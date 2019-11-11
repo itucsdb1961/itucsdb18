@@ -21,6 +21,13 @@ def books_page():
 		cursor.execute("select * from books")
 		books = cursor.fetchall()
 
+#	if request.method == "GET":
+#		return render_template("books.html")
+#	else:
+#		tmpbook = book(request.form["book_name"], request.form["pub_year"] ,request.form["book_lang"], request.form["book_genre"], request.form["pub_location"], request.form["publisher"])
+#		tmpbook.add_to_db(url)
+#		return render_template("books.html")
+
 	if request.method == "GET":
 		return render_template("admin_books.html", books = books)
 	else:
@@ -74,10 +81,10 @@ def authors_page():
 		cursor = connection.cursor()
 		cursor.execute("delete from books")
 	#print(url)
-
-
-
 	return render_template("authors.html")
+
+
+
 
 def closets_page():
 	with dbapi2.connect(url) as connection:
