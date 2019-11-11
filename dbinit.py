@@ -8,30 +8,31 @@ def init_book_table(url):
 		CREATE TABLE BOOKS(
 			ID SERIAL,
 			NAME VARCHAR(80) NOT NULL,
-			PB_YR INTEGER NOT NULL,
+			PB_YR CHAR(4) NOT NULL,
 			PB_LOC VARCHAR(80),
 			PUBLISHER VARCHAR(80),
 			GENRE VARCHAR(20),
 			LANG VARCHAR(20),
 			
-			
+
 			UNIQUE(NAME,PB_YR),
 			PRIMARY KEY(ID)
-	
+
 		)'''
 	with dbapi2.connect(url) as connection:
 		cursor = connection.cursor()
 		cursor.execute("DROP TABLE IF EXISTS BOOKS")
-		cursor.close()
+		connection.commit()
+
 	with dbapi2.connect(url) as connection:
 		cursor = connection.cursor()
 		cursor.execute(statement)
-		cursor.close()
+		connection.commit()
 
 
 
 def init_student_table(url):
-	
+
 	statement = '''
 		CREATE TABLE STUDENTS(
 			ID SERIAL,
@@ -42,14 +43,14 @@ def init_student_table(url):
 			GRADE INTEGER NOT NULL,
 			MEM_DATE VARCHAR(40),
 			DEBT FLOAT,
-			
+
 			PRIMARY KEY(ID)
 		)'''
 	with dbapi2.connect(url) as connection:
 		cursor = connection.cursor()
 		cursor.execute("DROP TABLE IF EXISTS STUDENTS")
-		cursor.close()
+		connection.commit()
 	with dbapi2.connect(url) as connection:
 		cursor = connection.cursor()
 		cursor.execute(statement)
-		cursor.close()
+		connection.commit()

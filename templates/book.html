@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+  
+    <h1 class="title">Books</h1>
+
+
+    <form action="" method="post" name="movie_list">
+      <table class="table is-striped is-fullwidth">
+        <tr>
+          <td>
+            <label class="checkbox">
+              <input type="checkbox" name="book_key"/>
+            </label>
+            <a href= {{ url_for('book_page', book_id = {{book.id}}) }}>
+              {{ book.name }} ({{book.pub_year}})
+            </a>
+          </td>
+        </tr>
+      </table>
+
+      <div class="field is-grouped">
+        <div class="control">
+          <button class="button is-danger is-small">Delete</button>
+        </div>
+      </div>
+    </form>
+
+{% endblock %}

@@ -17,14 +17,13 @@ class book:
 
 	def add_to_db(self,db_url):
 		STATEMENT ='''
-					INSERT INTO 
-					BOOKS	(NAME, PB_YR, LANG, GENRE, PB_LOC, PUBLISHER) 
-					VALUES 	('%s', %d, '%s', '%s', '%s', '%s') 
+					INSERT INTO
+					BOOKS	(NAME, PB_YR, LANG, GENRE, PB_LOC, PUBLISHER)
+					VALUES 	('%s', '%s', '%s', '%s', '%s', '%s')
 					ON CONFLICT(NAME,PB_YR) DO NOTHING
 					''' % (self.name, self.pub_year, self.lang, self.genre, self.pub_location, self.publisher)
-				
+
 		with dbapi2.connect(db_url) as connection:
 			cursor = connection.cursor()
 			cursor.execute(STATEMENT)
-			cursor.close()
-
+			connection.commit()
