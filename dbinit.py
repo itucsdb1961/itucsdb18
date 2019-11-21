@@ -30,6 +30,30 @@ def init_book_table(url):
 		connection.commit()
 
 
+def init_author_table(url):
+
+	statement = '''
+		CREATE TABLE AUTHORS(
+			ID SERIAL,
+			NAME VARCHAR(40) NOT NULL,
+			LAST_NAME VARCHAR(40) NOT NULL,
+			BIRTH_YR CHAR(4),
+			BIRTH_PLACE VARCHAR(40),
+			LAST_BOOK_DATE VARCHAR(40),
+			LAST_BOOK_NAME VARCHAR(40),
+
+			PRIMARY KEY(ID)
+		)'''
+
+	with dbapi2.connect(url) as connection:
+		cursor = connection.cursor()
+		cursor.execute("DROP TABLE IF EXISTS AUTHORS")
+		connection.commit()
+	with dbapi2.connect(url) as connection:
+		cursor = connection.cursor()
+		cursor.execute(statement)
+		connection.commit()
+
 
 def init_student_table(url):
 

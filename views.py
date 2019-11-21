@@ -29,15 +29,20 @@ def books_page():
 #		return render_template("books.html")
 
 	if request.method == "GET":
+		print(books)
 		return render_template("admin_books.html", books = books)
 	else:
 		tmpbook = book(request.form["book_name"], request.form["pub_year"] ,request.form["book_lang"], request.form["book_genre"], request.form["pub_location"], request.form["publisher"])
 		tmpbook.add_to_db(url)
 
+		print(tmpbook)
+		print(books)
+
 		with dbapi2.connect(url) as connection:
 			cursor = connection.cursor()
 			cursor.execute("select * from books")
 			books = cursor.fetchall()
+
 		return render_template("admin_books.html", books = books)
 
 def admin_books_page():
@@ -59,37 +64,55 @@ def admin_books_page():
 			cursor = connection.cursor()
 			cursor.execute("select * from books")
 			books = cursor.fetchall()
+		print(books)
 		return render_template("admin_books.html",books = books)
 
-@app.route("/book/<int:book_id>")	
-def book_page(book_id):
-	book = []
-	with dbapi2.connect(url) as connection:
-		cursor = connection.cursor()
-		cursor.execute(
-				'''	
-				select * from books
-				where ID = %d 
-				''' % (book_id)
-				)
-		book = cursor.fetchall()
+# @app.route("/book/<int:book_id>")	
+# def book_page(book_id):
+# 	book = []
+# 	with dbapi2.connect(url) as connection:
+# 		cursor = connection.cursor()
+# 		cursor.execute(
+# 				'''	
+# 				select * from books
+# 				where ID = %d 
+# 				''' % (book_id)
+# 				)
+# 		book = cursor.fetchall()
 
-	return render_template("book.html", book = book)
+# 	return render_template("book.html", book = book)
 
 def authors_page():
+
+	authors = []
+
 	with dbapi2.connect(url) as connection:
 		cursor = connection.cursor()
-		cursor.execute("delete from books")
-	#print(url)
-	return render_template("authors.html")
+		cursor.execute("select * from authors")
+		authors = cursor.fetchall()
 
+	if request.method == "GET":
+		print(authors)
+		return render_template("authors.html", authors = authors)
+	else:
+		tmpbook = book(request.form["book_name"], request.form["pub_year"] ,request.form["book_lang"], request.form["book_genre"], request.form["pub_location"], request.form["publisher"])
+		tmpbook.add_to_db(url)
 
+		print(tmpbook)
+		print(authors)
+
+		with dbapi2.connect(url) as connection:
+			cursor = connection.cursor()
+			cursor.execute("select * from authors")
+			authors = cursor.fetchall()
+
+		return render_template("authors.html", authors = authors)
 
 
 def closets_page():
-	with dbapi2.connect(url) as connection:
-		cursor = connection.cursor()
-		cursor.execute("drop table books")
+	# with dbapi2.connect(url) as connection:
+	# 	cursor = connection.cursor()
+	# 	cursor.execute("drop table authors")
 
 
 	return render_template("closets.html")
