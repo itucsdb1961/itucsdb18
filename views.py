@@ -67,20 +67,20 @@ def admin_books_page():
 		print(books)
 		return render_template("admin_books.html",books = books)
 
-# @app.route("/book/<int:book_id>")	
-# def book_page(book_id):
-# 	book = []
-# 	with dbapi2.connect(url) as connection:
-# 		cursor = connection.cursor()
-# 		cursor.execute(
-# 				'''	
-# 				select * from books
-# 				where ID = %d 
-# 				''' % (book_id)
-# 				)
-# 		book = cursor.fetchall()
+# @app.route("/book/<book_id>", methods = ['GET'])
+def book_page(book_id):
+	book = []
+	with dbapi2.connect(url) as connection:
+		cursor = connection.cursor()
+		cursor.execute(
+				'''
+				select * from books
+				where ID = %d
+				''' % (book_id)
+				)
+		book = cursor.fetchall()
 
-# 	return render_template("book.html", book = book)
+	return render_template("book.html", book = book)
 
 def authors_page():
 

@@ -13,7 +13,7 @@ def init_book_table(url):
 			PUBLISHER VARCHAR(80),
 			GENRE VARCHAR(20),
 			LANG VARCHAR(20),
-			
+
 
 			UNIQUE(NAME,PB_YR),
 			PRIMARY KEY(ID)
@@ -78,3 +78,8 @@ def init_student_table(url):
 		cursor = connection.cursor()
 		cursor.execute(statement)
 		connection.commit()
+
+def init_db(url):
+	init_book_table(url)
+	init_author_table(url)
+	init_student_table(url)

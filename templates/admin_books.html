@@ -14,10 +14,9 @@
               <input type="checkbox" name="book_key"/>
             </label>
 
-            <!-- <a  href = {{}} >   -->
-              {{book[1]}}( {{book[2]}} )
-            <!-- </a> -->
-
+            <a href = {{ url_for('views.book_page', book_id = book[0]) }}>
+                {{book[1]}}( {{book[2]}} )
+            </a>
           </td>
         </tr>
         {% endfor %}
@@ -78,6 +77,14 @@
               <input type="text" name="publisher" class="input"/>
             </div>
         </div>
+
+        <div class="field">
+            <label for="authors" class="label">Authors</label>
+              <div class="control">
+                <input type="text" name="authors" class="input"/>
+              </div>
+          </div>
+
 
         <div class="field is-grouped">
           <div class="control">
