@@ -1,6 +1,95 @@
 {% extends "layout.html" %}
-{% block title %}Home{% endblock %}
+{% block title %}Closets{% endblock %}
 {% block content %}
 
+<div class="container-fluid">
+
+      <h1 class="title">Closets</h1>
+
+      {% if closets %}
+      <form action="" method="post" name="movie_list">
+        <table class="table is-striped is-fullwidth">
+          {% for closet in closets %}
+          <tr>
+            <td>
+              <label class="checkbox">
+                <input type="checkbox" name="closet_key"/>
+              </label>
+
+              {{closet[1]}}&nbsp{{closet[2]}}&nbsp{{closet[3]}}&nbsp{{closet[4]}}&nbsp{{closet[5]}}
+              <!--<a href = "{{ url_for('closet_page', closet_id = closet[0]) }}">
+
+              </a>-->
+            </td>
+          </tr>
+          {% endfor %}
+        </table>
+
+        <div class="field is-grouped">
+          <div class="control">
+            <button class="button is-danger is-small">Delete</button>
+          </div>
+        </div>
+      </form>
+      {% endif %}
+
+
+    <div style="margin-left: 15px;">
+
+      <h1 class="title">Create closet</h1>
+
+      <form action="" method="post" name="closet_create">
+
+        <div class="field">
+          <label for="floor" class="label">Floor</label>
+            <div class="control">
+              <input type="text" name="closet_floor" class="input" required="required"/>
+            </div>
+        </div>
+
+        <div class="field">
+          <label for="block" class="label">Block</label>
+            <div class="control">
+              <input type="text" name="closet_block" class="input" required="required"/>
+            </div>
+        </div>
+
+        <div class="field">
+          <label for="number" class="label">Number</label>
+            <div class="control">
+              <input type="text" name="closet_number" class="input"/>
+            </div>
+        </div>
+
+        <div class="field">
+          <label for="type" class="label">Type</label>
+            <div class="control">
+              <input type="text" name="closet_type" class="input"/>
+            </div>
+        </div>
+
+      <div class="field">
+          <label for="size" class="label">Size</label>
+            <div class="control">
+              <input type="text" name="closet_size" class="input"/>
+            </div>
+      </div>
+
+      <div class="field">
+          <label for="return_hour" class="label">Return Hour</label>
+            <div class="control">
+              <input type="text" name="return_hour" class="input"/>
+            </div>
+      </div>
+
+        <div class="field is-grouped">
+          <div class="control">
+            <button class="button is-primary is-small">Create</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+</div>
 
 {% endblock %}

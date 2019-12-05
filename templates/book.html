@@ -1,12 +1,12 @@
 {% extends "layout.html" %}
 {% block title %}Home{% endblock %}
 {% block content %}
-  
+
     <h1 class="title">Books</h1>
     {% if book %}
 
-      <p> {{ book.name }} ({{book.pub_year}}) </p>
-    
+      <p> {{ book[1] }} ({{book[2]}}) </p>
+
     {% endif %}
 
 {% endblock %}
