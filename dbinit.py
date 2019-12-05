@@ -79,3 +79,15 @@ def init_student_table(url):
 		cursor = connection.cursor()
 		cursor.execute(statement)
 		connection.commit()
+		
+def init_relation_table_book_author():
+	
+	statement = '''
+		CREATE TABLE BOOK_AUTHORS(
+			
+			BOOK_ID INT NOT NULL,
+			AUTHOR_ID INT NOT NULL,
+			
+			UNIQUE (BOOK_ID,AUTHOR_ID),
+			PRIMARY KEY(BOOK_ID,AUTHOR_ID)			
+		)'''
