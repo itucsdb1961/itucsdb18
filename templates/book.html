@@ -2,11 +2,18 @@
 {% block title %}Home{% endblock %}
 {% block content %}
   
-    <h1 class="title">Books</h1>
+    <h1 class="title">Book</h1>
     {% if book %}
-
-      <p> {{ book.name }} ({{book.pub_year}}) </p>
-    
+		{% for b in book %}
+			<p> {{ b[1] }} ( {{b[2]}} ) </p>
+		{% endfor %}
     {% endif %}
+
+
+	<form action="{{url_for('delete_book', book_id = book[0][0])}}">
+            <button type="submit" rel="tooltip" class="btn btn-info btn-round btn-just-icon btn-sm btn-block" data-original-title="" title="">
+              Accept
+            </button>
+	</form>
 
 {% endblock %}

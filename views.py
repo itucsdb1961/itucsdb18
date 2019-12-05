@@ -67,21 +67,6 @@ def admin_books_page():
 		print(books)
 		return render_template("admin_books.html",books = books)
 
-# @app.route("/book/<int:book_id>")	
-# def book_page(book_id):
-# 	book = []
-# 	with dbapi2.connect(url) as connection:
-# 		cursor = connection.cursor()
-# 		cursor.execute(
-# 				'''	
-# 				select * from books
-# 				where ID = %d 
-# 				''' % (book_id)
-# 				)
-# 		book = cursor.fetchall()
-
-# 	return render_template("book.html", book = book)
-
 def authors_page():
 
 	authors = []
@@ -108,6 +93,37 @@ def authors_page():
 
 		return render_template("authors.html", authors = authors)
 
+def book_page(book_id):
+	
+	book = []
+	
+	statement = '''
+		SELECT * FROM BOOKS
+		WHERE (ID = %d)
+	''' % (int(book_id))
+	
+	with dbapi2.connect(url) as connection:
+		cursor = connection.cursor()
+		cursor.execute(statement)
+		book = cursor.fetchall()
+	
+	return render_template("book.html", book = book)
+	
+def delete_book(book_id):
+	
+	print("book_id = ")
+	print(book_id)
+	
+	statement = '''
+		DELETE FROM BOOKS
+		WHERE (ID = %d)
+	''' % (int(book_id))
+	
+	with dbapi2.connect(url) as connection:
+		cursor = connection.cursor()
+		cursor.execute(statement)
+	
+	return redirect(url_for("books_page"))
 
 def closets_page():
 	# with dbapi2.connect(url) as connection:
