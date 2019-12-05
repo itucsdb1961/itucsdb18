@@ -2,96 +2,144 @@
 {% block title %}Home{% endblock %}
 {% block content %}
 
-    <h1 class="title">Books</h1>
+  <div class="container-fluid">
 
-    {% if books %}
-    <form action="" method="post" name="movie_list">
-      <table class="table is-striped is-fullwidth">
-        {% for book in books %}
-        <tr>
-          <td>
-            <label class="checkbox">
-              <input type="checkbox" name="book_key"/>
-            </label>
+    <div class="row">
 
-            <a href = {{ url_for('views.book_page', book_id = book[0]) }}>
-                {{book[1]}}( {{book[2]}} )
-            </a>
-          </td>
-        </tr>
-        {% endfor %}
-      </table>
+      <div class="col-sm-9">
 
-      <div class="field is-grouped">
-        <div class="control">
-          <button class="button is-danger is-small">Delete</button>
-        </div>
-      </div>
-    </form>
-    {% endif %}
+        <h1 class="title">Books</h1>
 
-    <div style="margin-left: 15px;">
+        {% if books %}
+        <form action="" method="post" name="movie_list">
+          <table class="table is-striped is-fullwidth">
+            {% for book in books %}
+            <tr>
+              <td>
+                <label class="checkbox">
+                  <input type="checkbox" name="book_key"/>
+                </label>
 
-      <h1 class="title">Create book</h1>
+                <a href = "{{ url_for('book_page', book_id = book[0]) }}">
+                    {{book[1]}}( {{book[2]}} )
+                </a>
+              </td>
+            </tr>
+            {% endfor %}
+          </table>
 
-      <form action="" method="post" name="book_create">
-
-        <div class="field">
-          <label for="name" class="label">Book Name</label>
+          <div class="field is-grouped">
             <div class="control">
-              <input type="text" name="book_name" class="input" required="required"/>
+              <button class="button is-danger is-small">Delete</button>
             </div>
-        </div>
+          </div>
+        </form>
+        {% endif %}
 
-        <div class="field">
-          <label for="pb_year" class="label">Publication Year</label>
-            <div class="control">
-              <input type="text" name="pub_year" class="input" required="required"/>
-            </div>
-        </div>
+    </div>
 
-        <div class="field">
-          <label for="lang" class="label">Language</label>
-            <div class="control">
-              <input type="text" name="book_lang" class="input"/>
-            </div>
-        </div>
+    <div class="col-sm-3">
+      <div class="position-fixed bordered">
 
-        <div class="field">
-          <label for="genre" class="label">Genre</label>
-            <div class="control">
-              <input type="text" name="book_genre" class="input"/>
-            </div>
-        </div>
+        <form action="" method="post" name="book_create">
 
-      <div class="field">
-          <label for="pb_loc" class="label">Publication Location</label>
-            <div class="control">
-              <input type="text" name="pub_location" class="input"/>
-            </div>
-        </div>
-
-      <div class="field">
-          <label for="publisher" class="label">Publisher</label>
-            <div class="control">
-              <input type="text" name="publisher" class="input"/>
-            </div>
-        </div>
-
-        <div class="field">
-            <label for="authors" class="label">Authors</label>
+          <div>SEARCH</div>
+          <div class="field">
+            <label for="book_name" class="label">Book Name</label>
               <div class="control">
-                <input type="text" name="authors" class="input"/>
+                <input type="text" name="book_name" class="input"/>
+              </div>
+          </div>
+          <div class="field">
+            <label for="author_name" class="label">Author Name</label>
+              <div class="control">
+                <input type="text" name="author_name" class="input"/>
+              </div>
+          </div>
+          <div class="field">
+            <label for="genre" class="label">Genre</label>
+              <div class="control">
+                <div><input type="checkbox" name="checkbox_1"/>Horror</div>
+                <div><input type="checkbox" name="checkbox_2"/>Sci-Fi</div>
+                <div><input type="checkbox" name="checkbox_3"/>Biography</div>
+              </div>
+          </div>
+          <div class="field is-grouped">
+            <div class="control" style="padding: 10px;">
+              <button class="button is-primary is-small">Submit</button>
+            </div>
+          </div>
+
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+      <div style="margin-left: 15px;">
+
+        <h1 class="title">Create book</h1>
+
+        <form action="" method="post" name="book_create">
+
+          <div class="field">
+            <label for="name" class="label">Book Name</label>
+              <div class="control">
+                <input type="text" name="book_name" class="input" required="required"/>
               </div>
           </div>
 
-
-        <div class="field is-grouped">
-          <div class="control">
-            <button class="button is-primary is-small">Create</button>
+          <div class="field">
+            <label for="pb_year" class="label">Publication Year</label>
+              <div class="control">
+                <input type="text" name="pub_year" class="input" required="required"/>
+              </div>
           </div>
-        </div>
-      </form>
-    </div>
+
+          <div class="field">
+            <label for="lang" class="label">Language</label>
+              <div class="control">
+                <input type="text" name="book_lang" class="input"/>
+              </div>
+          </div>
+
+          <div class="field">
+            <label for="genre" class="label">Genre</label>
+              <div class="control">
+                <input type="text" name="book_genre" class="input"/>
+              </div>
+          </div>
+
+        <div class="field">
+            <label for="pb_loc" class="label">Publication Location</label>
+              <div class="control">
+                <input type="text" name="pub_location" class="input"/>
+              </div>
+          </div>
+
+        <div class="field">
+            <label for="publisher" class="label">Publisher</label>
+              <div class="control">
+                <input type="text" name="publisher" class="input"/>
+              </div>
+          </div>
+
+          <div class="field">
+              <label for="authors" class="label">Authors</label>
+                <div class="control">
+                  <input type="text" name="authors" class="input"/>
+                </div>
+            </div>
+
+
+          <div class="field is-grouped">
+            <div class="control">
+              <button class="button is-primary is-small">Create</button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+  </div>
 
 {% endblock %}
