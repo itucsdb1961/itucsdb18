@@ -1,12 +1,14 @@
 {% extends "layout.html" %}
 {% block title %}Home{% endblock %}
 {% block content %}
-  
+
     <h1 class="title">Book</h1>
     {% if book %}
-		{% for b in book %}
-			<p> {{ b[1] }} ( {{b[2]}} ) </p>
-		{% endfor %}
+      {% for b in book %}
+        <p> {{ b[1] }} ( {{b[2]}} ) </p>
+      {% endfor %}
+
+
     {% endif %}
 
 

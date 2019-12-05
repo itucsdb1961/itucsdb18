@@ -2,7 +2,7 @@ from flask import Flask
 import os
 import views
 import psycopg2 as dbapi2
-from dbinit import init_book_table
+from dbinit import init_db
 from flask import request, redirect, url_for
 
 
@@ -25,20 +25,25 @@ def create_app():
 	app.add_url_rule("/author/<author_id>", view_func = views.author_page)
 	app.add_url_rule("/author/delete/<author_id>", view_func = views.delete_author)
 
+
 	app.add_url_rule("/closets", view_func=views.closets_page)
+
+	app.add_url_rule("/book/<book_id>", view_func=views.book_page)
+
+
+	app.add_url_rule("/authors", view_func=views.authors_page)
+	app.add_url_rule("/closets", view_func=views.closets_page, methods=["GET", "POST"])
 	app.add_url_rule("/login", view_func=views.admin_login_page)
 
-	app.add_url_rule("/admin/books", view_func=views.admin_books_page , methods=["GET", "POST"])
-	
-	return app
 
-def init_db():
-	init_book_table(url)
+	app.add_url_rule("/admin/books", view_func=views.admin_books_page , methods=["GET", "POST"])
+
+	return app
 
 if __name__ == "__main__":
 	create_app()
 	port = app.config.get("PORT", 5000)
 
-	#init_db()
+	init_db(url)
 
 	app.run(host="0.0.0.0", port=port)

@@ -5,7 +5,7 @@
     <h1 class="title">Authors</h1>
 
     {% if authors %}
-    <form action="" method="post" name="movie_list">
+    <form action="" method="post" name="authors-list">
       <table class="table is-striped is-fullwidth">
         {% for author in authors %}
         <tr>
@@ -13,9 +13,12 @@
             <label class="checkbox">
               <input type="checkbox" name="author_key"/>
             </label>
-			<a class="small" href="{{url_for('author_page', author_id = author[0])}}" >
-				{{author[1]}}( {{author[2]}} )
-			</a>
+        <a class="small" href="{{url_for('author_page', author_id = author[0])}}" >
+          {{author[1]}}( {{author[2]}} )
+        </a>
+
+    
+
           </td>
         </tr>
         {% endfor %}
@@ -34,6 +37,16 @@
       <h1 class="title">Add Author</h1>
 
       <form action="" method="post" name="add_author">
+
+        ID SERIAL,
+        NAME VARCHAR(40) NOT NULL,
+        LAST_NAME VARCHAR(40) NOT NULL,
+        BIRTH_YR CHAR(4),
+        BIRTH_PLACE VARCHAR(40),
+        LAST_BOOK_DATE VARCHAR(40),
+        LAST_BOOK_NAME VARCHAR(40),
+
+        PRIMARY KEY(ID)
 
         <div class="field">
           <label for="name" class="label">Name</label>
