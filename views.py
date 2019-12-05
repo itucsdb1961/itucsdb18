@@ -3,6 +3,7 @@ from server import app,url
 from flask import request, redirect, url_for
 import psycopg2 as dbapi2
 from book import book
+from author import author
 
 def home_page():
 	with dbapi2.connect(url) as connection:
@@ -67,31 +68,7 @@ def admin_books_page():
 		print(books)
 		return render_template("admin_books.html",books = books)
 
-def authors_page():
 
-	authors = []
-
-	with dbapi2.connect(url) as connection:
-		cursor = connection.cursor()
-		cursor.execute("select * from authors")
-		authors = cursor.fetchall()
-
-	if request.method == "GET":
-		print(authors)
-		return render_template("authors.html", authors = authors)
-	else:
-		tmpbook = book(request.form["book_name"], request.form["pub_year"] ,request.form["book_lang"], request.form["book_genre"], request.form["pub_location"], request.form["publisher"])
-		tmpbook.add_to_db(url)
-
-		print(tmpbook)
-		print(authors)
-
-		with dbapi2.connect(url) as connection:
-			cursor = connection.cursor()
-			cursor.execute("select * from authors")
-			authors = cursor.fetchall()
-
-		return render_template("authors.html", authors = authors)
 
 def book_page(book_id):
 	
@@ -124,6 +101,50 @@ def delete_book(book_id):
 		cursor.execute(statement)
 	
 	return redirect(url_for("books_page"))
+
+
+def authors_page():
+
+	if request.method == "POST":
+		tmp_author = author(request.form["author_name"], request.form["last_name"] ,request.form["birth_year"], request.form["birth_place"], request.form["last_book_date"], request.form["last_book_name"])
+		tmp_author.add_to_db(url)
+
+	authors = []
+
+	with dbapi2.connect(url) as connection:
+		cursor = connection.cursor()
+		cursor.execute("select * from authors")
+		authors = cursor.fetchall()
+	return render_template("authors.html", authors = authors)
+	
+def author_page(author_id):
+	
+	author = []
+	
+	statement = '''
+		SELECT * FROM AUTHORS
+		WHERE (ID = %d)
+	''' % (int(author_id))
+	
+	with dbapi2.connect(url) as connection:
+		cursor = connection.cursor()
+		cursor.execute(statement)
+		author = cursor.fetchall()
+	
+	return render_template("author.html", author = author)	
+
+def delete_author(author_id):
+	
+	statement = '''
+		DELETE FROM AUTHORS
+		WHERE (ID = %d)
+	''' % (int(author_id))
+	
+	with dbapi2.connect(url) as connection:
+		cursor = connection.cursor()
+		cursor.execute(statement)
+	
+	return redirect(url_for("authors_page"))
 
 def closets_page():
 	# with dbapi2.connect(url) as connection:

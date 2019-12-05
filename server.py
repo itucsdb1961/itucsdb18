@@ -21,7 +21,10 @@ def create_app():
 	app.add_url_rule("/book/delete/<book_id>", view_func = views.delete_book)
 
 
-	app.add_url_rule("/authors", view_func=views.authors_page)
+	app.add_url_rule("/authors", view_func=views.authors_page, methods=["GET", "POST"])
+	app.add_url_rule("/author/<author_id>", view_func = views.author_page)
+	app.add_url_rule("/author/delete/<author_id>", view_func = views.delete_author)
+
 	app.add_url_rule("/closets", view_func=views.closets_page)
 	app.add_url_rule("/login", view_func=views.admin_login_page)
 

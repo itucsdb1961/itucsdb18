@@ -41,7 +41,8 @@ def init_author_table(url):
 			BIRTH_PLACE VARCHAR(40),
 			LAST_BOOK_DATE VARCHAR(40),
 			LAST_BOOK_NAME VARCHAR(40),
-
+	
+			UNIQUE(NAME, LAST_NAME),
 			PRIMARY KEY(ID)
 		)'''
 
