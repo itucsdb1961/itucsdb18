@@ -12,7 +12,9 @@
 
     {% if authors %}
       {% for author in authors %}      
-			<p> {{ author[1] }} ( {{author[2]}} ) </p>
+			<a href = "{{ url_for('author_page', author_id = author[0]) }}">
+				{{ author[1] }} ( {{author[2]}} ) 
+			</a>
       {% endfor %}
     {% endif %}
 

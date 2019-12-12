@@ -179,18 +179,48 @@ def authors_page():
 def author_page(author_id):
 	
 	author = []
+	books = []
 	
-	statement = '''
+	statement_author = '''
 		SELECT * FROM AUTHORS
 		WHERE (ID = %d)
 	''' % (int(author_id))
 	
+	statement_books = '''
+		SELECT * FROM BOOK_AUTHORS
+		WHERE (AUTHOR_ID = %d)
+	''' % (int(author_id))
+	
+
 	with dbapi2.connect(url) as connection:
 		cursor = connection.cursor()
-		cursor.execute(statement)
+		cursor.execute(statement_author)
 		author = cursor.fetchall()
-	
-	return render_template("author.html", author = author)	
+		
+		cursor.execute(statement_books)
+		author_book = cursor.fetchall() # return book ids
+				
+		for row in author_book:
+			print("row= ")
+			print(row)
+			book_id = row[0]
+				
+			print("book_id = " + str(book_id))
+					
+			statement_book_ids = '''
+				SELECT * FROM BOOKS
+				WHERE (ID = %d)
+			''' % (int(book_id))
+			
+			cursor.execute(statement_book_ids)
+			
+			book = cursor.fetchall()
+			
+			print(book)			
+			books.append(book)
+		
+	print("books = " + str(books))
+	return render_template("author.html", author = author, books = books)	
 
 def delete_author(author_id):
 	
