@@ -11,9 +11,14 @@
         <tr>
           <td>
             <label class="checkbox">
-              <input type="checkbox" name="book_key"/>
+              <input type="checkbox" name="author_key"/>
             </label>
-              {{author[1]}}( {{author[2]}} )
+        <a class="small" href="{{url_for('author_page', author_id = author[0])}}" >
+          {{author[1]}}( {{author[2]}} )
+        </a>
+
+    
+
           </td>
         </tr>
         {% endfor %}
@@ -29,9 +34,9 @@
 
     <div style="margin-left: 15px;">
 
-      <h1 class="title">Create author</h1>
+      <h1 class="title">Add Author</h1>
 
-      <form action="" method="post" name="book_create">
+      <form action="" method="post" name="add_author">
 
         ID SERIAL,
         NAME VARCHAR(40) NOT NULL,
@@ -44,44 +49,44 @@
         PRIMARY KEY(ID)
 
         <div class="field">
-          <label for="name" class="label">Book Name</label>
+          <label for="name" class="label">Name</label>
             <div class="control">
-              <input type="text" name="book_name" class="input" required="required"/>
+              <input type="text" name="author_name" class="input" required="required"/>
             </div>
         </div>
 
         <div class="field">
-          <label for="pb_year" class="label">Publication Year</label>
+          <label for="pb_year" class="label">Last name</label>
             <div class="control">
-              <input type="text" name="pub_year" class="input" required="required"/>
+              <input type="text" name="last_name" class="input" required="required"/>
             </div>
         </div>
 
         <div class="field">
-          <label for="lang" class="label">Language</label>
+          <label for="lang" class="label">Birth year</label>
             <div class="control">
-              <input type="text" name="book_lang" class="input"/>
+              <input type="text" name="birth_year" class="input"/>
             </div>
         </div>
 
         <div class="field">
-          <label for="genre" class="label">Genre</label>
+          <label for="genre" class="label">Birth place</label>
             <div class="control">
-              <input type="text" name="book_genre" class="input"/>
+              <input type="text" name="birth_place" class="input"/>
             </div>
         </div>
 
       <div class="field">
-          <label for="pb_loc" class="label">Publication Location</label>
+          <label for="pb_loc" class="label">Last book date</label>
             <div class="control">
-              <input type="text" name="pub_location" class="input"/>
+              <input type="text" name="last_book_date" class="input"/>
             </div>
         </div>
 
       <div class="field">
-          <label for="publisher" class="label">Publisher</label>
+          <label for="publisher" class="label">Last book name</label>
             <div class="control">
-              <input type="text" name="publisher" class="input"/>
+              <input type="text" name="last_book_name" class="input"/>
             </div>
         </div>
 

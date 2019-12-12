@@ -2,9 +2,36 @@
 {% block title %}Home{% endblock %}
 {% block content %}
 
+    <h1 class="title">Books</h1>
+
+    {% if books %}
+    <form action="" method="post" name="movie_list">
+      <table class="table is-striped is-fullwidth">
+        {% for book in books %}
+        <tr>
+          <td>
+            <label class="checkbox">
+              <input type="checkbox" name="book_key"/>
+            </label>
+            <a class="small" href="{{url_for('book_page', book_id = book[0])}}" > {{book[1]}}( {{book[2]}} )</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+
+      <div class="field is-grouped">
+        <div class="control">
+          <button class="button is-danger is-small">Delete</button>
+        </div>
+      </div>
+    </form>
+    {% endif %}
+    <div style="margin-left: 15px;">
+
   <div class="container-fluid">
 
     <div class="row">
+
 
       <div class="col-sm-9">
 
@@ -136,6 +163,13 @@
             <div class="control">
               <button class="button is-primary is-small">Create</button>
             </div>
+
+        </div>
+        
+        <div class="field is-grouped">
+          <div class="control">
+            <button class="button is-primary is-small">Create</button>
+
           </div>
         </form>
       </div>

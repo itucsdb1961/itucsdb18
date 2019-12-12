@@ -41,7 +41,8 @@ def init_author_table(url):
 			BIRTH_PLACE VARCHAR(40),
 			LAST_BOOK_DATE VARCHAR(40),
 			LAST_BOOK_NAME VARCHAR(40),
-
+	
+			UNIQUE(NAME, LAST_NAME),
 			PRIMARY KEY(ID)
 		)'''
 
@@ -78,6 +79,18 @@ def init_student_table(url):
 		cursor = connection.cursor()
 		cursor.execute(statement)
 		connection.commit()
+		
+def init_relation_table_book_author():
+	
+	statement = '''
+		CREATE TABLE BOOK_AUTHORS(
+			
+			BOOK_ID INT NOT NULL,
+			AUTHOR_ID INT NOT NULL,
+			
+			UNIQUE (BOOK_ID,AUTHOR_ID),
+			PRIMARY KEY(BOOK_ID,AUTHOR_ID)			
+		)'''
 
 def init_closets_table(url):
 
@@ -108,3 +121,4 @@ def init_db(url):
 	init_author_table(url)
 	init_student_table(url)
 	init_closets_table(url)
+ 
