@@ -23,56 +23,88 @@ def books_page():
 		cursor = connection.cursor()
 		cursor.execute("select * from books")
 		books = cursor.fetchall()
-
-	if request.method == "GET":
-		print(books)
-		return render_template("admin_books.html", books = books)
-	else:
-		tmp_book = book(request.form["book_name"], request.form["pub_year"] ,request.form["book_lang"], request.form["book_genre"], request.form["pub_location"], request.form["publisher"])
-		tmp_book.add_to_db(url)
-
-		authors = request.form["authors"]
-		authorList = authors.split('+')
-		for author0 in authorList:
-			parsed_name = author0.split(' ')
-			
-			last_name = parsed_name[-1]
-			first_name = parsed_name[0]
-			
-			ct = len(parsed_name)
-			t = 0
-			for nm in parsed_name:
-				if t==0 or t==ct-1:
-					t+=1
-				else:
-					first_name +=  " " + nm
-					t+=1
-			
-			tmp_author = author(str(first_name), str(last_name))
-			tmp_author.add_to_db(url)
 		
-			# adding book-author relation
-			STATEMENT ='''
-						INSERT INTO
-						BOOK_AUTHORS (BOOK_ID, AUTHOR_ID)
-						VALUES 	('%s', '%s')					
-						''' % (tmp_book.fetch_id(url), tmp_author.fetch_id(url))
-						
-			with dbapi2.connect(url) as connection:
-				cursor = connection.cursor()
-				cursor.execute( STATEMENT )
+	if request.method == "GET":
+		return render_template("admin_books.html", books = books, book_count = len(books))
+	else:
+		if "form_name" in request.form:
+			if request.form["form_name"] == "book_create":
+				tmp_book = book(request.form["book_name"], request.form["pub_year"] ,request.form["book_lang"], request.form["book_genre"], request.form["pub_location"], request.form["publisher"])
+				tmp_book.add_to_db(url)
 
-	
-	
-	
-		# collect and serve
-		with dbapi2.connect(url) as connection:
-			cursor = connection.cursor()
-			cursor.execute("select * from books")
-			books = cursor.fetchall()
+				authors = request.form["authors"]
+				authorList = authors.split('+')
+				for author0 in authorList:
+					parsed_name = author0.split(' ')
+					
+					last_name = parsed_name[-1]
+					first_name = parsed_name[0]
+					
+					ct = len(parsed_name)
+					t = 0
+					for nm in parsed_name:
+						if t==0 or t==ct-1:
+							t+=1
+						else:
+							first_name +=  " " + nm
+							t+=1
+					
+					tmp_author = author(str(first_name), str(last_name))
+					tmp_author.add_to_db(url)
+				
+					# adding book-author relation
+					STATEMENT ='''
+								INSERT INTO
+								BOOK_AUTHORS (BOOK_ID, AUTHOR_ID)
+								VALUES 	('%s', '%s')
+								ON CONFLICT(BOOK_ID, AUTHOR_ID) DO NOTHING				
+								''' % (tmp_book.fetch_id(url), tmp_author.fetch_id(url))
+								
+					with dbapi2.connect(url) as connection:
+						cursor = connection.cursor()
+						cursor.execute( STATEMENT )
+			
+				# collect and serve
+				with dbapi2.connect(url) as connection:
+					cursor = connection.cursor()
+					cursor.execute("select * from books")
+					books = cursor.fetchall()
+				
+				book_count += 1
+				return render_template("admin_books.html", books = books, book_count = len(books))
+			
+			elif request.form["form_name"] == "filter":
 
-		return render_template("admin_books.html", books = books)
+				statement = '''
+					SELECT * FROM BOOKS
+				'''
+				
+				condition = []
+				
+				if request.form["book_name"]:
+					condition.append("(NAME = '%s')" % (request.form["book_name"]))
+				
+				#if request.form["author_name"]:
+				#	condition.append("()")
+									
+				print(request.form["book_name"])
+	
+				if len(condition):
+					statement += "WHERE "
+					last = len(condition) - 1
+					t = 0
+					for cond in condition:
+						statement += cond
+						if t != last:
+							statement += " AND "
+						t += 1
+	
+				with dbapi2.connect(url) as connection:
+					cursor = connection.cursor()
+					cursor.execute(statement)
+					books = cursor.fetchall()
 
+				return render_template("admin_books.html", books = books, book_count = len(books))
 
 def admin_books_page():
 

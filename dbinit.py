@@ -91,7 +91,7 @@ def init_relation_table_book_author(url):
 			AUTHOR_ID INT REFERENCES AUTHORS(ID),
 			
 			UNIQUE (BOOK_ID,AUTHOR_ID),
-			PRIMARY KEY(BOOK_ID,AUTHOR_ID)			
+			PRIMARY KEY(BOOK_ID,AUTHOR_ID)	
 		)'''
 	
 	with dbapi2.connect(url) as connection:
