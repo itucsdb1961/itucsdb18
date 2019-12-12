@@ -27,3 +27,18 @@ class book:
 			cursor = connection.cursor()
 			cursor.execute(STATEMENT)
 			connection.commit()
+	
+	def fetch_id(self,db_url):
+		
+		with dbapi2.connect(db_url) as connection:
+			cursor = connection.cursor()
+			cursor.execute(
+					'''
+					select * from books
+					where 
+					NAME = '%s' and
+					PB_YR = '%s'
+					''' % (self.name, self.pub_year)
+					)
+			ids = cursor.fetchall()
+			return ids[0][0]

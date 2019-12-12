@@ -3,6 +3,9 @@ import sys
 
 import psycopg2 as dbapi2
 
+url = "postgres://vzvhmhqevlcedf:141b03607dee6c5c995d91b952b06e4fc122006f5cd2c1d789403aae34dc40a1@ec2-54-217-225-16.eu-west-1.compute.amazonaws.com:5432/dafo7esm4hjfc7"
+secret_key = "hjkalsfdlamfrqwrxzc"
+
 def init_book_table(url):
 	statement = '''
 		CREATE TABLE BOOKS(
@@ -80,17 +83,26 @@ def init_student_table(url):
 		cursor.execute(statement)
 		connection.commit()
 		
-def init_relation_table_book_author():
+def init_relation_table_book_author(url):
 	
 	statement = '''
 		CREATE TABLE BOOK_AUTHORS(
-			
-			BOOK_ID INT NOT NULL,
-			AUTHOR_ID INT NOT NULL,
+			BOOK_ID INT  REFERENCES BOOKS(ID),
+			AUTHOR_ID INT REFERENCES AUTHORS(ID),
 			
 			UNIQUE (BOOK_ID,AUTHOR_ID),
 			PRIMARY KEY(BOOK_ID,AUTHOR_ID)			
 		)'''
+	
+	with dbapi2.connect(url) as connection:
+		cursor = connection.cursor()
+		cursor.execute("DROP TABLE IF EXISTS BOOK_AUTHORS")
+		connection.commit()
+		
+	with dbapi2.connect(url) as connection:
+		cursor = connection.cursor()
+		cursor.execute(statement)
+		connection.commit()
 
 def init_closets_table(url):
 
@@ -121,4 +133,6 @@ def init_db(url):
 	init_author_table(url)
 	init_student_table(url)
 	init_closets_table(url)
- 
+	init_relation_table_book_author(url)
+
+#init_db(url)
