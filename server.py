@@ -15,17 +15,18 @@ def create_app():
 	app.config.from_object("settings")
 
 	app.add_url_rule("/", view_func=views.home_page)
+	app.add_url_rule("/admin/books", view_func=views.admin_books_page , methods=["GET", "POST"])
 	app.add_url_rule("/books", view_func=views.books_page , methods=["GET", "POST"])
-
 	app.add_url_rule("/book/<book_id>", view_func=views.book_page)
 
-
+	app.add_url_rule("/admin/authors", view_func=views.admin_authors_page)
 	app.add_url_rule("/authors", view_func=views.authors_page)
+
+	app.add_url_rule("/admin/closets", view_func=views.admin_closets_page, methods=["GET", "POST"])
 	app.add_url_rule("/closets", view_func=views.closets_page, methods=["GET", "POST"])
+
 	app.add_url_rule("/login", view_func=views.admin_login_page)
 
-
-	app.add_url_rule("/admin/books", view_func=views.admin_books_page , methods=["GET", "POST"])
 
 	return app
 

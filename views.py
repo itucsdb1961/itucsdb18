@@ -14,7 +14,8 @@ def home_page():
 			print(r)
 	return render_template("home.html")
 
-def books_page():
+
+def admin_books_page():
 	books = []
 
 	with dbapi2.connect(url) as connection:
@@ -46,7 +47,8 @@ def books_page():
 
 		return render_template("admin_books.html", books = books)
 
-def admin_books_page():
+
+def books_page():
 
 	books = []
 
@@ -56,17 +58,8 @@ def admin_books_page():
 		books = cursor.fetchall()
 
 	if request.method == "GET":
-		return render_template("admin_books.html", books = books)
-	else:
-		tmpbook = book(request.form["book_name"], request.form["pub_year"] ,request.form["book_lang"], request.form["book_genre"], request.form["pub_location"], request.form["publisher"])
-		tmpbook.add_to_db(url)
+		return render_template("books.html", books = books)
 
-		with dbapi2.connect(url) as connection:
-			cursor = connection.cursor()
-			cursor.execute("select * from books")
-			books = cursor.fetchall()
-		print(books)
-		return render_template("admin_books.html",books = books)
 
 # @app.route("/book/<book_id>", methods = ['GET'])
 def book_page(book_id):
@@ -83,7 +76,8 @@ def book_page(book_id):
 
 	return render_template("book.html", book = book)
 
-def authors_page():
+
+def admin_authors_page():
 
 	authors = []
 
@@ -94,7 +88,7 @@ def authors_page():
 
 	if request.method == "GET":
 		print(authors)
-		return render_template("authors.html", authors = authors)
+		return render_template("admin_authors.html", authors = authors)
 	else:
 		tmpbook = book(request.form["book_name"], request.form["pub_year"] ,request.form["book_lang"], request.form["book_genre"], request.form["pub_location"], request.form["publisher"])
 		tmpbook.add_to_db(url)
@@ -107,7 +101,47 @@ def authors_page():
 			cursor.execute("select * from authors")
 			authors = cursor.fetchall()
 
+		return render_template("admin_authors.html", authors = authors)
+
+
+def authors_page():
+
+	authors = []
+
+	with dbapi2.connect(url) as connection:
+		cursor = connection.cursor()
+		cursor.execute("select * from authors")
+		authors = cursor.fetchall()
+
+	if request.method == "GET":
+		print(authors)
 		return render_template("authors.html", authors = authors)
+
+
+def admin_closets_page():
+	# with dbapi2.connect(url) as connection:
+	# 	cursor = connection.cursor()
+	# 	cursor.execute("drop table authors")
+
+	closets = []
+
+	with dbapi2.connect(url) as connection:
+		cursor = connection.cursor()
+		cursor.execute("SELECT * FROM CLOSETS")
+		closets = cursor.fetchall()
+
+	if request.method == "GET":
+		return render_template("admin_closets.html", closets = closets)
+	else:
+		tmpcloset = closet(request.form["closet_floor"], request.form["closet_block"] ,request.form["closet_number"], request.form["closet_type"], request.form["closet_size"], request.form["return_hour"])
+		tmpcloset.add_to_db(url)
+
+		with dbapi2.connect(url) as connection:
+			cursor = connection.cursor()
+			cursor.execute("SELECT * FROM CLOSETS")
+			closets = cursor.fetchall()
+		print(closets)
+		return render_template("admin_closets.html",closets = closets)
 
 
 def closets_page():
@@ -123,17 +157,8 @@ def closets_page():
 		closets = cursor.fetchall()
 
 	if request.method == "GET":
-		return render_template("closets.html", closets = closets)
-	else:
-		tmpcloset = closet(request.form["closet_floor"], request.form["closet_block"] ,request.form["closet_number"], request.form["closet_type"], request.form["closet_size"], request.form["return_hour"])
-		tmpcloset.add_to_db(url)
+		return render_template("closets.html", closets = closets)		
 
-		with dbapi2.connect(url) as connection:
-			cursor = connection.cursor()
-			cursor.execute("SELECT * FROM CLOSETS")
-			closets = cursor.fetchall()
-		print(closets)
-		return render_template("closets.html",closets = closets)
 
 def admin_login_page():
     return render_template("admin_login.html")
