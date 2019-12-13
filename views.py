@@ -28,7 +28,7 @@ def books_page():
 		return render_template("admin_books.html", books = books, book_count = len(books))
 	else:
 		if "form_name" in request.form:
-			if request.form["form_name"] == "book_create":
+			if request.form["form_name"] == "book_create": # CREATE BOOK FORM SUBMITTED
 				tmp_book = book(request.form["book_name"], request.form["pub_year"] ,request.form["book_lang"], request.form["book_genre"], request.form["pub_location"], request.form["publisher"])
 				tmp_book.add_to_db(url)
 
@@ -70,15 +70,15 @@ def books_page():
 					cursor.execute("select * from books")
 					books = cursor.fetchall()
 				
-				book_count += 1
 				return render_template("admin_books.html", books = books, book_count = len(books))
 			
-			elif request.form["form_name"] == "filter":
+			elif request.form["form_name"] == "filter": # FILTER FORM SUBMITTED
 
 				statement = '''
 					SELECT * FROM BOOKS
 				'''
 				
+				where = False
 				condition = []
 				
 				if request.form["book_name"]:
@@ -86,11 +86,11 @@ def books_page():
 				
 				#if request.form["author_name"]:
 				#	condition.append("()")
-									
-				print(request.form["book_name"])
-	
+				
 				if len(condition):
-					statement += "WHERE "
+					
+					if where == False:
+						statement += " WHERE "
 					last = len(condition) - 1
 					t = 0
 					for cond in condition:
@@ -98,7 +98,29 @@ def books_page():
 						if t != last:
 							statement += " AND "
 						t += 1
-	
+				
+				genre_cond = request.form.getlist('genre')
+				
+				genre_statement = ""
+				
+				
+				if len(genre_cond):
+					if where == False:
+						statement += " WHERE "
+					first = True
+					for item in genre_cond:
+						if first == False:
+							genre_statement += " OR "
+						first = False
+						genre_statement += "GENRE = " + "\'%s\'" % (str(item))
+						
+				if len(condition):
+					statement += " AND "
+				statement += "(" + genre_statement + ")" 
+				
+				
+				# final statement
+				print(statement)
 				with dbapi2.connect(url) as connection:
 					cursor = connection.cursor()
 					cursor.execute(statement)
