@@ -5,6 +5,8 @@ import psycopg2 as dbapi2
 from book import book
 from author import author
 from closet import closet
+from student import student
+import time
 
 
 def home_page():
@@ -145,9 +147,6 @@ def admin_books_page():
 	
 		authors = request.form["authors"];
 			
-		print("authors= ")
-		print(authors)
-
 		with dbapi2.connect(url) as connection:
 			cursor = connection.cursor()
 			cursor.execute("select * from books")
@@ -313,6 +312,56 @@ def closets_page():
 			closets = cursor.fetchall()
 		print(closets)
 		return render_template("closets.html",closets = closets)
+
+def admin_students():
+	students = []	
+	if request.method == "POST":
+		tmp_student = student(request.form["name"], request.form["last_name"] ,request.form["faculty"], request.form["department"], request.form["grade"], time.time())
+		tmp_student.add_to_db(url)
+		
+	with dbapi2.connect(url) as connection:
+		cursor = connection.cursor()
+		cursor.execute("SELECT * FROM STUDENTS")
+		students = cursor.fetchall()	
+		
+	return render_template("admin_students.html", students = students)
+
+def admin_student(student_id):
+	student = []
+	books = []
+	
+	with dbapi2.connect(url) as connection:
+		cursor = connection.cursor()
+		cursor.execute('''
+			SELECT * FROM STUDENTS
+			WHERE (ID = %d)
+			''' % (int(student_id))
+		)
+		student = cursor.fetchall()	
+		
+		if(len(student)):
+			student_id = student[0][0]
+		
+			cursor.execute('''
+				SELECT * FROM STUDENT_BOOKS
+				WHERE (STUDENT_ID = %d)
+			''' % (int(student_id))
+			)
+			books = cursor.fetchall()
+	
+		cursor.execute('''
+			SELECT * FROM BOOKS
+			WHERE (COUNT > 0)
+		'''
+		)
+		opt = cursor.fetchall()
+		options = []
+		#deleting unnecessary colmuns
+		for op in opt:
+			options.append(op[1])
+		
+	
+	return render_template("student.html", student = student, lend_books = books , options = options)
 
 def admin_login_page():
     return render_template("admin_login.html")
