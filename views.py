@@ -330,6 +330,49 @@ def admin_student(student_id):
 	student = []
 	books = []
 	
+	if request.method == "POST":
+		
+		if(request.form["form_name"] == "book_selector"):
+			
+			selected_book = str(request.form["options"])
+			#print(request.form["options"])
+			
+			#get book_id
+			ids = []
+			
+			statement = '''
+				SELECT * FROM BOOKS
+				WHERE (NAME= '%s')
+			''' % (selected_book)
+			
+			with dbapi2.connect(url) as connection:
+				cursor = connection.cursor()
+				cursor.execute(statement)
+				ids = cursor.fetchall()
+				
+				book_id = int(ids[0][0])
+				
+				relation_insert_statement = '''
+					INSERT INTO 
+					STUDENT_BOOKS (BOOK_ID, STUDENT_ID, DATE_LEND) 
+					VALUES 	(%d, %d, %f)
+					ON CONFLICT(BOOK_ID, STUDENT_ID) DO NOTHING
+				''' % (book_id, int(student_id), time.time())
+				
+				cursor.execute(relation_insert_statement)
+				
+				#update book_count
+				
+				book_update_statement = '''
+					UPDATE BOOKS
+					SET COUNT = COUNT-1
+					WHERE (ID = %d)
+				''' % (book_id)
+				
+				cursor.execute(book_update_statement)
+				
+			
+			
 	with dbapi2.connect(url) as connection:
 		cursor = connection.cursor()
 		cursor.execute('''
@@ -347,8 +390,23 @@ def admin_student(student_id):
 				WHERE (STUDENT_ID = %d)
 			''' % (int(student_id))
 			)
-			books = cursor.fetchall()
-	
+			
+			books_rel = cursor.fetchall()
+			
+			for r in books_rel:
+				
+				bk_id = int(r[0]) 
+				
+				statement = '''
+					SELECT ID,NAME FROM BOOKS
+					WHERE (ID = %d)					
+				''' % (bk_id)
+				
+				cursor.execute(statement)
+				
+				books = cursor.fetchall()
+				
+			print("books = " + str(books))
 		cursor.execute('''
 			SELECT * FROM BOOKS
 			WHERE (COUNT > 0)
