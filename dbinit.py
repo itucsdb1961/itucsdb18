@@ -128,6 +128,24 @@ def init_closets_table(url):
 		cursor.execute(statement)
 		connection.commit()
 
+def init_user_table(url):
+
+	statement = '''
+		CREATE TABLE USERS(
+			ID SERIAL,
+			USERNAME VARCHAR(40) NOT NULL,
+			H_PASSWORD VARCHAR(250) NOT NULL,
+			ACCESS_LEVEL INT DEFAULT 3,
+			
+			UNIQUE(USERNAME),
+			PRIMARY KEY(ID)
+		)'''
+	
+	with dbapi2.connect(url) as connection:
+		cursor = connection.cursor()
+		cursor.execute(statement)
+		connection.commit()
+
 def wipe(url):
 	
 	with dbapi2.connect(url) as connection:
@@ -145,6 +163,7 @@ def init_db(url):
 	init_author_table(url)
 	init_student_table(url)
 	init_closets_table(url)
+	init_user_table(url)
 	init_relation_table_book_author(url)
 	init_relation_table_student_lendbook(url)
 
