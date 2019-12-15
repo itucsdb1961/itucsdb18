@@ -5,6 +5,8 @@
     <div class="container">
       <div class="row">
 
+        {% if session["access_level"] < 3%}
+
         <div class="col-sm-9">
 
           <h1 class="title">Book</h1>
@@ -90,6 +92,26 @@
       	</form>
 
       </div>
+
+      {% else %}
+
+        <h1 class="title">Book</h1>
+        {% if book %}
+          {% for b in book %}
+            <p> {{ b[1] }} ( {{b[2]}} ) {{ b[3] }} {{ b[4] }} {{ b[5] }} {{ b[6] }} {{ b[7] }}</p>
+          {% endfor %}
+        {% endif %}
+
+
+        {% if authors %}
+          {% for author in authors %}
+          <a href = "{{ url_for('author_page', author_id = author[0]) }}">
+            {{ author[1] }} ( {{author[2]}} )
+          </a>
+          {% endfor %}
+        {% endif %}
+
+      {% endif %}
 
     </div>
   </div>
