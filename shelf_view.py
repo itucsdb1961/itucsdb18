@@ -8,13 +8,11 @@ Shelf ID	Shelf Name	BookType	Floor	Number of Books	Capacity
 class shelf:
 	def __init__(self,
 				name,
-				pub_year,
-				lang = None,
-				genre = None,
-				pub_location = None,
-				publisher = None):
+				book_type,
+				floor,
+				capacity):
 		self.name = name
-		self.pub_year = pub_year
+		self.book_tpye = book_type
 		self.lang = lang
 		self.genre = genre
 		self.pub_location = pub_location

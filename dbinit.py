@@ -149,7 +149,7 @@ def init_user_table(url):
 		INSERT INTO 
 		USERS (USERNAME, H_PASSWORD, ACCESS_LEVEL)
 		VALUES 	('%s', '%s', %d)
-		ON CONFLICT(BOOK_ID, STUDENT_ID) DO NOTHING
+		ON CONFLICT(USERNAME) DO NOTHING
 	''' % (adm , psw, 0)
 	
 	with dbapi2.connect(url) as connection:
