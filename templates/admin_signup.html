@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+{% block title %}Admin Page{% endblock %}
+{% block content %}
+
+  <div class="container">
+	<div class="row" style="padding: 150px;">
+	  <div class="col-sm d-flex flex-wrap align-content-center justify-content-center" style="width: 50%;">
+
+
+			<form action="" method="post" name="Signup">
+				
+			<div class="field">
+				<input type="hidden" name="form_name" value = "signup"/>
+			</div>		
+
+			<div class="field">
+			  <label for="username" class="label">Username</label>
+				<div class="control">
+				  <input type="text" name="username" class="input" required="required"/>
+				</div>
+			</div>
+			<div class="field">
+			  <label for="password" class="label">Password</label>
+				<div class="control">
+				  <input type="text" name="password" class="input" required="required"/>
+				</div>
+			</div>
+			
+			<div class="field">
+			  <label for="password" class="label">Password Again</label>
+				<div class="control">
+				  <input type="text" name="password_again" class="input" required="required"/>
+				</div>
+			</div>
+			
+			<div class="field is-grouped">
+			  <div class="control" style="padding: 10px;">
+				<button class="button is-primary is-small">Signup</button>
+			  </div>
+			</div>
+			
+			</form>
+
+	  </div>
+	  <div class="col-sm d-flex flex-wrap align-content-center justify-content-center" style="width: 50%;">
+		  <img src="{{ url_for('static', filename='itu_logo.png') }}" alt="İTÜ Logo" width="212" height="120">
+	  </div>
+	</div>
+  </div>
+{% endblock %}
