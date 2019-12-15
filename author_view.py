@@ -60,7 +60,7 @@ def admin_authors_page():
 		cursor = connection.cursor()
 		cursor.execute("select * from authors")
 		authors = cursor.fetchall()
-	return render_template("authors.html", authors = authors)
+	return render_template("admin_authors.html", authors = authors)
 
 def author_page(author_id):
 

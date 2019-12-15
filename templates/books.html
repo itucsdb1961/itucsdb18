@@ -11,15 +11,10 @@
         <h1 class="title">Books</h1>
 
         {% if books %}
-        <form action="" method="post" name="book_list">
           <table class="table is-striped is-fullwidth">
             {% for book in books %}
             <tr>
               <td>
-                <label class="checkbox">
-                  <input type="checkbox" name="book_key"/>
-                </label>
-
                 <a href = "{{ url_for('book_page', book_id = book[0]) }}">
                     {{book[1]}}( {{book[2]}} )
                 </a>
@@ -27,13 +22,6 @@
             </tr>
             {% endfor %}
           </table>
-
-          <div class="field is-grouped">
-            <div class="control">
-              <button class="button is-danger is-small">Delete</button>
-            </div>
-          </div>
-        </form>
         {% endif %}
 
     </div>
@@ -45,6 +33,9 @@
           <form action="" method="post" name="book_create">
 
             <h3>Search</h3>
+            <div class="field">
+        		    <input type="hidden" name="form_name" value="filter"/>
+        		</div>
             <div class="field">
               <label for="book_name" class="label">Book Name</label>
                 <div class="control">

@@ -2,9 +2,11 @@ url = "postgres://vzvhmhqevlcedf:141b03607dee6c5c995d91b952b06e4fc122006f5cd2c1d
 secret_key = "hjkalsfdlamfrqwrxzc"
 import psycopg2 as dbapi2
 from flask import Flask, request, redirect, url_for,render_template
+import time
 
 class student:
 	def __init__(self,
+				student_num,
 				name,
 				last_name,
 				faculty,
@@ -12,6 +14,7 @@ class student:
 				grade,
 				membership_start_date,
 				debt = 0):
+		self.student_num = student_num
 		self.name = name
 		self.last_name = last_name
 		self.faculty = faculty
@@ -23,10 +26,10 @@ class student:
 	def add_to_db(self,db_url):
 		STATEMENT ='''
 					INSERT INTO
-					STUDENTS (NAME, LAST_NAME, FACULTY, DEPART, GRADE, MEM_DATE, DEBT)
-					VALUES 	('%s', '%s', '%s', '%s', '%s', '%s', '%f')
-					ON CONFLICT(NAME,LAST_NAME,FACULTY,DEPART,GRADE) DO NOTHING
-					''' % (self.name, self.last_name, self.faculty, self.department, self.grade, self.membership_start_date, self.debt)
+					STUDENTS (STUDENT_NUM, NAME, LAST_NAME, FACULTY, DEPART, GRADE, MEM_DATE, DEBT)
+					VALUES 	('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%f')
+					ON CONFLICT(STUDENT_NUM) DO NOTHING
+					''' % (self.student_num, self.name, self.last_name, self.faculty, self.department, self.grade, self.membership_start_date, self.debt)
 
 		with dbapi2.connect(db_url) as connection:
 			cursor = connection.cursor()
@@ -39,7 +42,7 @@ class student:
 def admin_students():
 	students = []
 	if request.method == "POST":
-		tmp_student = student(request.form["name"], request.form["last_name"] ,request.form["faculty"], request.form["department"], request.form["grade"], time.time())
+		tmp_student = student(request.form["student_num"], request.form["name"], request.form["last_name"], request.form["faculty"], request.form["department"], request.form["grade"], time.time())
 		tmp_student.add_to_db(url)
 
 	with dbapi2.connect(url) as connection:
