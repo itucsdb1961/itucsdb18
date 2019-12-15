@@ -1,0 +1,80 @@
+{% extends "layout.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+
+  <div class="container">
+
+	<div class="row">
+
+	  <div class="col-sm-9">
+
+		<h1 class="title">shelves</h1>
+
+		{% if shelves %}
+		  <table class="table is-striped is-fullwidth">
+			{% for shelf in shelves %}
+			<tr>
+			  <td>
+				<a href = "{{ url_for('book_page', book_id = shelf[0]) }}">
+					{{shelf[1]}}( {{shelf[2]}} )
+				</a>
+			  </td>
+			</tr>
+			{% endfor %}
+		  </table>
+		{% endif %}
+
+	</div>
+
+	<div class="col-sm-3 d-flex justify-content-center">
+	  <div class="position-fixed bordered">
+
+		<div class="d-flex justify-content-center" style="background-color: rgb(254,203,255); border: 1px solid white; border-radius: 8px; padding: 5px;">
+		  <form action="" method="post" name="book_create">
+
+			<h3>Search</h3>
+			<div class="field">
+					<input type="hidden" name="form_name" value="filter"/>
+				</div>
+			<div class="field">
+			  <label for="book_name" class="label">Shelf Type</label>
+				<div class="control">
+				  <input type="text" name="type" class="input"/>
+				</div>
+			</div>
+			<div class="field">
+			  <label for="author_name" class="label">Shelf Capacity</label>
+				<div class="control">
+				  <input type="text" name="author_name" class="input"/>
+				</div>
+			</div>
+			<div class="field is-grouped">
+			  <div class="control" style="padding: 10px;">
+				<button class="button is-primary is-small">Submit</button>
+			  </div>
+			</div>
+
+		  </form>
+
+
+			<form action="" method="post" name="add_random">
+				<div class="field">
+					<input type="hidden" name="form_name" value="random"/>
+				</div>
+				<div class="field is-grouped">
+					<div class="control" style="padding: 10px;">
+						<button class="button is-primary is-small">Add Random</button>
+			  		</div>
+				</div>
+			</form>
+
+
+
+		</div>
+
+	  </div>
+	</div>
+  </div>
+
+  </div>
+{% endblock %}
