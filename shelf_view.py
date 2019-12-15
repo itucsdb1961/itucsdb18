@@ -112,7 +112,7 @@ def admin_shelves_page():
 					cursor.execute("select * from shelves")
 					shelves = cursor.fetchall()
 
-	return render_template("admin_shelves.html", shelves = shelves, shelf_count = len(shelves))
+  return render_template("admin_shelves.html", shelves = shelves, shelf_count = len(shelves))
 
 def shelf_page(shelf_id):
 	print("in shelf_page")
