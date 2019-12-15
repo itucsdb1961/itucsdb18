@@ -142,11 +142,21 @@ def init_user_table(url):
 			PRIMARY KEY(ID)
 		)'''
 
+	adm = "admin123"
+	psw = "psw123"
+
+	add_admin = '''
+		INSERT INTO 
+		USERS (USERNAME, H_PASSWORD, ACCESS_LEVEL)
+		VALUES 	('%s', '%s', %d)
+		ON CONFLICT(BOOK_ID, STUDENT_ID) DO NOTHING
+	''' % (adm , psw, 0)
+	
 	with dbapi2.connect(url) as connection:
 		cursor = connection.cursor()
 		cursor.execute(statement)
-		connection.commit()
-
+		cursor.execute(add_admin)
+		
 def wipe(url):
 
 	with dbapi2.connect(url) as connection:

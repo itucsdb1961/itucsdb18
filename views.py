@@ -127,6 +127,7 @@ def admin_login_page():
 							session["logged_in"] = True
 							session["username"] = str(user[1])
 							session["password"] = str(user[2])
+							session["access_level"] = int(user[3])
 							return redirect(url_for("admin_logged_page"))
 						else:
 							return redirect(url_for("admin_login_page", error = "Wrong password"))
