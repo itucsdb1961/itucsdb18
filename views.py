@@ -8,6 +8,7 @@ import time
 from hashlib import md5
 
 def home_page():
+	session["access_level"] = 3
 	return render_template("home.html")
 
 def admin_closets_page():
@@ -67,6 +68,17 @@ def admin_signup_page():
 			print(h_password2)
 			if not h_password == h_password2:
 				return redirect(url_for("admin_signup_page"))
+
+			with dbapi2.connect(url) as connection:
+				cursor = connection.cursor()
+				cursor.execute('''
+						INSERT INTO
+						USERS (USERNAME, H_PASSWORD)
+						VALUES ('%s', '%s')
+					''' % (username, password))
+
+			return redirect(url_for("admin_login_page"))
+
 	return render_template("admin_signup.html")
 
 def admin_login_page():
@@ -79,7 +91,7 @@ def admin_login_page():
 
 
 	print("in Login funct")
-	
+
 	if request.method == "POST":
 
 		print("in POST")
@@ -111,7 +123,7 @@ def admin_login_page():
 
 						print("user = ")
 						print(user[2])
-						
+
 						if(h_password == md5(user[2].encode('utf-8')).hexdigest()):# succesfull login
 							print("success")
 							session["logged_in"] = True
@@ -123,6 +135,13 @@ def admin_login_page():
 							return redirect(url_for("admin_login_page", error = "Wrong password"))
 				#cursor.execute(add_user_statement)
 	return render_template("admin_login.html")
+
+def admin_logout_page():
+
+	session["logged_in"] = False
+	session["access_level"] = 3
+
+	return render_template("home.html")
 
 def admin_logged_page():
 

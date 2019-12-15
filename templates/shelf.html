@@ -1,0 +1,80 @@
+{% extends "layout.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+
+    <div class="container">
+      <div class="row">
+
+        <div class="col-sm-9">
+
+          <h1 class="title">Shelf</h1>
+          {% if shelf %}
+            {% for b in shelf %}
+              <p> {{ b[1] }} ( {{b[2]}} ) {{ b[3] }} {{ b[4] }} {{ b[5] }}</p>
+            {% endfor %}
+          {% endif %}
+
+        </div>
+
+        <div class="col-sm-3 d-flex justify-content-center" style="background-color: rgb(254,203,255); border: 1px solid white; border-radius: 8px; padding: 5px;">
+
+          <div class="text-center">
+
+            <form action="" method="post" name="shelf_update">
+
+        			<h3 class="title">Update Shelf</h3>
+        			<div class="field">
+        					<input type="hidden" name="form_name" value = "shelf_create"/>
+        			</div>
+
+        			<div class="field">
+        			  <label for="num" class="label">Shelf Number</label>
+        			  <div class="control">
+          				<input type="text" name="num" class="input"/>
+        			  </div>
+        			</div>
+
+        			<div class="field">
+        			  <label for="block" class="label">Shelf Block</label>
+        			  <div class="control">
+          				<input type="text" name="block" class="input"/>
+        			  </div>
+        			</div>
+
+        			<div class="field">
+        			  <label for="floor" class="label">Shelf Floor</label>
+        			  <div class="control">
+          				<input type="text" name="floor" class="input"/>
+        			  </div>
+        			</div>
+
+        			<div class="field">
+        			<label for="capacity" class="label">Shelf Capacity</label>
+        			  <div class="control">
+          				<input type="text" name="capacity" class="input"/>
+        			  </div>
+        			</div>
+
+        			<div class="field">
+        			  <label for="shelf_type" class="label">Shelf Type</label>
+        			  <div class="control">
+          				<input type="text" name="shelf_type" class="input"/>
+        			  </div>
+        			</div>
+
+        			<div class="field is-grouped">
+        			  <div class="control" style="padding: 10px;">
+          				<button class="button is-primary is-small">Update</button>
+        			  </div>
+        			</div>
+
+      		  </form>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+{% endblock %}

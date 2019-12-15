@@ -1,0 +1,103 @@
+{% extends "layout.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+
+    <div class="container">
+      <div class="row">
+
+        {% if session["access_level"] < 3%}
+
+        <div class="col-sm-9">
+
+          <h1 class="title">Closet</h1>
+          {% if closet %}
+            {% for b in closet %}
+              <p> {{ b[1] }} ( {{b[2]}} ) {{ b[3] }} {{ b[4] }} {{ b[5] }} {{ b[6] }}</p>
+            {% endfor %}
+          {% endif %}
+
+        </div>
+
+        <div class="col-sm-3 d-flex justify-content-center" style="background-color: rgb(254,203,255); border: 1px solid white; border-radius: 8px; padding: 5px;">
+
+          <div class="text-center">
+
+            <form action="" method="post" name="closet_update">
+
+              <h3 class="title">Update closet</h3>
+              <div class="field">
+                <input type="hidden" name="form_name" value = "closet_update"/>
+              </div>
+
+              <div class="field">
+                <label for="floor" class="label">Floor</label>
+                <div class="control">
+                  <input type="text" name="floor" class="input"/>
+                </div>
+              </div>
+
+              <div class="field">
+                <label for="block" class="label">Block</label>
+                <div class="control">
+                  <input type="text" name="block" class="input"/>
+                </div>
+              </div>
+
+              <div class="field">
+                <label for="closet_number" class="label">Closet Number</label>
+                <div class="control">
+                  <input type="text" name="closet_number" class="input"/>
+                </div>
+              </div>
+
+              <div class="field">
+              <label for="closet_type" class="label">Closet Type</label>
+                <div class="control">
+                  <input type="text" name="closet_type" class="input"/>
+                </div>
+              </div>
+
+              <div class="field">
+                <label for="size" class="label">Size</label>
+                <div class="control">
+                  <input type="text" name="size" class="input"/>
+                </div>
+              </div>
+
+            <div class="field">
+              <label for="return_hour" class="label">Return Hour</label>
+                <div class="control">
+                <input type="text" name="return_hour" class="input"/>
+                </div>
+              </div>
+
+            <div class="field is-grouped">
+              <div class="control" style="padding: 10px;">
+                <button class="button is-primary is-small">Update</button>
+              </div>
+            </div>
+          </form>
+
+        </div>
+
+      </div>
+
+      {% else %}
+
+        <div class="col-sm">
+
+          <h1 class="title">Closet</h1>
+          {% if closet %}
+            {% for b in closet %}
+              <p> {{ b[1] }} ( {{b[2]}} ) {{ b[3] }} {{ b[4] }} {{ b[5] }} {{ b[6] }}</p>
+            {% endfor %}
+          {% endif %}
+
+        </div>
+
+      {% endif %}
+
+    </div>
+  </div>
+
+{% endblock %}

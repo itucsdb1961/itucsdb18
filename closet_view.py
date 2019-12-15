@@ -71,3 +71,14 @@ def closets_page():
 
 	if request.method == "GET":
 		return render_template("closets.html", closets = closets)
+
+def closet_page(closet_id):
+
+	with dbapi2.connect(url) as connection:
+		cursor = connection.cursor()
+		cursor.execute('''
+						SELECT * FROM CLOSETS
+						WHERE ID = %d
+					   '''	% (int(closet_id)))
+		closet = cursor.fetchall()
+	return render_template("closet.html",closet = closet)

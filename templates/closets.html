@@ -2,36 +2,72 @@
 {% block title %}Closets{% endblock %}
 {% block content %}
 
-<div class="container-fluid">
+<div class="container">
+
+  <div class="row">
+
+    <div class="col-sm-9">
 
       <h1 class="title">Closets</h1>
 
       {% if closets %}
-      <form action="" method="post" name="movie_list">
         <table class="table is-striped is-fullwidth">
           {% for closet in closets %}
           <tr>
             <td>
-              <label class="checkbox">
-                <input type="checkbox" name="closet_key"/>
-              </label>
 
-              {{closet[1]}}&nbsp{{closet[2]}}&nbsp{{closet[3]}}&nbsp{{closet[4]}}&nbsp{{closet[5]}}
-              <!--<a href = "{{ url_for('closet_page', closet_id = closet[0]) }}">
+              <a href = "{{ url_for('closet_page', closet_id = closet[0]) }}">
+                {{closet[1]}}&nbsp{{closet[2]}}&nbsp{{closet[3]}}
+              </a>
 
-              </a>-->
             </td>
           </tr>
           {% endfor %}
         </table>
-
-        <div class="field is-grouped">
-          <div class="control">
-            <button class="button is-danger is-small">Delete</button>
-          </div>
-        </div>
-      </form>
       {% endif %}
+
+  </div>
+
+  <div class="col-sm-3 d-flex justify-content-center">
+    <div class="position-fixed bordered">
+
+      <div class="text-center" style="background-color: rgb(254,203,255); border: 1px solid white; border-radius: 8px; padding: 5px;">
+        <form action="" method="post" name="closet_search">
+
+          <h3>Search</h3>
+          <div class="field">
+              <input type="hidden" name="form_name" value="filter"/>
+          </div>
+          <div class="field">
+            <label for="floor" class="label">Floor</label>
+              <div class="control">
+                <input type="text" name="floor" class="input"/>
+              </div>
+          </div>
+          <div class="field">
+            <label for="closet_number" class="label">Closet Number</label>
+              <div class="control">
+                <input type="text" name="closet_number" class="input"/>
+              </div>
+          </div>
+          <div class="field">
+            <label for="closet_size" class="label">Closet Size</label>
+              <div class="control">
+                <input type="text" name="closet_size" class="input"/>
+              </div>
+          </div>
+          <div class="field is-grouped">
+            <div class="control" style="padding: 10px;">
+              <button class="button is-primary is-small">Submit</button>
+            </div>
+          </div>
+
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
 
 </div>
 
