@@ -33,8 +33,10 @@ def create_app():
 
 	app.add_url_rule("/authors", view_func=views.authors_page)
 	app.add_url_rule("/closets", view_func=views.closets_page, methods=["GET", "POST"])
-	app.add_url_rule("/login", view_func=views.admin_login_page)
+	app.add_url_rule("/login", view_func=views.admin_login_page, methods=["GET", "POST"])
 
+	app.add_url_rule("/admin/students", view_func=views.admin_students, methods=["GET", "POST"])
+	app.add_url_rule("/admin/student/<student_id>", view_func=views.admin_student, methods=["GET", "POST"])
 
 	app.add_url_rule("/admin/books", view_func=views.admin_books_page , methods=["GET", "POST"])
 
@@ -43,7 +45,5 @@ def create_app():
 if __name__ == "__main__":
 	create_app()
 	port = app.config.get("PORT", 5000)
-
-	init_db(url)
 
 	app.run(host="0.0.0.0", port=port)

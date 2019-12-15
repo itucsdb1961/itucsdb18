@@ -1,0 +1,64 @@
+{% extends "layout.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+
+    <h1 class="title">Students</h1>
+    {% if students %}
+      {% for student in students %}
+		<a href="{{url_for('admin_student', student_id = student[0])}}">
+				{{student[1]}} {{student[2]}}
+		</a>
+      {% endfor %}
+    {% endif %}
+
+
+	<div style="margin-left: 15px;">
+		<h1 class="title">Add student</h1>
+			<form action="" method="post" name="add_student">		  
+				<div class="field">
+					<input type="hidden" name="form_name" value = "add_student"/>
+				</div>		
+				  
+				<div class="field">
+					<label for="name" class="label">Name</label>
+					<div class="control">
+						<input type="text" name="name" class="input" required="required"/>
+					</div>
+				</div>
+				
+				<div class="field">
+					<label for="pb_year" class="label">Last Name</label>
+					<div class="control">
+						<input type="text" name="last_name" class="input" required="required"/>
+					</div>
+				</div>
+
+				<div class="field">
+					<label for="lang" class="label">Faculty</label>
+					<div class="control">
+						<input type="text" name="faculty" class="input"/>
+					</div>
+				</div>
+
+				<div class="field">
+					<label for="genre" class="label">Department</label>
+					<div class="control">
+						<input type="text" name="department" class="input"/>
+					</div>
+				</div>
+
+				<div class="field">
+					<label for="pb_loc" class="label">Grade</label>
+					<div class="control">
+						<input type="text" name="grade" class="input"/>
+					</div>
+				</div>
+
+				<div class="field is-grouped">
+					<div class="control">
+						<button class="button is-primary is-small">Add</button>
+					</div>
+				</div>
+			</form>
+		</div>
+{% endblock %}

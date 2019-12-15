@@ -7,10 +7,16 @@
       {% for b in book %}
         <p> {{ b[1] }} ( {{b[2]}} ) </p>
       {% endfor %}
-
-
     {% endif %}
 
+
+    {% if authors %}
+      {% for author in authors %}      
+			<a href = "{{ url_for('author_page', author_id = author[0]) }}">
+				{{ author[1] }} ( {{author[2]}} ) 
+			</a>
+      {% endfor %}
+    {% endif %}
 
 	<form action="{{url_for('delete_book', book_id = book[0][0])}}">
             <button type="submit" rel="tooltip" class="btn btn-info btn-round btn-just-icon btn-sm btn-block" data-original-title="" title="">
