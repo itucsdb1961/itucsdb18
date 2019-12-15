@@ -3,19 +3,23 @@ secret_key = "hjkalsfdlamfrqwrxzc"
 
 from flask import Flask, request, redirect, url_for, session
 import os
-import views
 import psycopg2 as dbapi2
-import author_view, book_view, closet_view, student_view
-from dbinit import init_db
+#from views import home_page
+#import author_view, book_view, closet_view, student_view
 
 app = Flask(__name__)
+
+def home_page():
+	return "test"
 
 def create_app():
 
 	app.config.from_object("settings")
 
-	app.add_url_rule("/", view_func=views.home_page)
-
+	app.add_url_rule("/", view_func=home_page)
+	return app
+	
+'''
 	app.add_url_rule("/admin/books", view_func = book_view.admin_books_page , methods=["GET", "POST"])
 
 	app.add_url_rule("/books", view_func = book_view.books_page , methods=["GET", "POST"])
@@ -38,10 +42,11 @@ def create_app():
 	
 	app.add_url_rule("/admin/students", view_func=student_view.admin_students, methods=["GET", "POST"])
 	app.add_url_rule("/admin/student/<student_id>", view_func=student_view.admin_student, methods=["GET", "POST"])
-
-	return app
+'''
+	
 
 if __name__ == "__main__":
+	
 	create_app()
 	port = app.config.get("PORT", 5000)
 

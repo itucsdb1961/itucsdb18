@@ -8,12 +8,13 @@ import time
 from hashlib import md5
 
 def home_page():
+	'''
 	with dbapi2.connect(url) as connection:
 		cursor = connection.cursor()
 		cursor.execute("select * from books")
 		row = cursor.fetchall()
 		for r in row:
-			print(r)
+			print(r)'''
 	return render_template("home.html")
 
 def admin_closets_page():
