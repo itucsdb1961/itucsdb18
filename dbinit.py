@@ -3,7 +3,8 @@ import sys
 
 import psycopg2 as dbapi2
 
-url = "postgres://vzvhmhqevlcedf:141b03607dee6c5c995d91b952b06e4fc122006f5cd2c1d789403aae34dc40a1@ec2-54-217-225-16.eu-west-1.compute.amazonaws.com:5432/dafo7esm4hjfc7"
+LOCAL = False
+_url = "postgres://vzvhmhqevlcedf:141b03607dee6c5c995d91b952b06e4fc122006f5cd2c1d789403aae34dc40a1@ec2-54-217-225-16.eu-west-1.compute.amazonaws.com:5432/dafo7esm4hjfc7"
 secret_key = "hjkalsfdlamfrqwrxzc"
 
 def init_book_table(url):
@@ -156,8 +157,8 @@ def wipe(url):
 		cursor.execute("DROP TABLE IF EXISTS AUTHORS")
 		cursor.execute("DROP TABLE IF EXISTS STUDENTS")
 		cursor.execute("DROP TABLE IF EXISTS CLOSETS")
-
-def init_db(url):
+		cursor.execute("DROP TABLE IF EXISTS USERS")
+def initialize(url):
 	wipe(url)	
 	init_book_table(url)
 	init_author_table(url)
@@ -167,4 +168,14 @@ def init_db(url):
 	init_relation_table_book_author(url)
 	init_relation_table_student_lendbook(url)
 
-#init_db(url)
+if __name__ == "__main__":
+	
+	if LOCAL:
+		url = _url
+	else:
+		url = os.getenv("DATABASE_URL")
+
+	if url is None:
+		print("Usage: DATABASE_URL=url python dbinit.py")
+		sys.exit(1)
+	initialize(url)
