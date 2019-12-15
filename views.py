@@ -8,7 +8,6 @@ import time
 from hashlib import md5
 
 def home_page():
-
 	session["access_level"] = 3
 	return render_template("home.html")
 

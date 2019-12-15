@@ -104,8 +104,8 @@ def admin_books_page():
 
 				return render_template("admin_books.html", books = books, book_count = len(books))
 
-			elif request.form["form_name"] == "filter": # FILTER FORM SUBMITTED
-
+			elif request.form["form_name"] == "filter":
+				
 				statement = '''
 					SELECT * FROM BOOKS
 				'''
@@ -114,51 +114,28 @@ def admin_books_page():
 				condition = []
 
 				if request.form["book_name"]:
-					condition.append("(NAME = '%s')" % (request.form["book_name"]))
+					condition.append("(NAME ~* '^" + str(request.form["book_name"]) + "*')")
 
-				#if request.form["author_name"]:
-				#	condition.append("()")
+				if request.form["genre"]:
+					condition.append("(GENRE ~* '^" + str(request.form["genre"]) + "*')")
 
 				if len(condition):
-
-					if where == False:
-						statement += " WHERE "
-					last = len(condition) - 1
-					t = 0
-					for cond in condition:
-						statement += cond
-						if t != last:
-							statement += " AND "
-						t += 1
-
-				genre_cond = request.form.getlist('genre')
-
-				genre_statement = ""
-
-
-				if len(genre_cond):
-					if where == False:
-						statement += " WHERE "
+					statement += " WHERE "
+					
 					first = True
-					for item in genre_cond:
-						if first == False:
-							genre_statement += " OR "
-						first = False
-						genre_statement += "GENRE = " + "\'%s\'" % (str(item))
-
-				if len(condition):
-					statement += " AND "
-				statement += "(" + genre_statement + ")"
-
+					for cond in condition:
+						if not first:
+							statement += " AND "
+						statement += cond
 
 				# final statement
-				print(statement)
+				print("statement = " + statement)
 				with dbapi2.connect(url) as connection:
 					cursor = connection.cursor()
 					cursor.execute(statement)
 					books = cursor.fetchall()
 
-				return render_template("admin_books.html", books = books, book_count = len(books))
+	return render_template("admin_books.html", books = books, book_count = len(books))
 
 def books_page():
 
@@ -172,22 +149,87 @@ def books_page():
 	if request.method == "GET":
 		return render_template("books.html", books = books)
 	else:
-		tmpbook = book(request.form["book_name"], request.form["pub_year"] ,request.form["book_lang"], request.form["book_genre"], request.form["pub_location"], request.form["publisher"])
-		tmpbook.add_to_db(url)
+		if "form_name" in request.form:
+			if request.form["form_name"] == "filter":
+				statement = '''
+					SELECT * FROM BOOKS
+				'''
 
-		authors = request.form["authors"];
+				where = False
+				condition = []
 
-		with dbapi2.connect(url) as connection:
-			cursor = connection.cursor()
-			cursor.execute("select * from books")
-			books = cursor.fetchall()
-		print(books)
-		return render_template("books.html", books = books)
+				if request.form["book_name"]:
+					condition.append("(NAME ~* '^" + str(request.form["book_name"]) + "*')")
+
+				if request.form["genre"]:
+					condition.append("(GENRE ~* '^" + str(request.form["genre"]) + "*')")
+
+				if len(condition):
+					statement += " WHERE "
+					
+					first = True
+					for cond in condition:
+						if not first:
+							statement += " AND "
+						statement += cond
+
+				# final statement
+				print("statement = " + statement)
+				with dbapi2.connect(url) as connection:
+					cursor = connection.cursor()
+					cursor.execute(statement)
+					books = cursor.fetchall()
+
+	return render_template("books.html", books = books)
 
 def book_page(book_id):
 	print("in book_page")
 	book = []
 	authors = []
+
+	if request.method == "POST":
+		if "form_name" in request.form:
+			if request.form["form_name"] == "update":
+
+				updates = []
+
+				if request.form["pub_year"]:
+					updates.append("PB_YR = " + str(request.form["pub_year"]))
+
+				if request.form["book_lang"]:
+					updates.append("LANG = '" + str(request.form["book_lang"]) + "'")
+
+				if request.form["book_genre"]:
+					updates.append("GENRE = '" + str(request.form["book_genre"]) + "'")
+
+				if request.form["pub_location"]:
+					updates.append("PB_LOC = '" + str(request.form["pub_location"]) + "'")
+
+				if request.form["publisher"]:
+					updates.append("PUBLISHER = '" + str(request.form["publisher"]) + "'")
+
+				statement = "UPDATE BOOKS SET "
+
+				update_statement = ""
+				first = True
+				for update in updates:
+					if not first:
+						update_statement += " , "
+					update_statement += update
+
+				statement += update_statement
+
+				where_statement = '''
+					WHERE ID = %d
+				''' % (int(book_id))
+
+				statement += where_statement
+
+				with dbapi2.connect(url) as connection:
+					cursor = connection.cursor()
+					cursor.execute(statement)
+
+	
 	with dbapi2.connect(url) as connection:
 		cursor = connection.cursor()
 		cursor.execute(
@@ -219,11 +261,6 @@ def book_page(book_id):
 			)
 			tmp_author = cursor.fetchall()[0]
 			authors.append(tmp_author)
-	print("testastastsat")
-	print("book = ")
-	print(book)
-	print("authors = ")
-	print(authors)
 
 	return render_template("book.html", book = book , authors = authors)
 
