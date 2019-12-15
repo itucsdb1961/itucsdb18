@@ -1,5 +1,7 @@
+url = "postgres://vzvhmhqevlcedf:141b03607dee6c5c995d91b952b06e4fc122006f5cd2c1d789403aae34dc40a1@ec2-54-217-225-16.eu-west-1.compute.amazonaws.com:5432/dafo7esm4hjfc7"
+secret_key = "hjkalsfdlamfrqwrxzc"
+
 from flask import Flask, request, redirect, url_for, session, render_template
-from server import app,url
 import psycopg2 as dbapi2
 from book import book
 from author import author
