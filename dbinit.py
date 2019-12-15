@@ -3,7 +3,8 @@ import sys
 
 import psycopg2 as dbapi2
 
-url = "postgres://vzvhmhqevlcedf:141b03607dee6c5c995d91b952b06e4fc122006f5cd2c1d789403aae34dc40a1@ec2-54-217-225-16.eu-west-1.compute.amazonaws.com:5432/dafo7esm4hjfc7"
+LOCAL = False
+_url = "postgres://vzvhmhqevlcedf:141b03607dee6c5c995d91b952b06e4fc122006f5cd2c1d789403aae34dc40a1@ec2-54-217-225-16.eu-west-1.compute.amazonaws.com:5432/dafo7esm4hjfc7"
 secret_key = "hjkalsfdlamfrqwrxzc"
 
 def init_book_table(url):
@@ -156,7 +157,7 @@ def init_user_table(url):
 		cursor = connection.cursor()
 		cursor.execute(statement)
 		cursor.execute(add_admin)
-
+    
 def init_shelf_table(url):
 
 	statement = '''
@@ -190,7 +191,6 @@ def init_relatin_table_shelf_book(url):
 	with dbapi2.connect(url) as connection:
 		cursor = connection.cursor()
 		cursor.execute(statement)
-
 def wipe(url):
 
 	with dbapi2.connect(url) as connection:

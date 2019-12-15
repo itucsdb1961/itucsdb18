@@ -5,7 +5,6 @@
 
 <div class="container">
   <div class="row">
-
     {% if session["access_level"] < 3%}
 
       <div class="col-sm-9">
@@ -32,65 +31,61 @@
 
       <div class="col-sm-3 d-flex justify-content-center" style="background-color: rgb(254,203,255); border: 1px solid white; border-radius: 8px; padding: 5px;">
 
-        <div class="text-center">
+        <form action="" method="post" name="author_update">
 
-          <form action="" method="post" name="author_update">
+          <h3 class="title">Update author</h3>
+          <div class="field">
+            <input type="hidden" name="form_name" value = "author_update"/>
+          </div>
 
-            <h3 class="title">Update author</h3>
-            <div class="field">
-              <input type="hidden" name="form_name" value = "author_update"/>
+          <div class="field">
+            <label for="author_name" class="label">Name</label>
+            <div class="control">
+              <input type="text" name="author_name" class="input" required="required"/>
             </div>
+          </div>
 
-            <div class="field">
-              <label for="author_name" class="label">Name</label>
-              <div class="control">
-                <input type="text" name="author_name" class="input" required="required"/>
-              </div>
+          <div class="field">
+            <label for="last_name" class="label">Surname</label>
+            <div class="control">
+              <input type="text" name="last_name" class="input" required="required"/>
             </div>
+          </div>
 
-            <div class="field">
-              <label for="last_name" class="label">Surname</label>
-              <div class="control">
-                <input type="text" name="last_name" class="input" required="required"/>
-              </div>
+          <div class="field">
+            <label for="birth_year" class="label">Birth Year</label>
+            <div class="control">
+              <input type="text" name="birth_year" class="input"/>
             </div>
+          </div>
 
-            <div class="field">
-              <label for="birth_year" class="label">Birth Year</label>
-              <div class="control">
-                <input type="text" name="birth_year" class="input"/>
-              </div>
+          <div class="field">
+          <label for="birth_place" class="label">Birth Place</label>
+            <div class="control">
+              <input type="text" name="birth_place" class="input"/>
             </div>
+          </div>
 
-            <div class="field">
-            <label for="birth_place" class="label">Birth Place</label>
-              <div class="control">
-                <input type="text" name="birth_place" class="input"/>
-              </div>
+          <div class="field">
+            <label for="last_book_date" class="label">Last Book Date</label>
+            <div class="control">
+              <input type="text" name="last_book_date" class="input"/>
             </div>
+          </div>
 
-            <div class="field">
-              <label for="last_book_date" class="label">Last Book Date</label>
-              <div class="control">
-                <input type="text" name="last_book_date" class="input"/>
-              </div>
+        <div class="field">
+          <label for="last_book_name" class="label">Last Book Name</label>
+            <div class="control">
+            <input type="text" name="last_book_name" class="input"/>
             </div>
+          </div>
 
-            <div class="field">
-              <label for="last_book_name" class="label">Last Book Name</label>
-                <div class="control">
-                <input type="text" name="last_book_name" class="input"/>
-                </div>
-              </div>
-
-            <div class="field is-grouped">
-              <div class="control" style="padding: 10px;">
-                <button class="button is-primary is-small">Update</button>
-              </div>
-            </div>
-          </form>
-
+        <div class="field is-grouped">
+          <div class="control">
+            <button class="button is-primary is-small">Update</button>
+          </div>
         </div>
+      </form>
 
     </div>
 
@@ -119,6 +114,10 @@
       </div>
 
     {% endif %}
+
+</div>
+</div>
+
 
 </div>
 </div>
