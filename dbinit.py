@@ -3,6 +3,9 @@ import sys
 
 import psycopg2 as dbapi2
 
+url = "postgres://vzvhmhqevlcedf:141b03607dee6c5c995d91b952b06e4fc122006f5cd2c1d789403aae34dc40a1@ec2-54-217-225-16.eu-west-1.compute.amazonaws.com:5432/dafo7esm4hjfc7"
+secret_key = "hjkalsfdlamfrqwrxzc"
+
 def init_book_table(url):
 	statement = '''
 		CREATE TABLE BOOKS(
@@ -13,16 +16,13 @@ def init_book_table(url):
 			PUBLISHER VARCHAR(80),
 			GENRE VARCHAR(20),
 			LANG VARCHAR(20),
+			COUNT INT DEFAULT 1 NOT NULL,
 
 
 			UNIQUE(NAME,PB_YR),
 			PRIMARY KEY(ID)
 
 		)'''
-	with dbapi2.connect(url) as connection:
-		cursor = connection.cursor()
-		cursor.execute("DROP TABLE IF EXISTS BOOKS")
-		connection.commit()
 
 	with dbapi2.connect(url) as connection:
 		cursor = connection.cursor()
@@ -41,14 +41,11 @@ def init_author_table(url):
 			BIRTH_PLACE VARCHAR(40),
 			LAST_BOOK_DATE VARCHAR(40),
 			LAST_BOOK_NAME VARCHAR(40),
-
+	
+			UNIQUE(NAME, LAST_NAME),
 			PRIMARY KEY(ID)
 		)'''
 
-	with dbapi2.connect(url) as connection:
-		cursor = connection.cursor()
-		cursor.execute("DROP TABLE IF EXISTS AUTHORS")
-		connection.commit()
 	with dbapi2.connect(url) as connection:
 		cursor = connection.cursor()
 		cursor.execute(statement)
@@ -64,16 +61,48 @@ def init_student_table(url):
 			LAST_NAME VARCHAR(40) NOT NULL,
 			FACULTY VARCHAR(40) NOT NULL,
 			DEPART VARCHAR(40) NOT NULL,
-			GRADE INTEGER NOT NULL,
-			MEM_DATE VARCHAR(40),
+			GRADE CHAR(1) NOT NULL,
+			MEM_DATE VARCHAR(40) NOT NULL,
 			DEBT FLOAT,
-
+	
+			UNIQUE(NAME,LAST_NAME,FACULTY,DEPART,GRADE),
 			PRIMARY KEY(ID)
 		)'''
+
 	with dbapi2.connect(url) as connection:
 		cursor = connection.cursor()
-		cursor.execute("DROP TABLE IF EXISTS STUDENTS")
+		cursor.execute(statement)
 		connection.commit()
+		
+def init_relation_table_book_author(url):
+	
+	statement = '''
+		CREATE TABLE BOOK_AUTHORS(
+			BOOK_ID INT  REFERENCES BOOKS(ID),
+			AUTHOR_ID INT REFERENCES AUTHORS(ID),
+			
+			UNIQUE (BOOK_ID,AUTHOR_ID),
+			PRIMARY KEY(BOOK_ID,AUTHOR_ID)	
+		)'''
+		
+	with dbapi2.connect(url) as connection:
+		cursor = connection.cursor()
+		cursor.execute(statement)
+		connection.commit()
+
+def init_relation_table_student_lendbook(url):
+	
+	statement = '''
+		CREATE TABLE STUDENT_BOOKS(
+			BOOK_ID INT  REFERENCES BOOKS(ID),
+			STUDENT_ID INT REFERENCES STUDENTS(ID),
+
+			DATE_LEND FLOAT NOT NULL,
+			
+			UNIQUE (BOOK_ID,STUDENT_ID),
+			PRIMARY KEY(BOOK_ID,STUDENT_ID)	
+		)'''
+		
 	with dbapi2.connect(url) as connection:
 		cursor = connection.cursor()
 		cursor.execute(statement)
@@ -96,15 +125,46 @@ def init_closets_table(url):
 		)'''
 	with dbapi2.connect(url) as connection:
 		cursor = connection.cursor()
-		cursor.execute("DROP TABLE IF EXISTS CLOSETS")
+		cursor.execute(statement)
 		connection.commit()
+
+def init_user_table(url):
+
+	statement = '''
+		CREATE TABLE USERS(
+			ID SERIAL,
+			USERNAME VARCHAR(40) NOT NULL,
+			H_PASSWORD VARCHAR(250) NOT NULL,
+			ACCESS_LEVEL INT DEFAULT 3,
+			
+			UNIQUE(USERNAME),
+			PRIMARY KEY(ID)
+		)'''
+	
 	with dbapi2.connect(url) as connection:
 		cursor = connection.cursor()
 		cursor.execute(statement)
 		connection.commit()
 
+def wipe(url):
+	
+	with dbapi2.connect(url) as connection:
+		cursor = connection.cursor()
+		cursor.execute("DROP TABLE IF EXISTS STUDENT_BOOKS")
+		cursor.execute("DROP TABLE IF EXISTS BOOK_AUTHORS")
+		cursor.execute("DROP TABLE IF EXISTS BOOKS")
+		cursor.execute("DROP TABLE IF EXISTS AUTHORS")
+		cursor.execute("DROP TABLE IF EXISTS STUDENTS")
+		cursor.execute("DROP TABLE IF EXISTS CLOSETS")
+
 def init_db(url):
+	wipe(url)	
 	init_book_table(url)
 	init_author_table(url)
 	init_student_table(url)
 	init_closets_table(url)
+	init_user_table(url)
+	init_relation_table_book_author(url)
+	init_relation_table_student_lendbook(url)
+
+#init_db(url)

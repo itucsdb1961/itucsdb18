@@ -11,9 +11,14 @@
         <tr>
           <td>
             <label class="checkbox">
-              <input type="checkbox" name="book_key"/>
+              <input type="checkbox" name="author_key"/>
             </label>
-              {{author[1]}}( {{author[2]}} )
+        <a class="small" href="{{url_for('author_page', author_id = author[0])}}" >
+          {{author[1]}}( {{author[2]}} )
+        </a>
+
+    
+
           </td>
         </tr>
         {% endfor %}
@@ -26,5 +31,4 @@
       </div>
     </form>
     {% endif %}
-
 {% endblock %}

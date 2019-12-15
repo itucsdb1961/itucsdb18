@@ -21,11 +21,15 @@ class student:
 		STATEMENT ='''
 					INSERT INTO 
 					STUDENTS (NAME, LAST_NAME, FACULTY, DEPART, GRADE, MEM_DATE, DEBT) 
-					VALUES 	('%s', '%s', '%s', '%s', '%d', '%s', '%f') 
+					VALUES 	('%s', '%s', '%s', '%s', '%s', '%s', '%f')
+					ON CONFLICT(NAME,LAST_NAME,FACULTY,DEPART,GRADE) DO NOTHING
 					''' % (self.name, self.last_name, self.faculty, self.department, self.grade, self.membership_start_date, self.debt)
 				
 		with dbapi2.connect(db_url) as connection:
 			cursor = connection.cursor()
 			cursor.execute(STATEMENT)
 			cursor.close()
-
+	
+	def get_book_id(self, url):
+		return False
+					
