@@ -2,63 +2,197 @@
 {% block title %}Home{% endblock %}
 {% block content %}
 
+<div class="container-fluid" style="padding-left: 100px; padding-right: 100px;">
+
+<div class="row">
+
+  <div class="col-sm-8">
+
     <h1 class="title">Students</h1>
     {% if students %}
+    <form action="" method="post" name="authors-list">
+      <table class="table is-striped is-fullwidth">
       {% for student in students %}
-		<a href="{{url_for('admin_student', student_id = student[0])}}">
-				{{student[1]}} {{student[2]}}
-		</a>
+      <tr>
+        <td>
+          <label class="checkbox">
+            <input type="checkbox" name="book_key"/>
+          </label>
+      		<a href="{{url_for('admin_student', student_id = student[0])}}">
+      				{{student[1]}} {{student[2]}}
+      		</a>
+        </td>
+      </tr>
       {% endfor %}
+      </table>
+
+      <div class="field is-grouped">
+        <div class="control">
+          <button class="button is-danger is-small">Delete</button>
+        </div>
+      </div>
     {% endif %}
+
+  </div>
+
+  <div class="col-sm-2 d-flex justify-content-center">
+    <div class="position-fixed">
+
+      <div class="d-flex justify-content-center" style="background-color: rgb(254,203,255); border: 1px solid white; border-radius: 8px; padding: 5px;">
+        <form action="" method="post" name="student_search">
+
+          <h3>Search</h3>
+          <div class="field">
+              <input type="hidden" name="form_name" value="filter"/>
+          </div>
+          <div class="field">
+            <label for="student_number" class="label">Student Number</label>
+              <div class="control">
+                <input type="text" name="student_number" class="input"/>
+              </div>
+          </div>
+          <div class="field">
+            <label for="student_name" class="label">Name</label>
+              <div class="control">
+                <input type="text" name="student_name" class="input"/>
+              </div>
+          </div>
+          <div class="field">
+            <label for="student_surname" class="label">Surname</label>
+              <div class="control">
+                <input type="text" name="student_surname" class="input"/>
+              </div>
+          </div>
+          <div class="field is-grouped">
+            <div class="control" style="padding: 10px;">
+              <button class="button is-primary is-small">Submit</button>
+            </div>
+          </div>
+
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="col-sm-2 d-flex justify-content-center">
+    <div class="position-fixed">
+
+      <div class="d-flex justify-content-center" style="background-color: rgb(254,203,255); border: 1px solid white; border-radius: 8px; padding: 5px;">
+
+    			<form action="" method="post" name="add_student">
+
+            <h3 class="title">Add student</h3>
+    				<div class="field">
+    					<input type="hidden" name="form_name" value = "add_student"/>
+    				</div>
+
+            <div class="field">
+    					<label for="student_num" class="label">Student Number</label>
+    					<div class="control">
+    						<input type="text" name="student_num" class="input" required="required"/>
+    					</div>
+    				</div>
+
+            <div class="field">
+    					<label for="name" class="label">Name</label>
+    					<div class="control">
+    						<input type="text" name="name" class="input" required="required"/>
+    					</div>
+    				</div>
+
+    				<div class="field">
+    					<label for="last_name" class="label">Last Name</label>
+    					<div class="control">
+    						<input type="text" name="last_name" class="input" required="required"/>
+    					</div>
+    				</div>
+
+    				<div class="field">
+    					<label for="faculty" class="label">Faculty</label>
+    					<div class="control">
+    						<input type="text" name="faculty" class="input"/>
+    					</div>
+    				</div>
+
+    				<div class="field">
+    					<label for="department" class="label">Department</label>
+    					<div class="control">
+    						<input type="text" name="department" class="input"/>
+    					</div>
+    				</div>
+
+    				<div class="field">
+    					<label for="grade" class="label">Grade</label>
+    					<div class="control">
+    						<input type="text" name="grade" class="input"/>
+    					</div>
+    				</div>
+
+            <div class="field">
+    					<label for="mem_date" class="label">Membership Date</label>
+    					<div class="control">
+    						<input type="text" name="mem_date" class="input"/>
+    					</div>
+    				</div>
+
+            <div class="field">
+    					<label for="debt" class="label">Debt</label>
+    					<div class="control">
+    						<input type="text" name="debt" class="input"/>
+    					</div>
+    				</div>
+
+    				<div class="field is-grouped">
+    					<div class="control">
+    						<button class="button is-primary is-small">Create</button>
+    					</div>
+    				</div>
+    			</form>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 	<div style="margin-left: 15px;">
-		<h1 class="title">Add student</h1>
-			<form action="" method="post" name="add_student">		  
-				<div class="field">
-					<input type="hidden" name="form_name" value = "add_student"/>
-				</div>		
-				  
-				<div class="field">
-					<label for="name" class="label">Name</label>
-					<div class="control">
-						<input type="text" name="name" class="input" required="required"/>
-					</div>
-				</div>
-				
-				<div class="field">
-					<label for="pb_year" class="label">Last Name</label>
-					<div class="control">
-						<input type="text" name="last_name" class="input" required="required"/>
-					</div>
-				</div>
 
-				<div class="field">
-					<label for="lang" class="label">Faculty</label>
-					<div class="control">
-						<input type="text" name="faculty" class="input"/>
-					</div>
-				</div>
-
-				<div class="field">
-					<label for="genre" class="label">Department</label>
-					<div class="control">
-						<input type="text" name="department" class="input"/>
-					</div>
-				</div>
-
-				<div class="field">
-					<label for="pb_loc" class="label">Grade</label>
-					<div class="control">
-						<input type="text" name="grade" class="input"/>
-					</div>
-				</div>
-
-				<div class="field is-grouped">
-					<div class="control">
-						<button class="button is-primary is-small">Add</button>
-					</div>
-				</div>
-			</form>
 		</div>
 {% endblock %}

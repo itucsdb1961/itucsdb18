@@ -2,33 +2,67 @@
 {% block title %}Home{% endblock %}
 {% block content %}
 
-    <h1 class="title">Authors</h1>
+    <div class="container">
 
-    {% if authors %}
-    <form action="" method="post" name="authors-list">
-      <table class="table is-striped is-fullwidth">
-        {% for author in authors %}
-        <tr>
-          <td>
-            <label class="checkbox">
-              <input type="checkbox" name="author_key"/>
-            </label>
-        <a class="small" href="{{url_for('author_page', author_id = author[0])}}" >
-          {{author[1]}}( {{author[2]}} )
-        </a>
+      <div class="row">
 
-    
+        <div class="col-sm-9">
 
-          </td>
-        </tr>
-        {% endfor %}
-      </table>
+          <h1 class="title">Authors</h1>
+          {% if authors %}
+            <table class="table is-striped is-fullwidth">
+              {% for author in authors %}
+              <tr>
+                <td>
+                  <a class="small" href="{{url_for('author_page', author_id = author[0])}}" >
+                    {{author[1]}}( {{author[2]}} )
+                  </a>
+                </td>
+              </tr>
+              {% endfor %}
+            </table>
+          {% endif %}
 
-      <div class="field is-grouped">
-        <div class="control">
-          <button class="button is-danger is-small">Delete</button>
         </div>
+
+        <div class="col-sm-3 d-flex justify-content-center">
+          <div class="position-fixed bordered">
+
+            <div class="d-flex justify-content-center" style="background-color: rgb(254,203,255); border: 1px solid white; border-radius: 8px; padding: 5px;">
+              <form action="" method="post" name="author_search">
+
+                <h3>Search</h3>
+                <div class="field">
+            		    <input type="hidden" name="form_name" value="filter"/>
+            		</div>
+                <div class="field">
+                  <label for="author_name" class="label">Name</label>
+                    <div class="control">
+                      <input type="text" name="author_name" class="input"/>
+                    </div>
+                </div>
+                <div class="field">
+                  <label for="author_surname" class="label">Surname</label>
+                    <div class="control">
+                      <input type="text" name="author_surname" class="input"/>
+                    </div>
+                </div>
+                <div class="field is-grouped">
+                  <div class="control" style="padding: 10px;">
+                    <button class="button is-primary is-small">Submit</button>
+                  </div>
+                </div>
+
+              </form>
+            </div>
+
+          </div>
+        </div>
+
       </div>
-    </form>
-    {% endif %}
+
+    </div>
+
+
+
 {% endblock %}
