@@ -67,6 +67,18 @@ def admin_signup_page():
 			print(h_password2)
 			if not h_password == h_password2:
 				return redirect(url_for("admin_signup_page"))
+
+			with dbapi2.connect(url) as connection:
+				cursor = connection.cursor()
+				cursor.execute('''
+						INSERT INTO 
+						USERS (USERNAME, H_PASSWORD)
+						VALUES ('%s', '%s')
+					''' % (username, password)
+					)
+
+			return redirect(url_for("admin_login_page"))
+
 	return render_template("admin_signup.html")
 	
 def admin_login_page():
