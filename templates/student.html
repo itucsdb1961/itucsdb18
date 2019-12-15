@@ -2,34 +2,99 @@
 {% block title %}Home{% endblock %}
 {% block content %}
 
-	<h1 class="title">Student</h1>
-	{% if student %}
-		<p> {{ student[0][1] }} ( {{student[0][2]}} ) </p>
-		
-		{% for book in lend_books %}
-			<a href = "{{ url_for('book_page', book_id = book[0]) }}">
-				{{book[1]}} 
-			</a>
-		{% endfor %}
-	{% endif %}
-	
-	<form action="" method="post" name="books">
-		<div class="field">
-			<input type="hidden" name="form_name" value = "book_selector"/>
-		</div>		
-		
-		<select name="options" method="GET" action="/">
-			{% for option in options %}
-			<option value= "{{option}}" SELECTED>{{option}}</option>"
-			{% endfor %}
-		</select>
-		
-		<div class="field is-grouped">
-			<div class="control">
-				<button class="button is-primary is-small">Lend</button>
-			</div>
+<div class="container">
+
+	<div class="row">
+
+		<div class="col-sm-9">
+
+			<h1 class="title">Student</h1>
+			{% if student %}
+				<p> ({{ student[0][1] }}) {{student[0][2]}} {{student[0][3]}} {{student[0][4]}} {{student[0][5]}} {{student[0][6]}} {{student[0][7]}} {{student[0][8]}}</p>
+			{% endif %}
+
 		</div>
-	
-	</form>
-	
+
+		<div class="col-sm-3 d-flex justify-content-center" style="background-color: rgb(254,203,255); border: 1px solid white; border-radius: 8px; padding: 5px;">
+
+			<div class="text-center">
+				<form action="" method="post" name="update_student">
+
+					<h3 class="title">Update student</h3>
+					<div class="field">
+						<input type="hidden" name="form_name" value = "update_student"/>
+					</div>
+
+					<div class="field">
+						<label for="student_num" class="label">Student Number</label>
+						<div class="control">
+							<input type="text" name="student_num" class="input"/>
+						</div>
+					</div>
+
+					<div class="field">
+						<label for="name" class="label">Name</label>
+						<div class="control">
+							<input type="text" name="name" class="input"/>
+						</div>
+					</div>
+
+					<div class="field">
+						<label for="last_name" class="label">Last Name</label>
+						<div class="control">
+							<input type="text" name="last_name" class="input"/>
+						</div>
+					</div>
+
+					<div class="field">
+						<label for="faculty" class="label">Faculty</label>
+						<div class="control">
+							<input type="text" name="faculty" class="input"/>
+						</div>
+					</div>
+
+					<div class="field">
+						<label for="department" class="label">Department</label>
+						<div class="control">
+							<input type="text" name="department" class="input"/>
+						</div>
+					</div>
+
+					<div class="field">
+						<label for="grade" class="label">Grade</label>
+						<div class="control">
+							<input type="text" name="grade" class="input"/>
+						</div>
+					</div>
+
+					<div class="field">
+						<label for="mem_date" class="label">Membership Date</label>
+						<div class="control">
+							<input type="text" name="mem_date" class="input"/>
+						</div>
+					</div>
+
+					<div class="field">
+						<label for="debt" class="label">Debt</label>
+						<div class="control">
+							<input type="text" name="debt" class="input"/>
+						</div>
+					</div>
+
+					<div class="field is-grouped">
+						<div class="control" style="padding: 10px;">
+							<button class="button is-primary is-small">Update</button>
+						</div>
+					</div>
+				</form>
+
+			</div>
+
+		</div>
+
+	</div>
+
+</div>
+
+
 {% endblock %}

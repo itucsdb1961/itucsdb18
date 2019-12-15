@@ -121,7 +121,7 @@ def admin_books_page():
 
 				if len(condition):
 					statement += " WHERE "
-					
+
 					first = True
 					for cond in condition:
 						if not first:
@@ -166,7 +166,7 @@ def books_page():
 
 				if len(condition):
 					statement += " WHERE "
-					
+
 					first = True
 					for cond in condition:
 						if not first:
@@ -230,7 +230,7 @@ def book_page(book_id):
 					cursor = connection.cursor()
 					cursor.execute(statement)
 
-	
+
 	with dbapi2.connect(url) as connection:
 		cursor = connection.cursor()
 		cursor.execute(
