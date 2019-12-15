@@ -29,11 +29,11 @@ def create_app():
 	app.add_url_rule("/admin/closets", view_func = closet_view.admin_closets_page, methods=["GET", "POST"])
 	app.add_url_rule("/closets", view_func = closet_view.closets_page, methods=["GET", "POST"])
 
-
 	app.add_url_rule("/login", view_func=views.admin_login_page, methods=["GET", "POST"])
 	app.add_url_rule("/signup", view_func=views.admin_signup_page, methods=["GET", "POST"])
 	app.add_url_rule("/logged", view_func=views.admin_logged_page, methods=["GET", "POST"])
-	
+	app.add_url_rule("/logged_out", view_func=views.admin_logout_page)
+
 	app.add_url_rule("/admin/students", view_func=student_view.admin_students, methods=["GET", "POST"])
 	app.add_url_rule("/admin/student/<student_id>", view_func=student_view.admin_student, methods=["GET", "POST"])
 
@@ -44,7 +44,7 @@ def create_app():
 	return app
 
 if __name__ == "__main__":
-	
+
 	create_app()
 	port = app.config.get("PORT", 5000)
 

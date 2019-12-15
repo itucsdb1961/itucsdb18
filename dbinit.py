@@ -146,17 +146,17 @@ def init_user_table(url):
 	psw = "psw123"
 
 	add_admin = '''
-		INSERT INTO 
+		INSERT INTO
 		USERS (USERNAME, H_PASSWORD, ACCESS_LEVEL)
 		VALUES 	('%s', '%s', %d)
-		ON CONFLICT(USERNAME) DO NOTHING
+		ON CONFLICT(BOOK_ID, STUDENT_ID) DO NOTHING
 	''' % (adm , psw, 0)
-	
+
 	with dbapi2.connect(url) as connection:
 		cursor = connection.cursor()
 		cursor.execute(statement)
 		cursor.execute(add_admin)
-		
+
 def init_shelf_table(url):
 	
 	statement = '''
@@ -215,4 +215,4 @@ def init_db(url):
 	init_relation_table_book_author(url)
 	init_relation_table_student_lendbook(url)
 
-init_db(url)
+#init_db(url)
