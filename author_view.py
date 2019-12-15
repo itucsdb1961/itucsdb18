@@ -23,7 +23,7 @@ class author:
 		STATEMENT ='''
 					INSERT INTO
 					AUTHORS	(NAME, LAST_NAME, BIRTH_YR, BIRTH_PLACE, LAST_BOOK_DATE, LAST_BOOK_NAME)
-					VALUES 	('%s', '%s', '%s', '%s', '%s', '%s')					
+					VALUES 	('%s', '%s', '%s', '%s', '%s', '%s')
 					ON CONFLICT(NAME, LAST_NAME) DO NOTHING
 					''' % (self.name, self.last_name, self.birth_year, self.birth_place, self.last_book_date, self.last_book_name)
 
@@ -31,15 +31,15 @@ class author:
 			cursor = connection.cursor()
 			cursor.execute(STATEMENT)
 			connection.commit()
-	
+
 	def fetch_id(self,db_url):
-		
+
 		with dbapi2.connect(db_url) as connection:
 			cursor = connection.cursor()
 			cursor.execute(
 					'''
 					select * from authors
-					where 
+					where
 					NAME = '%s' and
 					LAST_NAME = '%s'
 					''' % (self.name, self.last_name)
@@ -47,7 +47,7 @@ class author:
 			ids = cursor.fetchall()
 			return ids[0][0]
 
-		
+
 def admin_authors_page():
 
 	if request.method == "POST":
@@ -61,37 +61,37 @@ def admin_authors_page():
 		cursor.execute("select * from authors")
 		authors = cursor.fetchall()
 	return render_template("authors.html", authors = authors)
-	
+
 def author_page(author_id):
-	
+
 	author = []
 	books = []
-	
+
 	statement_author = '''
 		SELECT * FROM AUTHORS
 		WHERE (ID = %d)
 	''' % (int(author_id))
-	
+
 	statement_books = '''
 		SELECT * FROM BOOK_AUTHORS
 		WHERE (AUTHOR_ID = %d)
 	''' % (int(author_id))
-	
+
 	with dbapi2.connect(url) as connection:
 			cursor = connection.cursor()
 			cursor.execute(statement_author)
 			author = cursor.fetchall()
-			
+
 			cursor.execute(statement_books)
 			books = cursor.fetchall()
-			
+
 
 	return render_template("author.html", author = author, books = books)
 '''
 	if request.method == "GET":
 		return render_template("admin_authors.html", authors = authors)
 	else:
-		
+
 		with dbapi2.connect(url) as connection:
 			cursor = connection.cursor()
 			cursor.execute(statement)
@@ -112,46 +112,46 @@ def authors_page():
 	if request.method == "GET":
 		print(authors)
 		return render_template("authors.html", authors = authors)
-  
+
 	with dbapi2.connect(url) as connection:
 		cursor = connection.cursor()
 		cursor.execute(statement_author)
 		author = cursor.fetchall()
-		
+
 		cursor.execute(statement_books)
 		author_book = cursor.fetchall() # return book ids
-				
+
 		for row in author_book:
 			print("row= ")
 			print(row)
 			book_id = row[0]
-				
+
 			print("book_id = " + str(book_id))
-					
+
 			statement_book_ids = '''
 				SELECT * FROM BOOKS
 				WHERE (ID = %d)
 			''' % (int(book_id))
-			
+
 			cursor.execute(statement_book_ids)
-			
+
 			book = cursor.fetchall()
-			
-			print(book)			
+
+			print(book)
 			books.append(book)
-		
+
 	print("books = " + str(books))
-	return render_template("author.html", author = author, books = books)	
+	return render_template("author.html", author = author, books = books)
 
 def delete_author(author_id):
-	
+
 	statement = '''
 		DELETE FROM AUTHORS
 		WHERE (ID = %d)
 	''' % (int(author_id))
-	
+
 	with dbapi2.connect(url) as connection:
 		cursor = connection.cursor()
 		cursor.execute(statement)
-	
+
 	return redirect(url_for("authors_page"))

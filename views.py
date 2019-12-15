@@ -3,10 +3,6 @@ secret_key = "hjkalsfdlamfrqwrxzc"
 
 from flask import Flask, request, redirect, url_for, session, render_template
 import psycopg2 as dbapi2
-from book import book
-from author import author
-from closet import closet
-from student import student
 import time
 
 from hashlib import md5
@@ -81,31 +77,6 @@ def admin_signup_page():
 			if not h_password == h_password2:
 				return redirect(url_for("admin_signup_page"))
 
-			with dbapi2.connect(url) as connection:
-				cursor = connection.cursor()
-				cursor.execute('''
-					SELECT * FROM USERS
-					WHERE (USERNAME = '%s')
-					''' % (username)
-				)
-				users = cursor.fetchall()
-				print(len(users))
-				if len(users):	
-					return redirect(url_for("admin_signup_page"))
-				
-				add_user_statement = '''
-					INSERT INTO 
-					USERS (USERNAME, H_PASSWORD) 
-					VALUES 	('%s', '%s') 
-				'''% (username, h_password)
-				
-				cursor.execute(add_user_statement)
-				
-				print("added user")
-				return redirect(url_for("admin_login_page"))
-				
-	return render_template("admin_signup.html")
-	
 def admin_login_page():
 	
 	with dbapi2.connect(url) as connection:
@@ -163,6 +134,20 @@ def admin_login_page():
 		else:
 			print("kek")
 					
+
+				q = cursor.fetchall()
+				if len(q) > 0:
+					redirect(url_for("admin_login_page"))
+
+				h_password = md5(request.form.get('password').encode('utf-8')).hexdigest()
+
+				add_user_statement = '''
+					INSERT INTO
+					STUDENTS (USERNAME, H_PASSWORD)
+					VALUES 	('%s', '%s)
+				''' % (username, h_password)
+
+				cursor.execute(add_user_statement)
 	return render_template("admin_login.html")
 	
 def admin_logged_page():
