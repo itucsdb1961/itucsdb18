@@ -96,6 +96,7 @@ def admin_shelves_page():
 				shelves = cursor.fetchall()
 
 			elif request.form["form_name"] == "random":
+
 				num = randint(1,10)
 				block = randint(1,5)
 				floor  = randint(0,3)
@@ -111,8 +112,8 @@ def admin_shelves_page():
 					cursor = connection.cursor()
 					cursor.execute("select * from shelves")
 					shelves = cursor.fetchall()
-
-  return render_template("admin_shelves.html", shelves = shelves, shelf_count = len(shelves))
+				
+	return render_template("admin_shelves.html", shelves = shelves, shelf_count = len(shelves))
 
 def shelf_page(shelf_id):
 	print("in shelf_page")
