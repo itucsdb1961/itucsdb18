@@ -2,7 +2,7 @@
 {% block title %}Home{% endblock %}
 {% block content %}
 
-  <div class="container-fluid">
+  <div class="container">
 
     <div class="row">
 
@@ -11,7 +11,7 @@
         <h1 class="title">Books</h1>
 
         {% if books %}
-        <form action="" method="post" name="movie_list">
+        <form action="" method="post" name="book_list">
           <table class="table is-striped is-fullwidth">
             {% for book in books %}
             <tr>
@@ -38,39 +38,39 @@
 
     </div>
 
-    <div class="col-sm-3">
+    <div class="col-sm-3 d-flex justify-content-center">
       <div class="position-fixed bordered">
 
-        <form action="" method="post" name="book_create">
+        <div class="d-flex justify-content-center" style="background-color: rgb(254,203,255); border: 1px solid white; border-radius: 8px; padding: 5px;">
+          <form action="" method="post" name="book_create">
 
-          <div>SEARCH</div>
-          <div class="field">
-            <label for="book_name" class="label">Book Name</label>
-              <div class="control">
-                <input type="text" name="book_name" class="input"/>
-              </div>
-          </div>
-          <div class="field">
-            <label for="author_name" class="label">Author Name</label>
-              <div class="control">
-                <input type="text" name="author_name" class="input"/>
-              </div>
-          </div>
-          <div class="field">
-            <label for="genre" class="label">Genre</label>
-              <div class="control">
-                <div><input type="checkbox" name="checkbox_1"/>Horror</div>
-                <div><input type="checkbox" name="checkbox_2"/>Sci-Fi</div>
-                <div><input type="checkbox" name="checkbox_3"/>Biography</div>
-              </div>
-          </div>
-          <div class="field is-grouped">
-            <div class="control" style="padding: 10px;">
-              <button class="button is-primary is-small">Submit</button>
+            <h3>Search</h3>
+            <div class="field">
+              <label for="book_name" class="label">Book Name</label>
+                <div class="control">
+                  <input type="text" name="book_name" class="input"/>
+                </div>
             </div>
-          </div>
+            <div class="field">
+              <label for="author_name" class="label">Author Name</label>
+                <div class="control">
+                  <input type="text" name="author_name" class="input"/>
+                </div>
+            </div>
+            <div class="field">
+              <label for="genre_name" class="label">Genre</label>
+                <div class="control">
+                  <input type="text" name="genre_name" class="input"/>
+                </div>
+            </div>
+            <div class="field is-grouped">
+              <div class="control" style="padding: 10px;">
+                <button class="button is-primary is-small">Submit</button>
+              </div>
+            </div>
 
-        </form>
+          </form>
+        </div>
 
       </div>
     </div>

@@ -5,8 +5,8 @@ from flask import Flask, request, redirect, url_for
 import os
 import views
 import psycopg2 as dbapi2
+import author_view, book_view, closet_view, student_view
 from dbinit import init_db
-import book_view, author_view, student_view
 
 app = Flask(__name__)
 
@@ -15,26 +15,26 @@ def create_app():
 	app.config.from_object("settings")
 
 	app.add_url_rule("/", view_func=views.home_page)
-  
-	app.add_url_rule("/admin/books", view_func=book_view.admin_books_page , methods=["GET", "POST"])
-	
-	app.add_url_rule("/books", view_func=book_view.books_page , methods=["GET", "POST"])
+
+	app.add_url_rule("/admin/books", view_func = book_view.admin_books_page , methods=["GET", "POST"])
+
+	app.add_url_rule("/books", view_func = book_view.books_page , methods=["GET", "POST"])
 	app.add_url_rule("/book/<book_id>", view_func = book_view.book_page)
 	app.add_url_rule("/book/delete/<book_id>", view_func = book_view.delete_book)
 
 	app.add_url_rule("/author/<author_id>", view_func = author_view.author_page)
 	app.add_url_rule("/author/delete/<author_id>", view_func = author_view.delete_author)
 
-	app.add_url_rule("/admin/authors", view_func=author_view.admin_authors_page)
-	app.add_url_rule("/authors", view_func=author_view.authors_page, methods=["GET", "POST"])
+	app.add_url_rule("/admin/authors", view_func = author_view.admin_authors_page)
+	app.add_url_rule("/authors", view_func = author_view.authors_page, methods=["GET", "POST"])
 
-	app.add_url_rule("/admin/closets", view_func=views.admin_closets_page, methods=["GET", "POST"])
-	app.add_url_rule("/closets", view_func=views.closets_page, methods=["GET", "POST"])
+	app.add_url_rule("/admin/closets", view_func = closet_view.admin_closets_page, methods=["GET", "POST"])
+	app.add_url_rule("/closets", view_func = closet_view.closets_page, methods=["GET", "POST"])
 
-	app.add_url_rule("/login", view_func=views.admin_login_page, methods=["GET", "POST"])
+	app.add_url_rule("/login", view_func = views.admin_login_page, methods=["GET", "POST"])
 
-	app.add_url_rule("/admin/students", view_func=student_view.admin_students, methods=["GET", "POST"])
-	app.add_url_rule("/admin/student/<student_id>", view_func=student_view.admin_student, methods=["GET", "POST"])
+	app.add_url_rule("/admin/students", view_func = student_view.admin_students, methods=["GET", "POST"])
+	app.add_url_rule("/admin/student/<student_id>", view_func = student_view.admin_student, methods=["GET", "POST"])
 
 	return app
 
