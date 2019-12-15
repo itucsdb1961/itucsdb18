@@ -11,6 +11,8 @@ app = Flask(__name__)
 
 def create_app():
 
+
+
 	app.config.from_object("settings")
 
 	app.add_url_rule("/", view_func=views.home_page)
@@ -28,6 +30,7 @@ def create_app():
 
 	app.add_url_rule("/admin/closets", view_func = closet_view.admin_closets_page, methods=["GET", "POST"])
 	app.add_url_rule("/closets", view_func = closet_view.closets_page, methods=["GET", "POST"])
+	app.add_url_rule("/closet/<closet_id>", view_func = closet_view.closet_page)
 
 	app.add_url_rule("/login", view_func=views.admin_login_page, methods=["GET", "POST"])
 	app.add_url_rule("/signup", view_func=views.admin_signup_page, methods=["GET", "POST"])
@@ -38,9 +41,8 @@ def create_app():
 	app.add_url_rule("/admin/student/<student_id>", view_func=student_view.admin_student, methods=["GET", "POST"])
 
 	app.add_url_rule("/admin/shelves", view_func=shelf_view.admin_shelves_page, methods=["GET", "POST"])
-	app.add_url_rule("/shelves", view_func=shelf_view.shelves_page, methods=["GET", "POST"])
-	app.add_url_rule("/shelve/<shelve_id>", view_func=shelf_view.shelf_page, methods=["GET", "POST"])
-	
+	app.add_url_rule("/shelve/<shelf_id>", view_func = shelf_view.shelf_page, methods=["GET", "POST"])
+
 	return app
 
 if __name__ == "__main__":
