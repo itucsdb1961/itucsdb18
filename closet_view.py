@@ -38,23 +38,43 @@ def admin_closets_page():
 
 	closets = []
 
+	if request.method == "POST":
+		if "form_name" in request.form:
+			if request.form["form_name"] == "checkbox_filter":
+
+				checkbox_cond = request.form.getlist("closet_key")
+
+				statement = "DELETE FROM CLOSETS WHERE "
+				update_statement = ""
+				first = True
+				for update in checkbox_cond:
+					if not first:
+						update_statement += " OR "
+					update_statement += "ID = " + str(update)
+					first = False
+
+				statement += update_statement
+
+				with dbapi2.connect(url) as connection:
+					cursor = connection.cursor()
+					cursor.execute(statement)
+
+			elif request.form["form_name"] == "closet_create":
+				tmpcloset = closet(request.form["closet_floor"], request.form["closet_block"] ,request.form["closet_number"], request.form["closet_type"], request.form["closet_size"], request.form["return_hour"])
+				tmpcloset.add_to_db(url)
+
+				with dbapi2.connect(url) as connection:
+					cursor = connection.cursor()
+					cursor.execute("SELECT * FROM CLOSETS")
+					closets = cursor.fetchall()
+				print(closets)
+
 	with dbapi2.connect(url) as connection:
 		cursor = connection.cursor()
 		cursor.execute("SELECT * FROM CLOSETS")
 		closets = cursor.fetchall()
 
-	if request.method == "GET":
-		return render_template("admin_closets.html", closets = closets)
-	else:
-		tmpcloset = closet(request.form["closet_floor"], request.form["closet_block"] ,request.form["closet_number"], request.form["closet_type"], request.form["closet_size"], request.form["return_hour"])
-		tmpcloset.add_to_db(url)
-
-		with dbapi2.connect(url) as connection:
-			cursor = connection.cursor()
-			cursor.execute("SELECT * FROM CLOSETS")
-			closets = cursor.fetchall()
-		print(closets)
-		return render_template("admin_closets.html",closets = closets)
+	return render_template("admin_closets.html",closets = closets)
 
 
 def closets_page():
@@ -74,6 +94,53 @@ def closets_page():
 
 def closet_page(closet_id):
 
+	if request.method == "POST":
+		if "form_name" in request.form:
+			if request.form["form_name"] == "closet_update":
+
+				updates = []
+
+				if request.form["floor"]:
+					updates.append("CLOSET_FLOOR = " + str(request.form["floor"]))
+
+				if request.form["block"]:
+					updates.append("BLOCK = '" + str(request.form["block"]) + "'")
+
+				if request.form["closet_number"]:
+					updates.append("CLOSET_NUMBER = '" + str(request.form["closet_number"]) + "'")
+
+				if request.form["closet_type"]:
+					updates.append("CLOSET_TYPE = '" + str(request.form["closet_type"]) + "'")
+
+				if request.form["size"]:
+					updates.append("SIZE = '" + str(request.form["size"]) + "'")
+
+				if request.form["return_hour"]:
+					updates.append("RETURN_HOUR = '" + str(request.form["return_hour"]) + "'")
+
+				if len(updates):
+
+					statement = "UPDATE CLOSETS SET "
+
+					update_statement = ""
+					first = True
+					for update in updates:
+						if not first:
+							update_statement += " , "
+						update_statement += update
+						first = False
+
+					statement += update_statement
+
+					where_statement = ''' WHERE ID = %d
+								''' % (int(closet_id))
+
+					statement += where_statement
+
+					with dbapi2.connect(url) as connection:
+						cursor = connection.cursor()
+						cursor.execute(statement)
+
 	with dbapi2.connect(url) as connection:
 		cursor = connection.cursor()
 		cursor.execute('''
@@ -81,4 +148,7 @@ def closet_page(closet_id):
 						WHERE ID = %d
 					   '''	% (int(closet_id)))
 		closet = cursor.fetchall()
+
+
+
 	return render_template("closet.html",closet = closet)
