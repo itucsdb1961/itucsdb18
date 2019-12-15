@@ -76,15 +76,14 @@ def admin_signup_page():
 			print(h_password2)
 			if not h_password == h_password2:
 				return redirect(url_for("admin_signup_page"))
-
+	return render_template("admin_signup.html")
+	
 def admin_login_page():
 	
 	with dbapi2.connect(url) as connection:
 		cursor = connection.cursor()
 		cursor.execute("SELECT * FROM USERS")
-		
 		users = cursor.fetchall()
-		
 		print(users)
 		
 		
@@ -111,7 +110,7 @@ def admin_login_page():
 				)
 				users = cursor.fetchall()
 				print(len(users))
-				if len(users) == 0:
+				if not len(users):
 					print("user does not exist")
 					return redirect(url_for("admin_login_page", error = "Invalid Username"))
 				else:
@@ -131,23 +130,6 @@ def admin_login_page():
 						else:
 							return redirect(url_for("admin_login_page", error = "Wrong password"))
 				#cursor.execute(add_user_statement)
-		else:
-			print("kek")
-					
-
-				q = cursor.fetchall()
-				if len(q) > 0:
-					redirect(url_for("admin_login_page"))
-
-				h_password = md5(request.form.get('password').encode('utf-8')).hexdigest()
-
-				add_user_statement = '''
-					INSERT INTO
-					STUDENTS (USERNAME, H_PASSWORD)
-					VALUES 	('%s', '%s)
-				''' % (username, h_password)
-
-				cursor.execute(add_user_statement)
 	return render_template("admin_login.html")
 	
 def admin_logged_page():
