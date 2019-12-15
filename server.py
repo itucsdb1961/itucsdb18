@@ -41,9 +41,8 @@ def create_app():
 	app.add_url_rule("/admin/student/<student_id>", view_func=student_view.admin_student, methods=["GET", "POST"])
 
 	app.add_url_rule("/admin/shelves", view_func=shelf_view.admin_shelves_page, methods=["GET", "POST"])
-	app.add_url_rule("/shelves", view_func=shelf_view.shelves_page, methods=["GET", "POST"])
-	app.add_url_rule("/shelve/<shelve_id>", view_func=shelf_view.shelf_page, methods=["GET", "POST"])
-	
+	app.add_url_rule("/shelve/<shelf_id>", view_func = shelf_view.shelf_page, methods=["GET", "POST"])
+
 	return app
 
 if __name__ == "__main__":

@@ -158,7 +158,7 @@ def init_user_table(url):
 		cursor.execute(add_admin)
 
 def init_shelf_table(url):
-	
+
 	statement = '''
 		CREATE TABLE SHELVES(
 			ID SERIAL,
@@ -167,11 +167,11 @@ def init_shelf_table(url):
 			FLR INT NOT NULL,
 			BOOK_TYPE VARCHAR(40),
 			CAPACITY INT NOT NULL,
-		
+
 			UNIQUE(NUM,BLOCK,FLR),
 			PRIMARY KEY(ID)
 		)'''
-	
+
 	with dbapi2.connect(url) as connection:
 		cursor = connection.cursor()
 		cursor.execute(statement)
@@ -189,8 +189,8 @@ def init_relatin_table_shelf_book(url):
 
 	with dbapi2.connect(url) as connection:
 		cursor = connection.cursor()
-		cursor.execute(statement)	
-				
+		cursor.execute(statement)
+
 def wipe(url):
 
 	with dbapi2.connect(url) as connection:

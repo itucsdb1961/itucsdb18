@@ -30,6 +30,7 @@ class shelf:
 			cursor.execute(STATEMENT)
 			connection.commit()
 
+
 def admin_shelves_page():
 	shelves = []
 
@@ -49,20 +50,8 @@ def admin_shelves_page():
 					cursor = connection.cursor()
 					cursor.execute("select * from shelves")
 					shelves = cursor.fetchall()
-						
-	return render_template("admin_shelves.html", shelves = shelves, shelf_count = len(shelves))
 
-def shelves_page():
-	shelves = []
-
-	with dbapi2.connect(url) as connection:
-		cursor = connection.cursor()
-		cursor.execute("select * from shelves")
-		shelves = cursor.fetchall()
-
-	if request.method == "POST":
-		if "form_name" in request.form:
-			if request.form["form_name"] == "filter": # add shelve FORM SUBMITTED
+			elif request.form["form_name"] == "filter": # add shelve FORM SUBMITTED
 
 				statement = '''
 					SELECT * FROM SHELVES
@@ -80,7 +69,7 @@ def shelves_page():
 					cnd = ""
 
 					if st.last == '+':
-						val = int(st[0:-2]) 
+						val = int(st[0:-2])
 						cnd = '''
 							(CAPACITY > %d)
 						''' % (val)
@@ -107,8 +96,8 @@ def shelves_page():
 
 			elif request.form["form_name"] == "random":
 				pass
-				
-	return render_template("shelves.html", shelves = shelves, shelf_count = len(shelves))
+
+	return render_template("admin_shelves.html", shelves = shelves, shelf_count = len(shelves))
 
 def shelf_page(shelf_id):
 	print("in shelf_page")
@@ -117,7 +106,7 @@ def shelf_page(shelf_id):
 	with dbapi2.connect(url) as connection:
 		cursor = connection.cursor()
 		cursor.execute('''
-				select * from shelfs
+				select * from shelves
 				where ID = %d
 				''' % (int(shelf_id)))
 		shelf = cursor.fetchall()
