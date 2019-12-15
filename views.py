@@ -8,13 +8,6 @@ import time
 from hashlib import md5
 
 def home_page():
-	'''
-	with dbapi2.connect(url) as connection:
-		cursor = connection.cursor()
-		cursor.execute("select * from books")
-		row = cursor.fetchall()
-		for r in row:
-			print(r)'''
 	return render_template("home.html")
 
 def admin_closets_page():
@@ -62,9 +55,6 @@ def closets_page():
 def admin_signup_page():
 
 	if request.method == "POST":
-
-
-
 		if request.form["form_name"] == "signup":
 
 			username = str(request.form["username"])
@@ -121,8 +111,8 @@ def admin_login_page():
 
 						print("user = ")
 						print(user[2])
-
-						if(h_password == user[2]):# succesfull login
+						
+						if(h_password == md5(user[2].encode('utf-8')).hexdigest()):# succesfull login
 							print("success")
 							session["logged_in"] = True
 							session["username"] = str(user[1])
