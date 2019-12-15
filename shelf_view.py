@@ -106,8 +106,8 @@ def shelves_page():
 				shelves = cursor.fetchall()
 
 			elif request.form["form_name"] == "random":
+				pass
 				
-
 	return render_template("shelves.html", shelves = shelves, shelf_count = len(shelves))
 
 def shelf_page(shelf_id):
