@@ -48,9 +48,6 @@ class book:
 			return ids[0][0]
 
 
-
-
-
 def admin_books_page():
 	books = []
 
