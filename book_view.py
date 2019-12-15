@@ -126,6 +126,7 @@ def admin_books_page():
 					for cond in condition:
 						if not first:
 							statement += " AND "
+						first = False
 						statement += cond
 
 				# final statement
@@ -171,6 +172,7 @@ def books_page():
 					for cond in condition:
 						if not first:
 							statement += " AND "
+						first = False
 						statement += cond
 
 				# final statement
@@ -210,9 +212,7 @@ def book_page(book_id):
 					updates.append("PUBLISHER = '" + str(request.form["publisher"]) + "'")
 
 				if len(updates):
-
 					statement = "UPDATE BOOKS SET "
-
 					update_statement = ""
 					first = True
 					for update in updates:

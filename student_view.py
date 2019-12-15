@@ -41,13 +41,40 @@ class student:
 
 def admin_students():
 	students = []
+
+	statement = "SELECT * FROM STUDENTS"
+
 	if request.method == "POST":
-		tmp_student = student(request.form["student_num"], request.form["name"], request.form["last_name"], request.form["faculty"], request.form["department"], request.form["grade"], time.time())
-		tmp_student.add_to_db(url)
+		if "form_name" in request.form:
+			if request.form["form_name"] == "add_student":
+				tmp_student = student(request.form["student_num"], request.form["name"], request.form["last_name"], request.form["faculty"], request.form["department"], request.form["grade"], time.time())
+				tmp_student.add_to_db(url)
+			elif request.form["form_name"] == "filter":
+
+				condition = []
+
+				if request.form["student_name"]:
+					condition.append("(NAME ~* '.*" + str(request.form["student_name"]) + ".*')")
+
+				if request.form["student_surname"]:
+					condition.append("(LAST_NAME ~* '.*" + str(request.form["student_surname"]) + ".*')")
+
+				if len(condition):
+					statement += " WHERE "
+
+					first = True
+					for cond in condition:
+						if not first:
+							statement += " AND "
+						first = False
+						statement += cond
+
+				# final statement
+				print("statement = " + statement)
 
 	with dbapi2.connect(url) as connection:
 		cursor = connection.cursor()
-		cursor.execute("SELECT * FROM STUDENTS")
+		cursor.execute(statement)
 		students = cursor.fetchall()
 
 	return render_template("admin_students.html", students = students)
@@ -57,92 +84,57 @@ def admin_student(student_id):
 	books = []
 
 	if request.method == "POST":
+		if "form_name" in request.form:
+			if request.form["form_name"] == "update_student":
 
-		if(request.form["form_name"] == "book_selector"):
+				updates = []
 
-			selected_book = str(request.form["options"])
-			#print(request.form["options"])
+				if request.form["name"]:
+					updates.append("NAME = '" + str(request.form["name"]) + "'")
 
-			#get book_id
-			ids = []
+				if request.form["last_name"]:
+					updates.append("LAST_NAME = '" + str(request.form["last_name"]) + "'")
 
-			statement = '''
-				SELECT * FROM BOOKS
-				WHERE (NAME= '%s')
-			''' % (selected_book)
+				if request.form["faculty"]:
+					updates.append("FACULTY = '" + str(request.form["faculty"]) + "'")
 
-			with dbapi2.connect(url) as connection:
-				cursor = connection.cursor()
-				cursor.execute(statement)
-				ids = cursor.fetchall()
+				if request.form["department"]:
+					updates.append("DEPART = '" + str(request.form["department"]) + "'")
 
-				book_id = int(ids[0][0])
+				if request.form["grade"]:
+					updates.append("GRADE = '" + str(request.form["grade"]) + "'")
 
-				relation_insert_statement = '''
-					INSERT INTO
-					STUDENT_BOOKS (BOOK_ID, STUDENT_ID, DATE_LEND)
-					VALUES 	(%d, %d, %f)
-					ON CONFLICT(BOOK_ID, STUDENT_ID) DO NOTHING
-				''' % (book_id, int(student_id), time.time())
+				if request.form["debt"]:
+					updates.append("DEBT = " + str(request.form["debt"]))
 
-				cursor.execute(relation_insert_statement)
+				statement = "UPDATE STUDENTS SET "
 
-				#update book_count
+				update_statement = ""
+				first = True
+				for update in updates:
+					if not first:
+						update_statement += " , "
+					first = False
+					update_statement += update
 
-				book_update_statement = '''
-					UPDATE BOOKS
-					SET COUNT = COUNT-1
-					WHERE (ID = %d)
-				''' % (book_id)
+				statement += update_statement
 
-				cursor.execute(book_update_statement)
+				where_statement = '''
+					WHERE ID = %d
+				''' % (int(student_id))
 
+				statement += where_statement
 
+				with dbapi2.connect(url) as connection:
+					cursor = connection.cursor()
+					cursor.execute(statement)				
 
 	with dbapi2.connect(url) as connection:
 		cursor = connection.cursor()
 		cursor.execute('''
 			SELECT * FROM STUDENTS
-			WHERE (ID = %d)
-			''' % (int(student_id))
-		)
-		student = cursor.fetchall()
+			WHERE ID = %d
+		''' % (int(student_id)))
+		student = cursor.fetchall()				
 
-		if(len(student)):
-			student_id = student[0][0]
-
-			cursor.execute('''
-				SELECT * FROM STUDENT_BOOKS
-				WHERE (STUDENT_ID = %d)
-			''' % (int(student_id))
-			)
-
-			books_rel = cursor.fetchall()
-
-			for r in books_rel:
-
-				bk_id = int(r[0])
-
-				statement = '''
-					SELECT ID,NAME FROM BOOKS
-					WHERE (ID = %d)
-				''' % (bk_id)
-
-				cursor.execute(statement)
-
-				books = cursor.fetchall()
-
-			print("books = " + str(books))
-		cursor.execute('''
-			SELECT * FROM BOOKS
-			WHERE (COUNT > 0)
-		'''
-		)
-		opt = cursor.fetchall()
-		options = []
-		#deleting unnecessary colmuns
-		for op in opt:
-			options.append(op[1])
-
-
-	return render_template("student.html", student = student, lend_books = books , options = options)
+	return render_template("student.html", student = student)
