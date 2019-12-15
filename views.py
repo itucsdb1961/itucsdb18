@@ -142,6 +142,13 @@ def admin_login_page():
 				#cursor.execute(add_user_statement)
 	return render_template("admin_login.html")
 
+def admin_logout_page():
+
+	session["logged_in"] = False
+	session["access_level"] = 3
+
+	return render_template("home.html")
+
 def admin_logged_page():
 
 	return render_template("admin_logged.html")
