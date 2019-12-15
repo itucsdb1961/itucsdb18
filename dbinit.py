@@ -143,10 +143,54 @@ def init_user_table(url):
 			PRIMARY KEY(ID)
 		)'''
 
+	adm = "admin123"
+	psw = "psw123"
+
+	add_admin = '''
+		INSERT INTO
+		USERS (USERNAME, H_PASSWORD, ACCESS_LEVEL)
+		VALUES 	('%s', '%s', %d)
+		ON CONFLICT(BOOK_ID, STUDENT_ID) DO NOTHING
+	''' % (adm , psw, 0)
+
 	with dbapi2.connect(url) as connection:
 		cursor = connection.cursor()
 		cursor.execute(statement)
-		connection.commit()
+		cursor.execute(add_admin)
+
+def init_shelf_table(url):
+
+	statement = '''
+		CREATE TABLE SHELVES(
+			ID SERIAL,
+			NUM INT NOT NULL,
+			BLOCK INT NOT NULL,
+			FLR INT NOT NULL,
+			BOOK_GENRE VARCHAR(40),
+			CAPACITY INT NOT NULL,
+
+			UNIQUE(NUM,BLOCK,FLR),
+			PRIMARY KEY(ID)
+		)'''
+
+	with dbapi2.connect(url) as connection:
+		cursor = connection.cursor()
+		cursor.execute(statement)
+
+def init_relatin_table_shelf_book(url):
+
+	statement = '''
+		CREATE TABLE SHELF_BOOKS(
+			BOOK_ID INT  REFERENCES BOOKS(ID),
+			SHELF_ID INT REFERENCES SHELVES(ID),
+
+			UNIQUE (BOOK_ID,SHELF_ID),
+			PRIMARY KEY(BOOK_ID,SHELF_ID)
+		)'''
+
+	with dbapi2.connect(url) as connection:
+		cursor = connection.cursor()
+		cursor.execute(statement)
 
 def wipe(url):
 
@@ -159,26 +203,18 @@ def wipe(url):
 		cursor.execute("DROP TABLE IF EXISTS STUDENTS")
 		cursor.execute("DROP TABLE IF EXISTS CLOSETS")
 		cursor.execute("DROP TABLE IF EXISTS USERS")
-    
-def initialize(url):
-	wipe(url)	
+		cursor.execute("DROP TABLE IF EXISTS SHELVES")
+
+def init_db(url):
+	wipe(url)
 	init_book_table(url)
 	init_author_table(url)
 	init_student_table(url)
 	init_closets_table(url)
+	init_shelf_table(url)
 	init_user_table(url)
 	init_relation_table_book_author(url)
 	init_relation_table_student_lendbook(url)
 
-if __name__ == "__main__":
-	
-	if LOCAL:
-		url = _url
-	else:
-		url = os.getenv("DATABASE_URL")
 
-	if url is None:
-		print("Usage: DATABASE_URL=url python dbinit.py")
-		sys.exit(1)
-	initialize(url)
-
+#init_db(url)
