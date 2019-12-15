@@ -157,7 +157,7 @@ def init_user_table(url):
 		cursor = connection.cursor()
 		cursor.execute(statement)
 		cursor.execute(add_admin)
-    
+
 def init_shelf_table(url):
 
 	statement = '''
