@@ -41,7 +41,7 @@ def init_author_table(url):
 			BIRTH_PLACE VARCHAR(40),
 			LAST_BOOK_DATE VARCHAR(40),
 			LAST_BOOK_NAME VARCHAR(40),
-	
+
 			UNIQUE(NAME, LAST_NAME),
 			PRIMARY KEY(ID)
 		)'''
@@ -57,6 +57,7 @@ def init_student_table(url):
 	statement = '''
 		CREATE TABLE STUDENTS(
 			ID SERIAL,
+			STUDENT_NUM CHAR(9) NOT NULL,
 			NAME VARCHAR(40) NOT NULL,
 			LAST_NAME VARCHAR(40) NOT NULL,
 			FACULTY VARCHAR(40) NOT NULL,
@@ -64,8 +65,8 @@ def init_student_table(url):
 			GRADE CHAR(1) NOT NULL,
 			MEM_DATE VARCHAR(40) NOT NULL,
 			DEBT FLOAT,
-	
-			UNIQUE(NAME,LAST_NAME,FACULTY,DEPART,GRADE),
+
+			UNIQUE(STUDENT_NUM),
 			PRIMARY KEY(ID)
 		)'''
 
@@ -73,36 +74,36 @@ def init_student_table(url):
 		cursor = connection.cursor()
 		cursor.execute(statement)
 		connection.commit()
-		
+
 def init_relation_table_book_author(url):
-	
+
 	statement = '''
 		CREATE TABLE BOOK_AUTHORS(
 			BOOK_ID INT  REFERENCES BOOKS(ID),
 			AUTHOR_ID INT REFERENCES AUTHORS(ID),
-			
+
 			UNIQUE (BOOK_ID,AUTHOR_ID),
-			PRIMARY KEY(BOOK_ID,AUTHOR_ID)	
+			PRIMARY KEY(BOOK_ID,AUTHOR_ID)
 		)'''
-		
+
 	with dbapi2.connect(url) as connection:
 		cursor = connection.cursor()
 		cursor.execute(statement)
 		connection.commit()
 
 def init_relation_table_student_lendbook(url):
-	
+
 	statement = '''
 		CREATE TABLE STUDENT_BOOKS(
 			BOOK_ID INT  REFERENCES BOOKS(ID),
 			STUDENT_ID INT REFERENCES STUDENTS(ID),
 
 			DATE_LEND FLOAT NOT NULL,
-			
+
 			UNIQUE (BOOK_ID,STUDENT_ID),
-			PRIMARY KEY(BOOK_ID,STUDENT_ID)	
+			PRIMARY KEY(BOOK_ID,STUDENT_ID)
 		)'''
-		
+
 	with dbapi2.connect(url) as connection:
 		cursor = connection.cursor()
 		cursor.execute(statement)
@@ -136,18 +137,18 @@ def init_user_table(url):
 			USERNAME VARCHAR(40) NOT NULL,
 			H_PASSWORD VARCHAR(250) NOT NULL,
 			ACCESS_LEVEL INT DEFAULT 3,
-			
+
 			UNIQUE(USERNAME),
 			PRIMARY KEY(ID)
 		)'''
-	
+
 	with dbapi2.connect(url) as connection:
 		cursor = connection.cursor()
 		cursor.execute(statement)
 		connection.commit()
 
 def wipe(url):
-	
+
 	with dbapi2.connect(url) as connection:
 		cursor = connection.cursor()
 		cursor.execute("DROP TABLE IF EXISTS STUDENT_BOOKS")
@@ -156,9 +157,10 @@ def wipe(url):
 		cursor.execute("DROP TABLE IF EXISTS AUTHORS")
 		cursor.execute("DROP TABLE IF EXISTS STUDENTS")
 		cursor.execute("DROP TABLE IF EXISTS CLOSETS")
+		cursor.execute("DROP TABLE IF EXISTS USERS")
 
 def init_db(url):
-	wipe(url)	
+	wipe(url)
 	init_book_table(url)
 	init_author_table(url)
 	init_student_table(url)
@@ -167,4 +169,4 @@ def init_db(url):
 	init_relation_table_book_author(url)
 	init_relation_table_student_lendbook(url)
 
-#init_db(url)
+init_db(url)
