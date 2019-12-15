@@ -157,7 +157,7 @@ def init_user_table(url):
 		cursor = connection.cursor()
 		cursor.execute(statement)
 		cursor.execute(add_admin)
-
+    
 def init_shelf_table(url):
 
 	statement = '''
@@ -191,7 +191,6 @@ def init_relatin_table_shelf_book(url):
 	with dbapi2.connect(url) as connection:
 		cursor = connection.cursor()
 		cursor.execute(statement)
-
 def wipe(url):
 
 	with dbapi2.connect(url) as connection:
@@ -215,6 +214,5 @@ def init_db(url):
 	init_user_table(url)
 	init_relation_table_book_author(url)
 	init_relation_table_student_lendbook(url)
-
 
 #init_db(url)
