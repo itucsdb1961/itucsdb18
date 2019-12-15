@@ -126,6 +126,7 @@ def admin_books_page():
 					for cond in condition:
 						if not first:
 							statement += " AND "
+						first = False
 						statement += cond
 
 				# final statement
@@ -171,6 +172,7 @@ def books_page():
 					for cond in condition:
 						if not first:
 							statement += " AND "
+						first = False
 						statement += cond
 
 				# final statement
@@ -216,6 +218,7 @@ def book_page(book_id):
 				for update in updates:
 					if not first:
 						update_statement += " , "
+					first = False
 					update_statement += update
 
 				statement += update_statement
