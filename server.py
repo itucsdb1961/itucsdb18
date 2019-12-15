@@ -30,7 +30,7 @@ def create_app():
 
 	app.add_url_rule("/admin/closets", view_func = closet_view.admin_closets_page, methods=["GET", "POST"])
 	app.add_url_rule("/closets", view_func = closet_view.closets_page, methods=["GET", "POST"])
-	app.add_url_rule("/closet/<closet_id>", view_func = closet_view.closet_page)
+	app.add_url_rule("/closet/<closet_id>", view_func = closet_view.closet_page, methods=["GET", "POST"])
 
 	app.add_url_rule("/login", view_func=views.admin_login_page, methods=["GET", "POST"])
 	app.add_url_rule("/signup", view_func=views.admin_signup_page, methods=["GET", "POST"])

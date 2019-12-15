@@ -209,20 +209,23 @@ def book_page(book_id):
 				if request.form["publisher"]:
 					updates.append("PUBLISHER = '" + str(request.form["publisher"]) + "'")
 
-				statement = "UPDATE BOOKS "
+				if len(updates):
 
-				update_statement = ""
-				first = True
-				for update in updates:
-					if not first:
-						update_statement += " , "
-					update_statement += update
+					statement = "UPDATE BOOKS SET "
 
-				statement += update_statement
+					update_statement = ""
+					first = True
+					for update in updates:
+						if not first:
+							update_statement += " , "
+						update_statement += update
+						first = False
 
-				with dbapi2.connect(url) as connection:
-					cursor = connection.cursor()
-					cursor.execute(statement)
+					statement += update_statement
+
+					with dbapi2.connect(url) as connection:
+						cursor = connection.cursor()
+						cursor.execute(statement)
 
 
 	with dbapi2.connect(url) as connection:

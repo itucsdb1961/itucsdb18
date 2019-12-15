@@ -112,11 +112,57 @@ def admin_shelves_page():
 					cursor.execute("select * from shelves")
 					shelves = cursor.fetchall()
 
-  return render_template("admin_shelves.html", shelves = shelves, shelf_count = len(shelves))
+	return render_template("admin_shelves.html", shelves = shelves, shelf_count = len(shelves))
 
 def shelf_page(shelf_id):
 	print("in shelf_page")
 	shelf = []
+
+	if request.method == "POST":
+		if "form_name" in request.form:
+			if request.form["form_name"] == "shelf_update":
+
+				updates = []
+
+				if request.form["num"]:
+					updates.append("NUM = " + str(int(request.form["num"])))
+
+				if request.form["block"]:
+					updates.append("BLOCK = " + str(int(request.form["block"])))
+
+				if request.form["floor"]:
+					updates.append("FLR = " + str(int(request.form["floor"])))
+
+				if request.form["genre"]:
+					updates.append("BOOK_GENRE = " + "'" + str(request.form["genre"]) + "'")
+
+				if request.form["capacity"]:
+					updates.append("CAPACITY = " + str(int(request.form["capacity"])))
+
+				if len(updates):
+
+					statement = "UPDATE SHELVES SET "
+
+					update_statement = ""
+					first = True
+					for update in updates:
+						if not first:
+							update_statement += " , "
+						update_statement += update
+						first = False
+
+					statement += update_statement
+
+					where_statement = ''' WHERE ID = %d
+								''' % (int(shelf_id))
+
+					statement += where_statement
+
+					print(statement)
+
+					with dbapi2.connect(url) as connection:
+					 	cursor = connection.cursor()
+					 	cursor.execute(statement)
 
 	with dbapi2.connect(url) as connection:
 		cursor = connection.cursor()

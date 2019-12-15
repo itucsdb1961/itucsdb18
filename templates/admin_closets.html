@@ -12,12 +12,15 @@
 
     {% if closets %}
     <form action="" method="post" name="closet_list">
+      <div class="field">
+          <input type="hidden" name="form_name" value="checkbox_filter"/>
+      </div>
       <table class="table is-striped is-fullwidth">
       {% for closet in closets %}
       <tr>
         <td>
         <label class="checkbox">
-          <input type="checkbox" name="closet_key"/>
+          <input type="checkbox" name="closet_key" value="{{closet[0]}}"/>
         </label>
 
         <a href = "{{ url_for('closet_page', closet_id = closet[0]) }}">
@@ -91,16 +94,16 @@
           </div>
 
           <div class="field">
-            <label for="floor" class="label">Floor</label>
+            <label for="closet_floor" class="label">Floor</label>
             <div class="control">
-              <input type="text" name="floor" class="input" required="required"/>
+              <input type="text" name="closet_floor" class="input" required="required"/>
             </div>
           </div>
 
           <div class="field">
-            <label for="block" class="label">Block</label>
+            <label for="closet_block" class="label">Block</label>
             <div class="control">
-              <input type="text" name="block" class="input" required="required"/>
+              <input type="text" name="closet_block" class="input" required="required"/>
             </div>
           </div>
 
@@ -119,9 +122,9 @@
           </div>
 
           <div class="field">
-            <label for="size" class="label">Size</label>
+            <label for="closet_size" class="label">Size</label>
             <div class="control">
-              <input type="text" name="size" class="input" required="required"/>
+              <input type="text" name="closet_size" class="input" required="required"/>
             </div>
           </div>
 
