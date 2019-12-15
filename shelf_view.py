@@ -3,6 +3,7 @@ secret_key = "hjkalsfdlamfrqwrxzc"
 
 import psycopg2 as dbapi2
 from flask import Flask, request, redirect, url_for,render_template
+from random import randint
 
 class shelf:
 	def __init__(self,
@@ -10,20 +11,20 @@ class shelf:
 				block,
 				floor,
 				capacity,
-				book_type = None):
+				book_genre = None):
 		self.num = num
 		self.block = block
 		self.floor = floor
-		self.book_type = book_type
 		self.capacity = capacity
+		self.book_genre = book_genre
 
 	def add_to_db(self,db_url):
 		STATEMENT ='''
 					INSERT INTO
-					SHELVES	(NUM, BLOCK, FLR, BOOK_TYPE, CAPACITY)
+					SHELVES	(NUM, BLOCK, FLR, BOOK_GENRE, CAPACITY)
 					VALUES 	(%d, %d, %d, '%s', %d)
 					ON CONFLICT(NUM, BLOCK, FLR) DO NOTHING
-					''' % (self.num, self.block, self.floor, self.book_type, self.capacity)
+					''' % (self.num, self.block, self.floor, self.book_genre, self.capacity)
 
 		with dbapi2.connect(db_url) as connection:
 			cursor = connection.cursor()
@@ -42,7 +43,7 @@ def admin_shelves_page():
 	if request.method == "POST":
 		if "form_name" in request.form:
 			if request.form["form_name"] == "add_shelve": # add shelve FORM SUBMITTED
-				tmp_shelve = shelf(request.form["num"], request.form["block"] ,request.form["floor"], request.form["type"], request.form["capacity"])
+				tmp_shelve = shelf(request.form["num"], request.form["block"] ,request.form["floor"],  request.form["capacity"], request.form["genre"])
 				tmp_shelve.add_to_db(url)
 
 				# collect and serve
@@ -95,9 +96,23 @@ def admin_shelves_page():
 				shelves = cursor.fetchall()
 
 			elif request.form["form_name"] == "random":
-				pass
+				num = randint(1,10)
+				block = randint(1,5)
+				floor  = randint(0,3)
+				capacity = 250
+				genre = randint(0,3)
 
-	return render_template("admin_shelves.html", shelves = shelves, shelf_count = len(shelves))
+				genres = ["horror","sci-fi","fantasy", "romance"]
+
+				tmp_shelve = shelf(num,block,floor,capacity,genres[genre])
+				tmp_shelve.add_to_db(url)
+
+				with dbapi2.connect(url) as connection:
+					cursor = connection.cursor()
+					cursor.execute("select * from shelves")
+					shelves = cursor.fetchall()
+          
+  return render_template("admin_shelves.html", shelves = shelves, shelf_count = len(shelves))
 
 def shelf_page(shelf_id):
 	print("in shelf_page")
