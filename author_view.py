@@ -50,15 +50,39 @@ class author:
 
 def admin_authors_page():
 
+	authors = []
+	statement = '''
+		SELECT * FROM AUTHORS
+	'''	
+
 	if request.method == "POST":
-		tmp_author = author(request.form["author_name"], request.form["last_name"] ,request.form["birth_year"], request.form["birth_place"], request.form["last_book_date"], request.form["last_book_name"])
-		tmp_author.add_to_db(url)
+		if "form_name" in request.form:
+			if request.form["form_name"] == "create":
+				tmp_author = author(request.form["author_name"], request.form["last_name"] ,request.form["birth_year"], request.form["birth_place"], request.form["last_book_date"], request.form["last_book_name"])
+				tmp_author.add_to_db(url)
+			elif request.form["form_name"] == "filter":
+				condition = []
+
+				if request.form["author_name"]:
+					condition.append("(NAME ~* '.*" + str(request.form["author_name"]) + ".*')")
+
+				if request.form["author_surname"]:
+					condition.append("(LAST_NAME ~* '.*" + str(request.form["author_surname"]) + ".*')")
+
+				if len(condition):
+					statement += " WHERE "
+					
+					first = True
+					for cond in condition:
+						if not first:
+							statement += " AND "
+						statement += cond				
 
 	authors = []
-
+	print("statement = " + statement)
 	with dbapi2.connect(url) as connection:
 		cursor = connection.cursor()
-		cursor.execute("select * from authors")
+		cursor.execute(statement)
 		authors = cursor.fetchall()
 	return render_template("admin_authors.html", authors = authors)
 
@@ -66,6 +90,47 @@ def author_page(author_id):
 
 	author = []
 	books = []
+
+	if request.method == "POST":
+		if "form_name" in request.form:
+			if request.form["form_name"] == "update":
+
+				updates = []
+
+				if request.form["birth_year"]:
+					updates.append("BIRTH_YR = " + str(request.form["birth_year"]))
+
+				if request.form["birth_place"]:
+					updates.append("BIRTH_PLACE = '" + str(request.form["birth_place"]) + "'")
+
+				if request.form["last_book_date"]:
+					updates.append("LAST_BOOK_DATE = '" + str(request.form["last_book_date"]) + "'")
+
+				if request.form["last_book_name"]:
+					updates.append("LAST_BOOK_NAME = '" + str(request.form["last_book_name"]) + "'")
+
+				statement = "UPDATE AUTHORS SET "
+
+				update_statement = ""
+				first = True
+				for update in updates:
+					if not first:
+						update_statement += " , "
+					update_statement += update
+
+				statement += update_statement
+
+				where_statement = '''
+					WHERE ID = %d
+				''' % (int(author_id))
+
+				statement += where_statement
+
+				with dbapi2.connect(url) as connection:
+					cursor = connection.cursor()
+					cursor.execute(statement)
+
+
 
 	statement_author = '''
 		SELECT * FROM AUTHORS
@@ -87,61 +152,48 @@ def author_page(author_id):
 
 
 	return render_template("author.html", author = author, books = books)
-'''
-	if request.method == "GET":
-		return render_template("admin_authors.html", authors = authors)
-	else:
-
-		with dbapi2.connect(url) as connection:
-			cursor = connection.cursor()
-			cursor.execute(statement)
-			authors = cursor.fetchall()
-
-		return render_template("admin_authors.html", author = author)
-'''
 
 def authors_page():
 
 	authors = []
+	statement = '''
+		SELECT * FROM AUTHORS
+	'''
 
 	with dbapi2.connect(url) as connection:
 		cursor = connection.cursor()
 		cursor.execute("select * from authors")
 		authors = cursor.fetchall()
 
-	if request.method == "GET":
-		print(authors)
-		return render_template("authors.html", authors = authors)
+	if request.method == "POST":
+		if "form_name" in request.form:
+			if request.form["form_name"] == "filter":
+				condition = []
 
+				if request.form["author_name"]:
+					condition.append("(NAME ~* '.*" + str(request.form["author_name"]) + ".*')")
+
+				if request.form["author_surname"]:
+					condition.append("(LAST_NAME ~* '.*" + str(request.form["author_surname"]) + ".*')")
+
+				if len(condition):
+					statement += " WHERE "
+					
+					first = True
+					for cond in condition:
+						if not first:
+							statement += " AND "
+						statement += cond
+
+				# final statement
+
+	print("statement = " + statement)
 	with dbapi2.connect(url) as connection:
 		cursor = connection.cursor()
-		cursor.execute(statement_author)
-		author = cursor.fetchall()
+		cursor.execute(statement)
+		authors = cursor.fetchall()
 
-		cursor.execute(statement_books)
-		author_book = cursor.fetchall() # return book ids
-
-		for row in author_book:
-			print("row= ")
-			print(row)
-			book_id = row[0]
-
-			print("book_id = " + str(book_id))
-
-			statement_book_ids = '''
-				SELECT * FROM BOOKS
-				WHERE (ID = %d)
-			''' % (int(book_id))
-
-			cursor.execute(statement_book_ids)
-
-			book = cursor.fetchall()
-
-			print(book)
-			books.append(book)
-
-	print("books = " + str(books))
-	return render_template("author.html", author = author, books = books)
+	return render_template("authors.html", authors = authors)
 
 def delete_author(author_id):
 

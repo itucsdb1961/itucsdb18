@@ -96,6 +96,7 @@ def admin_shelves_page():
 				shelves = cursor.fetchall()
 
 			elif request.form["form_name"] == "random":
+
 				num = randint(1,10)
 				block = randint(1,5)
 				floor  = randint(0,3)
