@@ -13,7 +13,7 @@
 
         {% if author %}
       		{% for a in author %}
-      			<p> {{ a[1] }} ( {{a[2]}} ) </p>
+      			<p> {{ a[1] }} ( {{a[2]}} ) ({{ a[3] }}) ({{ a[4] }}) </p>
       		{% endfor %}
         {% endif %}
 
@@ -35,21 +35,7 @@
 
           <h3 class="title">Update author</h3>
           <div class="field">
-            <input type="hidden" name="form_name" value = "author_update"/>
-          </div>
-
-          <div class="field">
-            <label for="author_name" class="label">Name</label>
-            <div class="control">
-              <input type="text" name="author_name" class="input" required="required"/>
-            </div>
-          </div>
-
-          <div class="field">
-            <label for="last_name" class="label">Surname</label>
-            <div class="control">
-              <input type="text" name="last_name" class="input" required="required"/>
-            </div>
+            <input type="hidden" name="form_name" value = "update"/>
           </div>
 
           <div class="field">

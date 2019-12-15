@@ -117,11 +117,7 @@ def admin_books_page():
 					condition.append("(NAME ~* '^" + str(request.form["book_name"]) + "*')")
 
 				if request.form["genre"]:
-<<<<<<< HEAD
 					condition.append("(GENRE ~* '^" + str(request.form["genre"]) + "*')")
-=======
-					condition.append("(GENRE = '%s')" % (request.form["genre"]))
->>>>>>> ebbd3775769248a39bd39a3458df0b5a67c75b8a
 
 				if len(condition):
 					statement += " WHERE "
@@ -155,7 +151,6 @@ def books_page():
 	else:
 		if "form_name" in request.form:
 			if request.form["form_name"] == "filter":
-<<<<<<< HEAD
 				statement = '''
 					SELECT * FROM BOOKS
 				'''
@@ -163,21 +158,11 @@ def books_page():
 				where = False
 				condition = []
 
-=======
-
-				statement = '''
-					SELECT * FROM BOOKS
-				'''
-
-				where = False
-				condition = []
-
->>>>>>> ebbd3775769248a39bd39a3458df0b5a67c75b8a
 				if request.form["book_name"]:
-					condition.append("(NAME ~* '^" + str(request.form["book_name"]) + "*')")
+					condition.append("(NAME ~* '.*" + str(request.form["book_name"]) + ".*')")
 
 				if request.form["genre"]:
-					condition.append("(GENRE ~* '^" + str(request.form["genre"]) + "*')")
+					condition.append("(GENRE ~* '.*" + str(request.form["genre"]) + ".*')")
 
 				if len(condition):
 					statement += " WHERE "
@@ -189,11 +174,8 @@ def books_page():
 						statement += cond
 
 				# final statement
-<<<<<<< HEAD
 				print("statement = " + statement)
-=======
-				print(statement)
->>>>>>> ebbd3775769248a39bd39a3458df0b5a67c75b8a
+
 				with dbapi2.connect(url) as connection:
 					cursor = connection.cursor()
 					cursor.execute(statement)
