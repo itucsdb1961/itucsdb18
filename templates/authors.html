@@ -14,7 +14,7 @@
               {% for author in authors %}
               <tr>
                 <td>
-                  <a class="small" href="{{url_for('author_page', author_id = author[0])}}" >
+                  <a href="{{url_for('author_page', author_id = author[0])}}" >
                     {{author[1]}}( {{author[2]}} )
                   </a>
                 </td>
@@ -28,7 +28,7 @@
         <div class="col-sm-3 d-flex justify-content-center">
           <div class="position-fixed bordered">
 
-            <div class="d-flex justify-content-center" style="background-color: rgb(254,203,255); border: 1px solid white; border-radius: 8px; padding: 5px;">
+            <div class="text-center" style="background-color: rgb(254,203,255); border: 1px solid white; border-radius: 8px; padding: 5px;">
               <form action="" method="post" name="author_search">
 
                 <h3>Search</h3>
