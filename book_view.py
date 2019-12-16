@@ -166,7 +166,7 @@ def admin_books_page():
 				with dbapi2.connect(url) as connection:
 					cursor = connection.cursor()
 					cursor.execute(statement)
-	
+
 
 	with dbapi2.connect(url) as connection:
 		cursor = connection.cursor()
@@ -277,7 +277,7 @@ def book_page(book_id):
 				where ID = %d
 				''' % (int(book_id))
 				)
-		book = cursor.fetchall()
+		book = cursor.fetchall()[0]
 		cursor.execute(
 			'''
 				select * from BOOK_AUTHORS

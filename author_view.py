@@ -176,15 +176,15 @@ def author_page(author_id):
 	with dbapi2.connect(url) as connection:
 			cursor = connection.cursor()
 			cursor.execute(statement_author)
-			author = cursor.fetchall()
+			author = cursor.fetchall()[0]
 
 			cursor.execute(statement_books)
 
 			book_ids = cursor.fetchall()
 
 			for book_id in book_ids:
-				
-				cursor.execute(''' 
+
+				cursor.execute('''
 					SELECT * FROM BOOKS
 					WHERE ID = %d
 				''' % (int(book_id[0])))
@@ -192,8 +192,6 @@ def author_page(author_id):
 				books.append(cursor.fetchall()[0])
 
 	print(books)
-
-	author = author[0][1:-1] # delete author_id before serving
 
 	return render_template("author.html", author = author, books = books)
 

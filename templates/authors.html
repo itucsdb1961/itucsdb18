@@ -9,18 +9,24 @@
         <div class="col-sm-9">
 
           <h1 class="title">Authors</h1>
+
           {% if authors %}
-            <table class="table is-striped is-fullwidth">
-              {% for author in authors %}
+          <table class="table table-striped" style="margin-top: 20px;">
+            <thead class="thead-dark">
               <tr>
-                <td>
-                  <a href="{{url_for('author_page', author_id = author[0])}}" >
-                    {{author[1]}}( {{author[2]}} )
-                  </a>
-                </td>
+                <th>Name and Surname</th>
               </tr>
-              {% endfor %}
-            </table>
+            </thead>
+            <tbody>
+              {% for author in authors %}
+          		<tr>
+            			<td>
+                    <a href = "{{ url_for('author_page', author_id = author[0]) }}">{{author[1]}} {{author[2]}}</a>
+                  </td>
+          		</tr>
+          		{% endfor %}
+            </tbody>
+          </table>
           {% endif %}
 
         </div>
