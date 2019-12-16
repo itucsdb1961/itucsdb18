@@ -45,7 +45,7 @@ class book:
 					''' % (self.name, self.pub_year)
 					)
 			ids = cursor.fetchall()
-			return ids[0][0]
+			return int(ids[0][0])
 
 
 def admin_books_page():
@@ -92,7 +92,7 @@ def admin_books_page():
 					STATEMENT ='''
 								INSERT INTO
 								BOOK_AUTHORS (BOOK_ID, AUTHOR_ID)
-								VALUES 	('%s', '%s')
+								VALUES 	(%d, %d)
 								ON CONFLICT(BOOK_ID, AUTHOR_ID) DO NOTHING
 								''' % (tmp_book.fetch_id(url), tmp_author.fetch_id(url))
 

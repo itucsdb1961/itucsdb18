@@ -45,7 +45,7 @@ class author:
 					''' % (self.name, self.last_name)
 					)
 			ids = cursor.fetchall()
-			return ids[0][0]
+			return int(ids[0][0])
 
 
 def admin_authors_page():
