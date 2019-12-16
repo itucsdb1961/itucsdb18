@@ -9,7 +9,6 @@ from hashlib import md5
 
 def home_page():
 	if not "logged_in" in session:
-		print "logged"
 		session["access_level"] = 4
 
 	return render_template("home.html")
