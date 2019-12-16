@@ -4,7 +4,7 @@ import sys
 import psycopg2 as dbapi2
 
 LOCAL = False
-_url = "postgres://vzvhmhqevlcedf:141b03607dee6c5c995d91b952b06e4fc122006f5cd2c1d789403aae34dc40a1@ec2-54-217-225-16.eu-west-1.compute.amazonaws.com:5432/dafo7esm4hjfc7"
+_url = "postgres://mrzogiikkbrxmf:b6042668a00f9ea7e4d353f06e02e8c5ffab90a6a2a76191de8597340a254d68@ec2-54-228-243-29.eu-west-1.compute.amazonaws.com:5432/dsbe8b5jahoaq"
 secret_key = "hjkalsfdlamfrqwrxzc"
 
 def init_book_table(url):
@@ -150,7 +150,7 @@ def init_user_table(url):
 		INSERT INTO
 		USERS (USERNAME, H_PASSWORD, ACCESS_LEVEL)
 		VALUES 	('%s', '%s', %d)
-		ON CONFLICT(BOOK_ID, STUDENT_ID) DO NOTHING
+		ON CONFLICT(USERNAME) DO NOTHING
 	''' % (adm , psw, 0)
 
 	with dbapi2.connect(url) as connection:
@@ -215,4 +215,4 @@ def init_db(url):
 	init_relation_table_book_author(url)
 	init_relation_table_student_lendbook(url)
 
-#init_db(url)
+#init_db(_url)
