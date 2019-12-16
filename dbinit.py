@@ -12,7 +12,7 @@ from book_view import book
 from author_view import author
 from student_view import student
 from closet_view import closet
-from shelf_view import shelf
+from shelf_view import mshelf
 
 import time
 import datetime
@@ -303,15 +303,15 @@ def add_mock_data(url):
 	###############
 	shelves = []
 
-	tmp_shelf = shelf("x1-t3",1,3,4,40,"Fiction")
+	tmp_shelf = mshelf("x1-t3",1,3,4,40,"Fiction")
 	shelves.append(tmp_shelf)
-	tmp_shelf = shelf("x2-t4",1,2,5,40,"Classics")
+	tmp_shelf = mshelf("x2-t4",1,2,5,40,"Classics")
 	shelves.append(tmp_shelf)
-	tmp_shelf = shelf("x3-v4",3,3,3,25,"Thriller")
+	tmp_shelf = mshelf("x3-v4",3,3,3,25,"Thriller")
 	shelves.append(tmp_shelf)
-	tmp_shelf = shelf("y2-a4",2,4,5,25,"Dystopia")
+	tmp_shelf = mshelf("y2-a4",2,4,5,25,"Dystopia")
 	shelves.append(tmp_shelf)
-	tmp_shelf = shelf("r2-d2",1,1,2,100,"Biography")
+	tmp_shelf = mshelf("r2-d2",1,1,2,100,"Biography")
 	shelves.append(tmp_shelf)
 
 	for s in shelves:
