@@ -90,8 +90,8 @@ def init_relation_table_book_author(url):
 
 	statement = '''
 		CREATE TABLE BOOK_AUTHORS(
-			BOOK_ID INT  REFERENCES BOOKS(ID),
-			AUTHOR_ID INT REFERENCES AUTHORS(ID),
+			BOOK_ID INT  REFERENCES BOOKS(ID) ON DELETE CASCADE,
+			AUTHOR_ID INT REFERENCES AUTHORS(ID) ON DELETE CASCADE,
 
 			UNIQUE (BOOK_ID,AUTHOR_ID),
 			PRIMARY KEY(BOOK_ID,AUTHOR_ID)
@@ -106,8 +106,8 @@ def init_relation_table_student_lendbook(url):
 
 	statement = '''
 		CREATE TABLE STUDENT_BOOKS(
-			BOOK_ID INT  REFERENCES BOOKS(ID),
-			STUDENT_ID INT REFERENCES STUDENTS(ID),
+			BOOK_ID INT  REFERENCES BOOKS(ID) ON DELETE CASCADE,
+			STUDENT_ID INT REFERENCES STUDENTS(ID) ON DELETE CASCADE,
 
 			DATE_LEND FLOAT NOT NULL,
 
@@ -191,8 +191,8 @@ def init_relation_table_shelf_book(url):
 
 	statement = '''
 		CREATE TABLE SHELF_BOOKS(
-			BOOK_ID INT  REFERENCES BOOKS(ID),
-			SHELF_ID INT REFERENCES SHELVES(ID),
+			BOOK_ID INT  REFERENCES BOOKS(ID) ON DELETE CASCADE,
+			SHELF_ID INT REFERENCES SHELVES(ID) ON DELETE CASCADE,
 
 			UNIQUE (BOOK_ID,SHELF_ID),
 			PRIMARY KEY(BOOK_ID,SHELF_ID)
@@ -271,7 +271,7 @@ def add_mock_data(url):
 
 	students = []
 
-	tmp_student = student("150170004", "Salih Furkan" , "Ceyhan" , "Comp&Inf.Eng", "Comp Eng.", "2", time.time())
+	tmp_student = student("150170004", "Salih Furkan" , "Ceyhan" , "Comp&Inf.Eng", "Comp Eng.", "2", '''%s''' % (str(datetime.datetime.now())))
 	students.append(tmp_student)
 
 	for s in students:
@@ -298,8 +298,23 @@ def add_mock_data(url):
 	for c in closets:
 		c.add_to_db(url)
 
-	###############
+	#################### CLOSETS ADDED
 
+	shelves = []
+
+	tmp_shelf = shelf(1,3,4,40,"Fiction")
+	shelves.append(tmp_shelf)
+	tmp_shelf = shelf(1,2,5,40,"Classics")
+	shelves.append(tmp_shelf)
+	tmp_shelf = shelf(3,3,3,25,"Thriller")
+	shelves.append(tmp_shelf)
+	tmp_shelf = shelf(2,4,5,25,"Dystopia")
+	shelves.append(tmp_shelf)
+	tmp_shelf = shelf(1,1,2,100,"Biography")
+	shelves.append(tmp_shelf)
+
+	for s in shelves:
+		s.add_to_db(url)
 
 def init_db(url):
 	wipe(url)
