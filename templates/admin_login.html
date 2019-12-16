@@ -6,15 +6,6 @@
 	<div class="row" style="padding: 150px;">
 	  <div class="col-sm d-flex flex-wrap align-content-center justify-content-center" style="width: 50%;">
 			
-			<h3 class="login-heading mb-4">
-				{% if error is defined %}
-					<div class="alert alert-danger" role="alert">{{error}}</div>
-						Please login again
-				{% else %}
-					Welcome back!
-				{% endif %}
-			</h3>
-
 			<form action="" method="post" name="Login">
 				
 			<div class="field">
@@ -30,7 +21,7 @@
 			<div class="field">
 			  <label for="password" class="label">Password</label>
 				<div class="control">
-				  <input type="text" name="password" class="input" required="required"/>
+				  <input type="password" name="password" class="input" required="required"/>
 				</div>
 			</div>
 			<div class="field is-grouped">
