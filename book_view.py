@@ -149,11 +149,25 @@ def admin_books_page():
 					update_statement += "ID = " + str(update)
 					first = False
 
+					# delete from book_authors relation
+					with dbapi2.connect(url) as connection:
+						cursor = connection.cursor()
+						cursor.execute('''
+							DELETE FROM BOOK_AUTHORS
+							WHERE BOOK_ID = %d
+						''' % (int(update)))
+
 				statement += update_statement
 
 				with dbapi2.connect(url) as connection:
 					cursor = connection.cursor()
 					cursor.execute(statement)
+	
+
+	with dbapi2.connect(url) as connection:
+		cursor = connection.cursor()
+		cursor.execute("select * from books")
+		books = cursor.fetchall()
 
 	return render_template("admin_books.html", books = books, book_count = len(books))
 
