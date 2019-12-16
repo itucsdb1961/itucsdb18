@@ -5,7 +5,7 @@
     <div class="container">
       <div class="row">
 
-        {% if session["access_level"] < 3%}
+      {% if "access_level" in session and session["access_level"] < 3%}
 
         <div class="col-sm-9">
 

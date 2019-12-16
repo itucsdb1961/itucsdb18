@@ -1,20 +1,18 @@
 url = "postgres://mrzogiikkbrxmf:b6042668a00f9ea7e4d353f06e02e8c5ffab90a6a2a76191de8597340a254d68@ec2-54-228-243-29.eu-west-1.compute.amazonaws.com:5432/dsbe8b5jahoaq"
 secret_key = "hjkalsfdlamfrqwrxzc"
 
-from flask import Flask, request, redirect, url_for, session, render_template
+from flask import Flask, request, redirect, url_for, session, render_template, abort
 import psycopg2 as dbapi2
 import time
 
 from hashlib import md5
 
 def home_page():
-	session["access_level"] = 3
 	return render_template("home.html")
 
 def admin_closets_page():
-	# with dbapi2.connect(url) as connection:
-	# 	cursor = connection.cursor()
-	# 	cursor.execute("drop table authors")
+	if not "access_level" in session or session["access_level"] > 2: # non-admin-user trying url manually / abort
+		abort(451)
 
 	closets = []
 
@@ -38,9 +36,8 @@ def admin_closets_page():
 
 
 def closets_page():
-	# with dbapi2.connect(url) as connection:
-	# 	cursor = connection.cursor()
-	# 	cursor.execute("drop table authors")
+	if not session["access_level"] < 3: # non-admin-user trying url manually / abort
+		abort(451)
 
 	closets = []
 

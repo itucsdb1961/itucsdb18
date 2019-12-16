@@ -32,9 +32,8 @@ class closet:
 			connection.commit()
 
 def admin_closets_page():
-	# with dbapi2.connect(url) as connection:
-	# 	cursor = connection.cursor()
-	# 	cursor.execute("drop table authors")
+	if not "access_level" in session or session["access_level"] > 2: # non-admin-user trying url manually / abort
+		abort(451)
 
 	closets = []
 
@@ -67,7 +66,6 @@ def admin_closets_page():
 					cursor = connection.cursor()
 					cursor.execute("SELECT * FROM CLOSETS")
 					closets = cursor.fetchall()
-				print(closets)
 
 	with dbapi2.connect(url) as connection:
 		cursor = connection.cursor()
@@ -78,9 +76,6 @@ def admin_closets_page():
 
 
 def closets_page():
-	# with dbapi2.connect(url) as connection:
-	# 	cursor = connection.cursor()
-	# 	cursor.execute("drop table authors")
 
 	closets = []
 

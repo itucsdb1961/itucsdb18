@@ -20,8 +20,9 @@
 
   <body>
     <header>
-      {% if session["access_level"] < 3%}
-    	<nav class="navbar navbar-static-top navbar-expand-sm navbar-light" style="margin-bottom: 30px;">
+      {% if "access_level" in session and session["access_level"] < 3%}
+    	<nav class="navbar navbar-expand-sm navbar-light navbar-fixed-top" style="margin-bottom: 40px;">
+
     		<div class="container">
     			<div id="navbar" class="navbar-collapse collapse">
     				<ul class="nav navbar-nav">

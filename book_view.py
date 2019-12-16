@@ -1,7 +1,7 @@
 url = "postgres://mrzogiikkbrxmf:b6042668a00f9ea7e4d353f06e02e8c5ffab90a6a2a76191de8597340a254d68@ec2-54-228-243-29.eu-west-1.compute.amazonaws.com:5432/dsbe8b5jahoaq"
 secret_key = "hjkalsfdlamfrqwrxzc"
 import psycopg2 as dbapi2
-from flask import Flask, request, redirect, url_for,render_template
+from flask import Flask, request, redirect, url_for,render_template, session, abort
 from author_view import author
 
 class book:
@@ -49,6 +49,10 @@ class book:
 
 
 def admin_books_page():
+
+	if not "access_level" in session or session["access_level"] > 2: # non-admin-user trying url manually / abort
+		abort(451)
+
 	books = []
 
 	with dbapi2.connect(url) as connection:
@@ -149,11 +153,25 @@ def admin_books_page():
 					update_statement += "ID = " + str(update)
 					first = False
 
+					# delete from book_authors relation
+					with dbapi2.connect(url) as connection:
+						cursor = connection.cursor()
+						cursor.execute('''
+							DELETE FROM BOOK_AUTHORS
+							WHERE BOOK_ID = %d
+						''' % (int(update)))
+
 				statement += update_statement
 
 				with dbapi2.connect(url) as connection:
 					cursor = connection.cursor()
 					cursor.execute(statement)
+	
+
+	with dbapi2.connect(url) as connection:
+		cursor = connection.cursor()
+		cursor.execute("select * from books")
+		books = cursor.fetchall()
 
 	return render_template("admin_books.html", books = books, book_count = len(books))
 
@@ -205,7 +223,6 @@ def books_page():
 	return render_template("books.html", books = books)
 
 def book_page(book_id):
-	print("in book_page")
 	book = []
 	authors = []
 
@@ -269,9 +286,6 @@ def book_page(book_id):
 		)
 		rows = cursor.fetchall()
 
-		print("rows = ")
-		print(rows)
-
 		for r in rows:
 			author_id = int(r[1])
 
@@ -285,19 +299,3 @@ def book_page(book_id):
 			authors.append(tmp_author)
 
 	return render_template("book.html", book = book , authors = authors)
-
-def delete_book(book_id):
-
-	print("book_id = ")
-	print(book_id)
-
-	statement = '''
-		DELETE FROM BOOKS
-		WHERE (ID = %d)
-	''' % (int(book_id))
-
-	with dbapi2.connect(url) as connection:
-		cursor = connection.cursor()
-		cursor.execute(statement)
-
-	return redirect(url_for("books_page"))

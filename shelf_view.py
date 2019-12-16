@@ -2,7 +2,7 @@ url = "postgres://mrzogiikkbrxmf:b6042668a00f9ea7e4d353f06e02e8c5ffab90a6a2a7619
 secret_key = "hjkalsfdlamfrqwrxzc"
 
 import psycopg2 as dbapi2
-from flask import Flask, request, redirect, url_for,render_template
+from flask import Flask, request, redirect, url_for,render_template ,session, abort
 from random import randint
 
 class shelf:
@@ -33,6 +33,9 @@ class shelf:
 
 
 def admin_shelves_page():
+
+	if not "access_level" in session or session["access_level"] > 2: # non-admin-user trying url manually / abort
+		abort(451)
 
 	shelves = []
 
@@ -121,7 +124,6 @@ def admin_shelves_page():
 	return render_template("admin_shelves.html", shelves = shelves, shelf_count = len(shelves))
 
 def shelf_page(shelf_id):
-	print("in shelf_page")
 	shelf = []
 
 	if request.method == "POST":
