@@ -2,12 +2,40 @@
 {% block title %}Home{% endblock %}
 {% block content %}
 
+<script src="https://api.tiles.mapbox.com/mapbox-gl-js/v1.6.0/mapbox-gl.js"></script>
+<link href="https://api.tiles.mapbox.com/mapbox-gl-js/v1.6.0/mapbox-gl.css" rel="stylesheet" />
+<style>
+</style>
+
+
+
 <div class= "container-fluid">
+  <div class="row">
+    <div id="map" style="height: 490px; margin-top: 500px;"></div>
+  </div>
     <div class= "row">
       <div class = "col-sm d-flex flex-wrap align-content-center justify-content-center"><img src="{{ url_for('static', filename='itu_logo.png') }}" alt="İTÜ Logo" width="212" height="120"></div>
       <div class = "col-sm"><a href="#" class="btn btn-primary"><p style="font-size:200%; color:rgb(178,0,0);">WELCOME TO LIBRARIAN. YOU CAN FREELY LOOK FOR THE RETURN DATES AND PLACES OF THE BOOKS YOU WANT TO BORROW. ALSO YOU CAN BORROW A CLOSET TO STORE YOUR BELONGINGS.</p></a></div>
       <div class = "col-sm d-flex flex-wrap align-content-center justify-content-center"><img src="{{ url_for('static', filename='itu_logo.png') }}" alt="İTÜ Logo" width="212" height="120"></div>
     </div>
 </div>
+
+<script>
+	  mapboxgl.accessToken = 'pk.eyJ1IjoiZGVrc3ByaW1lIiwiYSI6ImNqOGsxb3dyYzA4b2wyeHBsdGx0aXdzeHYifQ.4vYgxeGhICEGWbC1552LsQ';
+		var map = new mapboxgl.Map({
+  		container: 'map',
+  		zoom: 16,
+  		center: [29.025489, 41.104989],
+  		style: 'mapbox://styles/mapbox/satellite-v9'
+	  });
+    var popup = new mapboxgl.Popup({ closeOnClick: false })
+      .setHTML('<h3>ITU Library</h3>')
+
+    var marker = new mapboxgl.Marker()
+      .setLngLat([29.021303, 41.103970])
+      .setPopup(popup)
+      .addTo(map);
+
+</script>
 
 {% endblock %}
