@@ -42,4 +42,5 @@ app.add_url_rule("/shelve/<shelf_id>", view_func = shelf_view.shelf_page, method
 
 port = app.config.get("PORT", 5000)
 
-app.run(host="0.0.0.0", port=port)
+if __name__ == "__main__":
+	app.run(host="0.0.0.0", port=port)
