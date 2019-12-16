@@ -5,18 +5,18 @@ import psycopg2 as dbapi2
 from flask import Flask, request, redirect, url_for,render_template ,session, abort
 from random import randint
 
-class shelf:
+class mshelf:
 	def __init__(self,
 				name,
 				num,
 				block,
-				floor,
-				capacity,
+				flr,
+				capacity = 0,
 				book_genre = ""):
 		self.name = name
 		self.num = num
 		self.block = block
-		self.floor = floor
+		self.flr = flr
 		self.capacity = capacity
 		self.book_genre = book_genre
 
@@ -26,7 +26,7 @@ class shelf:
 					SHELVES	(NAME, NUM, BLOCK, FLR, BOOK_GENRE, CAPACITY)
 					VALUES 	('%s',%d, %d, %d, '%s', %d)
 					ON CONFLICT(NUM, BLOCK, FLR) DO NOTHING
-					''' % (self.name, self.num, self.block, self.floor, self.book_genre, self.capacity)
+					''' % (self.name, self.num, self.block, self.flr, self.book_genre, self.capacity)
 
 		with dbapi2.connect(db_url) as connection:
 			cursor = connection.cursor()
@@ -48,12 +48,15 @@ def admin_shelves_page():
 		shelves = cursor.fetchall()
 
 	if request.method == "POST":
-
 		if "form_name" in request.form:
+			if request.form["form_name"] == "shelf_create": 
 
-			if request.form["form_name"] == "shelf_create": # add shelve FORM SUBMITTED
-				tmp_shelve = shelf(int(request.form["num"]), int(request.form["block"]), int(request.form["floor"]), int(request.form["capacity"]), str(request.form["book_genre"]))
-				tmp_shelve.add_to_db(url)
+				if request.form["capacity"]:
+					tmp_shelf = mshelf(str(request.form["shelf_name"]),int(request.form["num"]),int(request.form["block"]),int(request.form["floor"]),int(request.form["capacity"]),str(request.form["book_genre"]))
+					tmp_shelf.add_to_db(url)
+				else:
+					tmp_shelf = mshelf(str(request.form["shelf_name"]),int(request.form["num"]),int(request.form["block"]),int(request.form["floor"]),0,str(request.form["book_genre"]))
+					tmp_shelf.add_to_db(url)
 
 				with dbapi2.connect(url) as connection:
 					cursor = connection.cursor()
@@ -67,7 +70,6 @@ def admin_shelves_page():
 				'''
 
 				cond = []
-
 	
 				if request.form["genre"]:
 					cond.append("(BOOK_GENRE ~* '.*" + str(request.form["genre"]) + ".*')")

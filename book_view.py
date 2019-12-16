@@ -65,6 +65,7 @@ def admin_books_page():
 	else:
 		if "form_name" in request.form:
 			if request.form["form_name"] == "book_create": # CREATE BOOK FORM SUBMITTED
+				
 				tmp_book = book(request.form["book_name"], request.form["pub_year"] ,request.form["book_lang"], request.form["book_genre"], request.form["pub_location"], request.form["publisher"])
 				tmp_book.add_to_db(url)
 

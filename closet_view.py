@@ -62,6 +62,10 @@ def admin_closets_page():
 				with dbapi2.connect(url) as connection:
 					cursor = connection.cursor()
 					cursor.execute(statement)
+					cursor.execute("SELECT * FROM CLOSETS")
+					closets = cursor.fetchall()
+
+				return render_template("admin_closets.html",closets = closets)
 
 			elif request.form["form_name"] == "closet_create":
 				tmpcloset = closet(request.form["closet_floor"], request.form["closet_block"] ,request.form["closet_number"], request.form["closet_type"], request.form["closet_size"], request.form["return_hour"])
@@ -106,6 +110,7 @@ def admin_closets_page():
 					cursor = connection.cursor()
 					cursor.execute(statement)
 					closets = cursor.fetchall()
+				return render_template("admin_closets.html",closets = closets)
 
 	return render_template("admin_closets.html",closets = closets)
 
