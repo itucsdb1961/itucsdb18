@@ -22,7 +22,7 @@ class shelf:
 		STATEMENT ='''
 					INSERT INTO
 					SHELVES	(NUM, BLOCK, FLR, BOOK_GENRE, CAPACITY)
-					VALUES 	(%d, %d, %d, '%s', %d)
+					VALUES 	('%d', '%d', '%d', '%s', '%d')
 					ON CONFLICT(NUM, BLOCK, FLR) DO NOTHING
 					''' % (self.num, self.block, self.floor, self.book_genre, self.capacity)
 
@@ -33,6 +33,7 @@ class shelf:
 
 
 def admin_shelves_page():
+
 	shelves = []
 
 	with dbapi2.connect(url) as connection:
@@ -41,12 +42,13 @@ def admin_shelves_page():
 		shelves = cursor.fetchall()
 
 	if request.method == "POST":
+
 		if "form_name" in request.form:
-			if request.form["form_name"] == "add_shelve": # add shelve FORM SUBMITTED
-				tmp_shelve = shelf(request.form["num"], request.form["block"] ,request.form["floor"],  request.form["capacity"], request.form["genre"])
+
+			if request.form["form_name"] == "shelf_create": # add shelve FORM SUBMITTED
+				tmp_shelve = shelf(int(request.form["num"]), int(request.form["block"]), int(request.form["floor"]), int(request.form["capacity"]), str(request.form["book_genre"]))
 				tmp_shelve.add_to_db(url)
 
-				# collect and serve
 				with dbapi2.connect(url) as connection:
 					cursor = connection.cursor()
 					cursor.execute("select * from shelves")
@@ -113,6 +115,8 @@ def admin_shelves_page():
 				with dbapi2.connect(url) as connection:
 					cursor = connection.cursor()
 					cursor.execute(statement)
+					cursor.execute("select * from shelves")
+					shelves = cursor.fetchall()
 
 	return render_template("admin_shelves.html", shelves = shelves, shelf_count = len(shelves))
 

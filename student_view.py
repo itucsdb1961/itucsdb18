@@ -40,9 +40,6 @@ class student:
 		return False
 
 def admin_students():
-	students = []
-
-	statement = "SELECT * FROM STUDENTS"
 
 	if request.method == "POST":
 		if "form_name" in request.form:
@@ -90,6 +87,9 @@ def admin_students():
 				with dbapi2.connect(url) as connection:
 					cursor = connection.cursor()
 					cursor.execute(statement)
+
+	students = []
+	statement = "SELECT * FROM STUDENTS"				
 
 	with dbapi2.connect(url) as connection:
 		cursor = connection.cursor()
