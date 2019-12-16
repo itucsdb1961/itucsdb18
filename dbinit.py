@@ -7,6 +7,16 @@ LOCAL = False
 _url = "postgres://mrzogiikkbrxmf:b6042668a00f9ea7e4d353f06e02e8c5ffab90a6a2a76191de8597340a254d68@ec2-54-228-243-29.eu-west-1.compute.amazonaws.com:5432/dsbe8b5jahoaq"
 secret_key = "hjkalsfdlamfrqwrxzc"
 
+
+from book_view import book
+from author_view import author
+from student_view import student
+from closet_view import closet
+from shelf_view import shelf
+
+import time
+import datetime
+
 def init_book_table(url):
 	statement = '''
 		CREATE TABLE BOOKS(
@@ -177,7 +187,7 @@ def init_shelf_table(url):
 		cursor = connection.cursor()
 		cursor.execute(statement)
 
-def init_relatin_table_shelf_book(url):
+def init_relation_table_shelf_book(url):
 
 	statement = '''
 		CREATE TABLE SHELF_BOOKS(
@@ -196,6 +206,7 @@ def wipe(url):
 	with dbapi2.connect(url) as connection:
 		cursor = connection.cursor()
 		cursor.execute("DROP TABLE IF EXISTS STUDENT_BOOKS")
+		cursor.execute("DROP TABLE IF EXISTS SHELF_BOOKS")
 		cursor.execute("DROP TABLE IF EXISTS BOOK_AUTHORS")
 		cursor.execute("DROP TABLE IF EXISTS BOOKS")
 		cursor.execute("DROP TABLE IF EXISTS AUTHORS")
@@ -203,6 +214,92 @@ def wipe(url):
 		cursor.execute("DROP TABLE IF EXISTS CLOSETS")
 		cursor.execute("DROP TABLE IF EXISTS USERS")
 		cursor.execute("DROP TABLE IF EXISTS SHELVES")
+
+def add_mock_data(url):
+
+	books = []
+
+	tmp_book = book("Pride and Prejudice", "2000", "English", "Classics", "USA / CAN", "Modern Library")
+	books.append(tmp_book)
+	tmp_book = book("Animal Farm", "2003", "English", "Dystopia", "USA", "NA")
+	books.append(tmp_book)
+	tmp_book = book("The Picture of Dorian Gray", "2004", "English", "Classics", "USA", "Modern Library")
+	books.append(tmp_book)
+	tmp_book = book("Les Miserables", "1987", "English", "Classics", "USA", "Signet Classics")
+	books.append(tmp_book)
+	tmp_book = book("Romeo and Juliet", "2004", "English", "Classics", "USA", "Simon Schuster")
+	books.append(tmp_book)
+
+	for b in books:
+		b.add_to_db(url)
+	##################### 5 - BOOK ADDED
+
+	authors = []
+
+	tmp_author = author("Jane", "Austen")
+	authors.append(tmp_author)
+	tmp_author = author("George", "Orwell")
+	authors.append(tmp_author)
+	tmp_author = author("Oscar", "Wilde")
+	authors.append(tmp_author)
+	tmp_author = author("Victor", "Hugo")
+	authors.append(tmp_author)
+	tmp_author = author("William", "Shakespeare")
+	authors.append(tmp_author)
+
+	for a in authors:
+		a.add_to_db(url)
+	###################### 5 - AUTHOR ADDED
+
+
+
+	with dbapi2.connect(url) as connection:
+		cursor = connection.cursor()
+		for x in range(0,5):
+
+			a_id = int(authors[x].fetch_id(url))
+			b_id = int(books[x].fetch_id(url))
+
+			cursor.execute('''
+				INSERT INTO
+				BOOK_AUTHORS (BOOK_ID, AUTHOR_ID)
+				VALUES 	(%d, %d)
+				ON CONFLICT(BOOK_ID, AUTHOR_ID) DO NOTHING
+			''' % (b_id, a_id)
+			)
+	#################### BOOK_AUTHOR RELATIONS ADDED
+
+	students = []
+
+	tmp_student = student("150170004", "Salih Furkan" , "Ceyhan" , "Comp&Inf.Eng", "Comp Eng.", "2", time.time())
+	students.append(tmp_student)
+
+	for s in students:
+		s.add_to_db(url)
+	#################### STUDENT ADDED
+
+	closets = []
+
+	tmp_closet = closet("1","3","4","1","3", '''%s''' % (str(datetime.datetime.now())))
+	closets.append(tmp_closet)
+
+	tmp_closet = closet("1","4","7","2","2", '''%s''' % (str(datetime.datetime.now())))
+	closets.append(tmp_closet)
+
+	tmp_closet = closet("2","1","3","1","3", '''%s''' % (str(datetime.datetime.now())))
+	closets.append(tmp_closet)
+
+	tmp_closet = closet("0","3","4","1","3", '''%s''' % (str(datetime.datetime.now())))
+	closets.append(tmp_closet)
+
+	tmp_closet = closet("0","5","1","3","3", '''%s''' % (str(datetime.datetime.now())))
+	closets.append(tmp_closet)
+
+	for c in closets:
+		c.add_to_db(url)
+
+	###############
+
 
 def init_db(url):
 	wipe(url)
@@ -214,13 +311,15 @@ def init_db(url):
 	init_user_table(url)
 	init_relation_table_book_author(url)
 	init_relation_table_student_lendbook(url)
+	init_relation_table_shelf_book(url)
+	add_mock_data(url)
 
 
 if __name__ == "__main__":
 
-    url = os.getenv("DATABASE_URL",5000)
+    url = os.getenv("DATABASE_URL", _url)
 
     if url is None:
-        print("Usage: DATABASE_URL=url python dbinit.py", file=sys.stderr)
+        print("Usage: DATABASE_URL=url python dbinit.py")
         sys.exit(1)
     init_db(url)

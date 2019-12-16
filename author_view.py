@@ -7,10 +7,10 @@ class author:
 	def __init__(self,
 				name,
 				last_name,
-				birth_year = None,
-				birth_place = None,
-				last_book_date = None,
-				last_book_name = None,
+				birth_year = "",
+				birth_place = "",
+				last_book_date = "",
+				last_book_name = "",
 				):
 		self.name = name
 		self.last_name = last_name
@@ -45,7 +45,7 @@ class author:
 					''' % (self.name, self.last_name)
 					)
 			ids = cursor.fetchall()
-			return ids[0][0]
+			return int(ids[0][0])
 
 
 def admin_authors_page():
