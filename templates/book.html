@@ -28,8 +28,11 @@
                   <tr><td> <b>Count:</b>  {{ book[7] }} </td></tr>
                 {% if authors %}
                   {% for author in authors %}
-                  <tr><td>Author: <a href = "{{ url_for('author_page', author_id = author[0]) }}">{{ author[1] }} {{author[2]}}</a></td></tr>
+                  <tr><td><b>Author: </b><a href = "{{ url_for('author_page', author_id = author[0]) }}">{{ author[1] }} {{author[2]}}</a></td></tr>
                   {% endfor %}
+                {% endif %}
+                {% if cur_shelf %}
+                    <tr><td> <b>Shelf:</b>  {{ cur_shelf[0][1] }} </td></tr>
                 {% endif %}
               </tbody>
             </table>
@@ -101,6 +104,7 @@
 
       </div>
 
+      {% if not cur_shelf %}
       <div class="col-sm-2 d-flex justify-content-center">
 
         <form action="" method="post" name="update">
@@ -127,6 +131,7 @@
         </form>
 
       </div>
+      {% endif %}
 
       {% else %}
 
@@ -146,15 +151,16 @@
               <tr><td> <b>Genre:</b>  {{ b[5] }} </td></tr>
               <tr><td> <b>Language:</b>  {{ b[6] }} </td></tr>
               <tr><td> <b>Count:</b>  {{ b[7] }} </td></tr>
-              {% if cur_shelf %}
-                <tr><td> <b>Shelf:</b>  {{ cur_shelf[0] }} </td></tr>
-              {% endif %}
             {% endfor %}
             {% if authors %}
               {% for author in authors %}
               <tr><td>Author: <a href = "{{ url_for('author_page', author_id = author[0]) }}">{{ author[1] }} {{author[2]}}</a></td></tr>
               {% endfor %}
             {% endif %}
+
+              {% if cur_shelf %}
+                  <tr><td> <b>Shelf:</b>  {{ cur_shelf[0][1] }} </td></tr>
+              {% endif %}
           </tbody>
         </table>
         {% endif %}

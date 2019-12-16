@@ -40,6 +40,7 @@ def admin_shelves_page():
 		abort(451)
 
 	shelves = []
+	book_counts = []
 
 	with dbapi2.connect(url) as connection:
 		cursor = connection.cursor()
@@ -116,14 +117,30 @@ def admin_shelves_page():
 					first = False
 
 				statement += update_statement
-
 				with dbapi2.connect(url) as connection:
 					cursor = connection.cursor()
 					cursor.execute(statement)
-					cursor.execute("select * from shelves")
-					shelves = cursor.fetchall()
 
-	return render_template("admin_shelves.html", shelves = shelves, shelf_count = len(shelves))
+	with dbapi2.connect(url) as connection:
+		cursor = connection.cursor()
+		cursor.execute("select * from shelves")
+		shelves = cursor.fetchall()
+
+		idx = 0
+		for shelf in shelves:
+			book_counts.append([])
+			cursor.execute('''
+				SELECT * FROM SHELF_BOOKS
+				WHERE SHELF_ID = %d
+			''' % (int(shelf[0])))
+
+			book_counts[idx].append(len(cursor.fetchall()))
+			idx+=1
+
+		for idx in range(0,len(shelves)):
+			shelves[idx] = shelves[idx] + tuple(book_counts[idx])
+
+	return render_template("admin_shelves.html", shelves = shelves, shelf_count = len(shelves), book_count = book_counts)
 
 def shelf_page(shelf_id):
 	shelf = []
@@ -174,6 +191,9 @@ def shelf_page(shelf_id):
 					 	cursor = connection.cursor()
 					 	cursor.execute(statement)
 
+
+	books = []
+
 	with dbapi2.connect(url) as connection:
 		cursor = connection.cursor()
 		cursor.execute('''
@@ -181,4 +201,22 @@ def shelf_page(shelf_id):
 				where ID = %d
 				''' % (int(shelf_id)))
 		shelf = cursor.fetchall()[0]
-	return render_template("shelf.html", shelf = shelf)
+
+		cursor.execute('''
+			SELECT * FROM SHELF_BOOKS
+			WHERE SHELF_ID = %d
+		'''% (int(shelf_id))
+		)		
+		book_ids = cursor.fetchall()
+
+		for book_id in book_ids:
+			cursor.execute('''
+				SELECT * FROM BOOKS
+				WHERE ID = %d
+			'''% (int(book_id[0]))
+			)
+			tmp_book = cursor.fetchall()[0]
+			books.append(tmp_book)
+
+
+	return render_template("shelf.html", shelf = shelf , books = books)

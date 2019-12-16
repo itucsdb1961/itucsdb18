@@ -173,12 +173,14 @@ def init_shelf_table(url):
 	statement = '''
 		CREATE TABLE SHELVES(
 			ID SERIAL,
+			NAME VARCHAR(40) NOT NULL,
 			NUM INT NOT NULL,
 			BLOCK INT NOT NULL,
 			FLR INT NOT NULL,
 			BOOK_GENRE VARCHAR(40),
 			CAPACITY INT NOT NULL,
 
+			UNIQUE(NAME),
 			UNIQUE(NUM,BLOCK,FLR),
 			PRIMARY KEY(ID)
 		)'''
@@ -194,7 +196,7 @@ def init_relation_table_shelf_book(url):
 			BOOK_ID INT  REFERENCES BOOKS(ID),
 			SHELF_ID INT REFERENCES SHELVES(ID),
 
-			UNIQUE (BOOK_ID,SHELF_ID),
+			UNIQUE (BOOK_ID),
 			PRIMARY KEY(BOOK_ID,SHELF_ID)
 		)'''
 
@@ -299,7 +301,21 @@ def add_mock_data(url):
 		c.add_to_db(url)
 
 	###############
+	shelves = []
 
+	tmp_shelf = shelf("x1-t3",1,3,4,40,"Fiction")
+	shelves.append(tmp_shelf)
+	tmp_shelf = shelf("x2-t4",1,2,5,40,"Classics")
+	shelves.append(tmp_shelf)
+	tmp_shelf = shelf("x3-v4",3,3,3,25,"Thriller")
+	shelves.append(tmp_shelf)
+	tmp_shelf = shelf("y2-a4",2,4,5,25,"Dystopia")
+	shelves.append(tmp_shelf)
+	tmp_shelf = shelf("r2-d2",1,1,2,100,"Biography")
+	shelves.append(tmp_shelf)
+
+	for s in shelves:
+		s.add_to_db(url)
 
 def init_db(url):
 	wipe(url)
