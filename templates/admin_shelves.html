@@ -19,7 +19,7 @@
         <table class="table table-striped" style="margin-top: 20px;">
           <thead class="thead-dark">
             <tr>
-              <th>Number</th>
+              <th>Name</th>
               <th>Genre</th>
               <th>Floor</th>
             </tr>
@@ -33,8 +33,8 @@
                   </label>
                   <a href = "{{ url_for('shelf_page', shelf_id = shelf[0]) }}">{{shelf[1]}}</a>
                 </td>
+                <td>{{shelf[5]}}</td>
                 <td>{{shelf[4]}}</td>
-                <td>{{shelf[3]}}</td>
       			</tr>
       			{% endfor %}
           </tbody>

@@ -300,6 +300,22 @@ def add_mock_data(url):
 
 	###############
 
+<<<<<<< HEAD
+=======
+	tmp_shelf = shelf("x1-t3",1,3,4,40,"Fiction")
+	shelves.append(tmp_shelf)
+	tmp_shelf = shelf("x2-t4",1,2,5,40,"Classics")
+	shelves.append(tmp_shelf)
+	tmp_shelf = shelf("x3-v4",3,3,3,25,"Thriller")
+	shelves.append(tmp_shelf)
+	tmp_shelf = shelf("y2-a4",2,4,5,25,"Dystopia")
+	shelves.append(tmp_shelf)
+	tmp_shelf = shelf("r2-d2",1,1,2,100,"Biography")
+	shelves.append(tmp_shelf)
+
+	for s in shelves:
+		s.add_to_db(url)
+>>>>>>> a210ee7a9ccfcfa60127e4bb87d4ce83f9867609
 
 def init_db(url):
 	wipe(url)
