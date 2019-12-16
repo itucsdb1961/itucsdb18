@@ -37,6 +37,11 @@ def admin_closets_page():
 
 	closets = []
 
+	with dbapi2.connect(url) as connection:
+		cursor = connection.cursor()
+		cursor.execute("SELECT * FROM CLOSETS")
+		closets = cursor.fetchall()
+
 	if request.method == "POST":
 		if "form_name" in request.form:
 			if request.form["form_name"] == "checkbox_filter":
@@ -67,10 +72,40 @@ def admin_closets_page():
 					cursor.execute("SELECT * FROM CLOSETS")
 					closets = cursor.fetchall()
 
-	with dbapi2.connect(url) as connection:
-		cursor = connection.cursor()
-		cursor.execute("SELECT * FROM CLOSETS")
-		closets = cursor.fetchall()
+			elif request.form["form_name"] == "filter":
+				statement = '''
+					SELECT * FROM CLOSETS
+				'''
+
+				where = False
+				condition = []
+
+				if request.form["floor"]:
+					condition.append("(CLOSET_FLOOR ~* '.*" + str(request.form["floor"]) + ".*')")
+
+				if request.form["closet_number"]:
+					condition.append("(CLOSET_NUMBER ~* '.*" + str(request.form["closet_number"]) + ".*')")
+
+				if request.form["closet_size"]:
+					condition.append("(SIZE ~* '.*" + str(request.form["closet_size"]) + ".*')")
+
+				if len(condition):
+					statement += " WHERE "
+
+					first = True
+					for cond in condition:
+						if not first:
+							statement += " AND "
+						first = False
+						statement += cond
+
+				# final statement
+				print("statement = " + statement)
+
+				with dbapi2.connect(url) as connection:
+					cursor = connection.cursor()
+					cursor.execute(statement)
+					closets = cursor.fetchall()
 
 	return render_template("admin_closets.html",closets = closets)
 
@@ -84,8 +119,44 @@ def closets_page():
 		cursor.execute("SELECT * FROM CLOSETS")
 		closets = cursor.fetchall()
 
-	if request.method == "GET":
-		return render_template("closets.html", closets = closets)
+	if request.method == "POST":
+
+		if request.form["form_name"] == "filter":
+			statement = '''
+				SELECT * FROM CLOSETS
+			'''
+
+			where = False
+			condition = []
+
+			if request.form["floor"]:
+				condition.append("(CLOSET_FLOOR ~* '.*" + str(request.form["floor"]) + ".*')")
+
+			if request.form["closet_number"]:
+				condition.append("(CLOSET_NUMBER ~* '.*" + str(request.form["closet_number"]) + ".*')")
+
+			if request.form["closet_size"]:
+				condition.append("(SIZE ~* '.*" + str(request.form["closet_size"]) + ".*')")
+
+			if len(condition):
+				statement += " WHERE "
+
+				first = True
+				for cond in condition:
+					if not first:
+						statement += " AND "
+					first = False
+					statement += cond
+
+			# final statement
+			print("statement = " + statement)
+
+			with dbapi2.connect(url) as connection:
+				cursor = connection.cursor()
+				cursor.execute(statement)
+				closets = cursor.fetchall()
+
+	return render_template("closets.html", closets = closets)
 
 def closet_page(closet_id):
 
@@ -142,8 +213,6 @@ def closet_page(closet_id):
 						SELECT * FROM CLOSETS
 						WHERE ID = %d
 					   '''	% (int(closet_id)))
-		closet = cursor.fetchall()
-
-
+		closet = cursor.fetchall()[0]
 
 	return render_template("closet.html",closet = closet)

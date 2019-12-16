@@ -8,11 +8,25 @@
         <div class="col-sm-9">
 
           <h1 class="title">Shelf</h1>
-          {% if shelf %}
-            {% for b in shelf %}
-              <p> {{ b[1] }} ( {{b[2]}} ) {{ b[3] }} {{ b[4] }} {{ b[5] }}</p>
-            {% endfor %}
-          {% endif %}
+
+            {% if shelf %}
+            <table class="table table-striped" style="margin-top: 20px;">
+              <thead class="thead-dark">
+                <tr>
+                  <th>Shelf Information</th>
+                </tr>
+              </thead>
+              <tbody>
+                  {% if shelf %}
+                    <tr><td> <b>Number:</b>  {{ shelf[1] }} </td></tr>
+                    <tr><td> <b>Block:</b>  {{ shelf[2] }} </td></tr>
+                    <tr><td> <b>Floor:</b>  {{ shelf[3] }} </td></tr>
+                    <tr><td> <b>Genre:</b>  {{ shelf[4] }} </td></tr>
+                    <tr><td> <b>Capacity:</b>  {{ shelf[5] }} </td></tr>
+                  {% endif %}
+              </tbody>
+            </table>
+            {% endif %}
 
         </div>
 

@@ -10,10 +10,23 @@
         <div class="col-sm-9">
 
           <h1 class="title">Closet</h1>
+
           {% if closet %}
-            {% for b in closet %}
-              <p> {{ b[1] }} ( {{b[2]}} ) {{ b[3] }} {{ b[4] }} {{ b[5] }} {{ b[6] }}</p>
-            {% endfor %}
+          <table class="table table-striped" style="margin-top: 20px;">
+            <thead class="thead-dark">
+              <tr>
+                <th>Closet Information</th>
+              </tr>
+            </thead>
+            <tbody>
+                <tr><td> <b>Floor:</b>  {{ closet[1] }} </td></tr>
+                <tr><td> <b>Block:</b>  {{ closet[2] }} </td></tr>
+                <tr><td> <b>Number:</b>  {{ closet[3] }} </td></tr>
+                <tr><td> <b>Type:</b>  {{ closet[4] }} </td></tr>
+                <tr><td> <b>Size:</b>  {{ closet[5] }} </td></tr>
+                <tr><td> <b>Return Hour:</b>  {{ closet[6] }} </td></tr>
+            </tbody>
+          </table>
           {% endif %}
 
         </div>
@@ -88,9 +101,21 @@
 
           <h1 class="title">Closet</h1>
           {% if closet %}
-            {% for b in closet %}
-              <p> {{ b[1] }} ( {{b[2]}} ) {{ b[3] }} {{ b[4] }} {{ b[5] }} {{ b[6] }}</p>
-            {% endfor %}
+          <table class="table table-striped" style="margin-top: 20px;">
+            <thead class="thead-dark">
+              <tr>
+                <th>Closet Information</th>
+              </tr>
+            </thead>
+            <tbody>
+                <tr><td> <b>Floor:</b>  {{ closet[1] }} </td></tr>
+                <tr><td> <b>Block:</b>  {{ closet[2] }} </td></tr>
+                <tr><td> <b>Number:</b>  {{ closet[3] }} </td></tr>
+                <tr><td> <b>Type:</b>  {{ closet[4] }} </td></tr>
+                <tr><td> <b>Size:</b>  {{ closet[5] }} </td></tr>
+                <tr><td> <b>Return Hour:</b>  {{ closet[6] }} </td></tr>
+            </tbody>
+          </table>
           {% endif %}
 
         </div>

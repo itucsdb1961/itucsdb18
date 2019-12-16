@@ -11,30 +11,39 @@
 		  <h1 class="title">Shelves ({{shelf_count}})</h1>
 
   		{% if shelves %}
-  		<form action="" method="post" name="book_list">
+      <form action="" method="post" name="book_list">
         <div class="field">
             <input type="hidden" name="form_name" value="checkbox_filter"/>
         </div>
-  		  <table class="table is-striped is-fullwidth">
-  			{% for shelf in shelves %}
-  			<tr>
-  			  <td>
-  				<label class="checkbox">
-  				  <input type="checkbox" name="shelf_key" value="{{shelf[0]}}"/>
-  				</label>
 
-  				<a href = "{{ url_for('shelf_page', shelf_id = shelf[0]) }}">
-  					{{shelf[3]}}( {{shelf[1]}} )
-  				</a>
-  			  </td>
-  			</tr>
-  			{% endfor %}
-  		  </table>
+        <table class="table table-striped" style="margin-top: 20px;">
+          <thead class="thead-dark">
+            <tr>
+              <th>Number</th>
+              <th>Genre</th>
+              <th>Floor</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for shelf in shelves %}
+      			<tr>
+        			  <td>
+                  <label class="checkbox">
+                    <input type="checkbox" name="shelf_key" value="{{shelf[0]}}"/>
+                  </label>
+                  <a href = "{{ url_for('shelf_page', shelf_id = shelf[0]) }}">{{shelf[1]}}</a>
+                </td>
+                <td>{{shelf[4]}}</td>
+                <td>{{shelf[3]}}</td>
+      			</tr>
+      			{% endfor %}
+          </tbody>
+        </table>
 
   		  <div class="field is-grouped">
-  				<div class="control">
-  				  <button class="button is-danger is-small">Delete</button>
-  				</div>
+    			<div class="control">
+    			  <button class="button is-danger is-small">Delete</button>
+    			</div>
   		  </div>
   		</form>
   		{% endif %}

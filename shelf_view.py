@@ -178,5 +178,5 @@ def shelf_page(shelf_id):
 				select * from shelves
 				where ID = %d
 				''' % (int(shelf_id)))
-		shelf = cursor.fetchall()
+		shelf = cursor.fetchall()[0]
 	return render_template("shelf.html", shelf = shelf)

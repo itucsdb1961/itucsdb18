@@ -11,24 +11,33 @@
     <h1 class="title">Closet ({{closet_count}})</h1>
 
     {% if closets %}
-    <form action="" method="post" name="closet_list">
+    <form action="" method="post" name="book_list">
       <div class="field">
           <input type="hidden" name="form_name" value="checkbox_filter"/>
       </div>
-      <table class="table is-striped is-fullwidth">
-      {% for closet in closets %}
-      <tr>
-        <td>
-        <label class="checkbox">
-          <input type="checkbox" name="closet_key" value="{{closet[0]}}"/>
-        </label>
 
-        <a href = "{{ url_for('closet_page', closet_id = closet[0]) }}">
-          {{closet[1]}}&nbsp{{closet[2]}}&nbsp{{closet[3]}}
-        </a>
-        </td>
-      </tr>
-      {% endfor %}
+      <table class="table table-striped" style="margin-top: 20px;">
+        <thead class="thead-dark">
+          <tr>
+            <th>Closet Number</th>
+            <th>Closet Floor</th>
+            <th>Return Hour</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for closet in closets %}
+          <tr>
+              <td>
+                <label class="checkbox">
+                  <input type="checkbox" name="closet_key" value="{{closet[0]}}"/>
+                </label>
+                <a href = "{{ url_for('closet_page', closet_id = closet[0]) }}">{{closet[3]}}</a>
+              </td>
+              <td>{{closet[1]}}</td>
+              <td>{{closet[6]}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
       </table>
 
       <div class="field is-grouped">
@@ -137,7 +146,7 @@
 
         <div class="field is-grouped">
           <div class="control" style="padding: 10px;">
-            <button class="button is-primary is-small">Update</button>
+            <button class="button is-primary is-small">Create</button>
           </div>
         </div>
       </form>

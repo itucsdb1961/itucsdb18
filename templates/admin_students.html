@@ -9,24 +9,33 @@
   <div class="col-sm-8">
 
     <h1 class="title">Students</h1>
+
     {% if students %}
-    <form action="" method="post" name="authors-list">
+    <form action="" method="post" name="book_list">
       <div class="field">
           <input type="hidden" name="form_name" value="checkbox_filter"/>
       </div>
-      <table class="table is-striped is-fullwidth">
-      {% for student in students %}
-      <tr>
-        <td>
-          <label class="checkbox">
-            <input type="checkbox" name="student_key" value="{{student[0]}}"/>
-          </label>
-      		<a href="{{url_for('admin_student', student_id = student[0])}}">
-      				{{student[1]}} {{student[2]}}
-      		</a>
-        </td>
-      </tr>
-      {% endfor %}
+
+      <table class="table table-striped" style="margin-top: 20px;">
+        <thead class="thead-dark">
+          <tr>
+            <th>Student Name</th>
+            <th>Student Number</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for student in students %}
+          <tr>
+              <td>
+                <label class="checkbox">
+                  <input type="checkbox" name="student_key" value="{{student[0]}}"/>
+                </label>
+                <a href = "{{ url_for('admin_student', student_id = student[0]) }}">{{student[2]}} {{student[3]}}</a>
+              </td>
+              <td>{{student[1]}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
       </table>
 
       <div class="field is-grouped">
@@ -34,6 +43,7 @@
           <button class="button is-danger is-small">Delete</button>
         </div>
       </div>
+    </form>
     {% endif %}
 
   </div>

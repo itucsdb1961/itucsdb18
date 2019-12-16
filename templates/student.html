@@ -9,9 +9,26 @@
 		<div class="col-sm-9">
 
 			<h1 class="title">Student</h1>
-			{% if student %}
-				<p> ({{ student[0][1] }}) {{student[0][2]}} {{student[0][3]}} {{student[0][4]}} {{student[0][5]}} {{student[0][6]}} {{student[0][7]}} {{student[0][8]}}</p>
-			{% endif %}
+
+				{% if student %}
+				<table class="table table-striped" style="margin-top: 20px;">
+					<thead class="thead-dark">
+						<tr>
+							<th>Student Information</th>
+						</tr>
+					</thead>
+					<tbody>
+							<tr><td> <b>Student Number:</b>  {{ student[0][1] }} </td></tr>
+							<tr><td> <b>Name:</b>  {{ student[0][2] }} </td></tr>
+							<tr><td> <b>Last Name:</b>  {{ student[0][3] }} </td></tr>
+							<tr><td> <b>Faculty:</b>  {{ student[0][4] }} </td></tr>
+							<tr><td> <b>Department:</b>  {{ student[0][5] }} </td></tr>
+							<tr><td> <b>Grade:</b>  {{ student[0][6] }} </td></tr>
+							<tr><td> <b>Membership Date:</b>  {{ student[0][7] }} </td></tr>
+							<tr><td> <b>Debt:</b>  {{ student[0][8] }} </td></tr>
+					</tbody>
+				</table>
+				{% endif %}
 
 		</div>
 

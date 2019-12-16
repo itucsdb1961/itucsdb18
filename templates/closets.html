@@ -8,22 +8,32 @@
 
     <div class="col-sm-9">
 
+
       <h1 class="title">Closets</h1>
 
       {% if closets %}
-        <table class="table is-striped is-fullwidth">
+      <table class="table table-striped" style="margin-top: 20px;">
+        <thead class="thead-dark">
+          <tr>
+            <th>Closet Number</th>
+            <th>Closet Floor</th>
+            <th>Return Hour</th>
+            <th>Lend Button</th>
+          </tr>
+        </thead>
+        <tbody>
           {% for closet in closets %}
           <tr>
-            <td>
-
-              <a href = "{{ url_for('closet_page', closet_id = closet[0]) }}">
-                {{closet[1]}}&nbsp{{closet[2]}}&nbsp{{closet[3]}}
-              </a>
-
-            </td>
+              <td>
+                <a href = "{{ url_for('closet_page', closet_id = closet[0]) }}">{{closet[3]}}</a>
+              </td>
+              <td>{{closet[1]}}</td>
+              <td>{{closet[6]}}</td>
+              <td><div class="control"><button class="button is-primary is-small" value="{{closet[0]}}">Lend</button></div></td>
           </tr>
           {% endfor %}
-        </table>
+        </tbody>
+      </table>
       {% endif %}
 
   </div>

@@ -271,7 +271,7 @@ def add_mock_data(url):
 
 	students = []
 
-	tmp_student = student("150170004", "Salih Furkan" , "Ceyhan" , "Comp&Inf.Eng", "Comp Eng.", "2", time.time())
+	tmp_student = student("150170004", "Salih Furkan" , "Ceyhan" , "Comp&Inf.Eng", "Comp Eng.", "2", '''%s''' % (str(datetime.datetime.now())))
 	students.append(tmp_student)
 
 	for s in students:
