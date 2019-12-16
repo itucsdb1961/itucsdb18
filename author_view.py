@@ -50,6 +50,7 @@ class author:
 
 def admin_authors_page():
 
+
 	authors = []
 	statement = '''
 		SELECT * FROM AUTHORS
@@ -82,7 +83,7 @@ def admin_authors_page():
 
 				checkbox_cond = request.form.getlist("author_key")
 
-				statement = "DELETE FROM AUTHORS WHERE "
+				statement_delete = "DELETE FROM AUTHORS WHERE "
 				update_statement = ""
 				first = True
 				for update in checkbox_cond:
@@ -91,11 +92,20 @@ def admin_authors_page():
 					update_statement += "ID = " + str(update)
 					first = False
 
-				statement += update_statement
+				# delete from book_authors relation
+				with dbapi2.connect(url) as connection:
+					cursor = connection.cursor()
+					cursor.execute('''
+						DELETE FROM BOOK_AUTHORS
+						WHERE AUTHOR_ID = %d
+					''' % (int(update)))
+
+
+				statement_delete += update_statement
 
 				with dbapi2.connect(url) as connection:
 					cursor = connection.cursor()
-					cursor.execute(statement)
+					cursor.execute(statement_delete)
 
 	authors = []
 	print("statement = " + statement)
@@ -103,6 +113,7 @@ def admin_authors_page():
 		cursor = connection.cursor()
 		cursor.execute(statement)
 		authors = cursor.fetchall()
+
 	return render_template("admin_authors.html", authors = authors)
 
 def author_page(author_id):
@@ -157,7 +168,7 @@ def author_page(author_id):
 	''' % (int(author_id))
 
 	statement_books = '''
-		SELECT * FROM BOOK_AUTHORS
+		SELECT BOOK_ID FROM BOOK_AUTHORS
 		WHERE (AUTHOR_ID = %d)
 	''' % (int(author_id))
 
@@ -167,8 +178,21 @@ def author_page(author_id):
 			author = cursor.fetchall()
 
 			cursor.execute(statement_books)
-			books = cursor.fetchall()
 
+			book_ids = cursor.fetchall()
+
+			for book_id in book_ids:
+				
+				cursor.execute(''' 
+					SELECT * FROM BOOKS
+					WHERE ID = %d
+				''' % (int(book_id[0])))
+
+				books.append(cursor.fetchall()[0])
+
+	print(books)
+
+	author = author[0][1:-1] # delete author_id before serving
 
 	return render_template("author.html", author = author, books = books)
 
