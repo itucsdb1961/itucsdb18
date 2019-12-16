@@ -11,7 +11,7 @@ class shelf:
 				block,
 				floor,
 				capacity,
-				book_genre = None):
+				book_genre = ""):
 		self.num = num
 		self.block = block
 		self.floor = floor
