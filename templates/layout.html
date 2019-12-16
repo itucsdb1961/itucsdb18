@@ -5,7 +5,7 @@
     <!-- Site hakkındaki genel bilgiler,bootstrap ve font-awesome kodlarının internetten import edilmesi-->
     <title>Librarian {% block title %}{% endblock %}</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
     <meta content="An example site of a university library" name="description">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -13,6 +13,8 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script src="https://kit.fontawesome.com/cedd86c4ea.js" crossorigin="anonymous"></script>
     <style>
+    	body { margin: 0; padding: 0; }
+    	#map { position: absolute; top: 0; bottom: 0; width: 100%; };
     </style>
   </head>
 
@@ -20,6 +22,7 @@
     <header>
       {% if "access_level" in session and session["access_level"] < 3%}
     	<nav class="navbar navbar-expand-sm navbar-light navbar-fixed-top" style="margin-bottom: 40px;">
+
     		<div class="container">
     			<div id="navbar" class="navbar-collapse collapse">
     				<ul class="nav navbar-nav">
@@ -35,9 +38,10 @@
     				<li><a href="{{ url_for('admin_logout_page') }}" class="btn" style="color:rgb(178,0,0);"><i class="fa fa-key" style=""></i>LOG OUT</a></li>
     			</ul>
     		</div>
+        <p id="xClock" style="font-size: 30px;"></p>
     	</nav>
       {% else %}
-      <nav class="navbar navbar-expand-sm navbar-light navbar-fixed-top" style="margin-bottom: 40px;">
+      <nav class="navbar navbar-expand-sm navbar-light navbar-fixed-top" style="margin-bottom: 30px;">
         <div class="container">
           <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
@@ -51,6 +55,7 @@
             <li><a href="{{ url_for('admin_login_page') }}" class="btn" style="color:rgb(178,0,0);"><i class="fa fa-key" style=""></i>ADMIN LOGIN</a></li>
           </ul>
         </div>
+        <p id="xClock" style="font-size: 30px;"></p>
       </nav>
       {% endif %}
     </header>
@@ -60,6 +65,37 @@
     <footer style="text-align: center;">
         <small>2019, Oğuz Gögebakan & Salih Furkan Ceyhan</small>
     </footer>
+
+    <script>
+
+      function xClock() {
+         xC = new Date;
+         xV = vClock(xC.getHours()) + ":" + vClock(xC.getMinutes()) + ":" + vClock(xC.getSeconds());
+         document.getElementById("xClock").innerHTML = xV;
+         setTimeout("xClock()", 1000);
+      }
+
+      function vClock(v) {
+         return (v > 9) ? "" + v : "0" + v;
+      }
+
+      function addLoadEvent(func) {
+         var oldonload = window.onload;
+         if (typeof window.onload != 'function') {
+            window.onload = func;
+         } else {
+            window.onload = function() {
+               if (oldonload) {
+                  oldonload();
+               }
+               func();
+            }
+         }
+      }
+
+      addLoadEvent(xClock);
+
+    </script>
 
   </body>
 </html>
