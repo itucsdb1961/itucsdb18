@@ -9,6 +9,7 @@ from hashlib import md5
 
 def home_page():
 	if not "logged_in" in session:
+		print "logged"
 		session["access_level"] = 4
 
 	return render_template("home.html")
@@ -139,7 +140,7 @@ def admin_login_page():
 def admin_logout_page():
 
 	session["logged_in"] = False
-	session["access_level"] = 3
+	session["access_level"] = 4
 
 	return render_template("home.html")
 
