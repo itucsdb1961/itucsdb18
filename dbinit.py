@@ -196,6 +196,7 @@ def wipe(url):
 	with dbapi2.connect(url) as connection:
 		cursor = connection.cursor()
 		cursor.execute("DROP TABLE IF EXISTS STUDENT_BOOKS")
+		cursor.execute("DROP TABLE IF EXISTS SHELF_BOOKS")
 		cursor.execute("DROP TABLE IF EXISTS BOOK_AUTHORS")
 		cursor.execute("DROP TABLE IF EXISTS BOOKS")
 		cursor.execute("DROP TABLE IF EXISTS AUTHORS")
@@ -218,9 +219,9 @@ def init_db(url):
 
 if __name__ == "__main__":
 
-    url = os.getenv("DATABASE_URL",5000)
+    url = os.getenv("DATABASE_URL",_url)
 
     if url is None:
-        print("Usage: DATABASE_URL=url python dbinit.py", file=sys.stderr)
+        print("Usage: DATABASE_URL=url python dbinit.py")
         sys.exit(1)
     init_db(url)
