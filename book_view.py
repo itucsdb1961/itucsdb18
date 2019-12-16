@@ -330,15 +330,15 @@ def book_page(book_id):
 		''' % (int(book_id))
 		)
 
-		shelf_id = int(cursor.fetchall()[0])
-
-		cursor.execute(
-		'''
-			select * from SHELVES
-			where ID = %d
-		''' % (int(shelf_id))
-		)
-
-		shelf = cursor.fetchall()[0]
+		shelf_ids = cursor.fetchall()
+		if shelf_ids:
+			shelf_id = shelf_ids[0]
+			cursor.execute(
+			'''
+				select * from SHELVES
+				where ID = %d
+			''' % (int(shelf_id))
+			)
+			shelf = cursor.fetchall()
 
 	return render_template("book.html", book = book , authors = authors, shelf = shelf)
