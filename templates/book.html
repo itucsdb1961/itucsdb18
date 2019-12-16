@@ -7,7 +7,7 @@
 
       {% if "access_level" in session and session["access_level"] < 3%}
 
-        <div class="col-sm-9">
+        <div class="col-sm-8">
 
           <h1 class="title">Book</h1>
 
@@ -37,7 +37,7 @@
 
         </div>
 
-        <div class="col-sm-3 d-flex justify-content-center" style="background-color: rgb(254,203,255); border: 1px solid white; border-radius: 8px; padding: 5px;">
+        <div class="col-sm-2 d-flex justify-content-center" style="background-color: rgb(254,203,255); border: 1px solid white; border-radius: 8px; padding: 5px;">
 
           <div class="text-center">
 
@@ -98,6 +98,33 @@
           </form>
 
         </div>
+
+      </div>
+
+      <div class="col-sm-2">
+
+        <form action="" method="post" name="update">
+
+          <h3 class="title">Update Shelf</h3>
+          <div class="field">
+            <input type="hidden" name="form_name" value = "update"/>
+          </div>
+
+          {{% if shelves %}}
+            <select>
+              {{% for shelf in shelves %}}
+                <option value="shelf[0]">{{shelf[1]}}</option>
+              {{% endfor %}}
+            </select>
+          {% endif %}
+
+          <div class="field is-grouped">
+            <div class="control" style="padding: 10px;">
+              <button class="button is-primary is-small">Update</button>
+            </div>
+          </div>
+          
+        </form>
 
       </div>
 
