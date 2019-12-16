@@ -7,7 +7,7 @@
 
       {% if "access_level" in session and session["access_level"] < 3%}
 
-        <div class="col-sm-8">
+        <div class="col-sm-7">
 
           <h1 class="title">Book</h1>
 
@@ -37,7 +37,7 @@
 
         </div>
 
-        <div class="col-sm-2 d-flex justify-content-center" style="background-color: rgb(254,203,255); border: 1px solid white; border-radius: 8px; padding: 5px;">
+        <div class="col-sm-3 d-flex justify-content-center" style="background-color: rgb(254,203,255); border: 1px solid white; border-radius: 8px; padding: 5px;">
 
           <div class="text-center">
 
@@ -84,7 +84,7 @@
               </div>
 
             <div class="field">
-              <label for="authors" class="label">Authors(For >1, use +)</label>
+              <label for="authors" class="label">Authors</label>
                 <div class="control">
                   <input type="text" name="authors" class="input"/>
                 </div>
@@ -101,7 +101,7 @@
 
       </div>
 
-      <div class="col-sm-2">
+      <div class="col-sm-2 d-flex justify-content-center">
 
         <form action="" method="post" name="update">
 
@@ -110,11 +110,11 @@
             <input type="hidden" name="form_name" value = "update"/>
           </div>
 
-          {{% if shelves %}}
+          {% if shelves %}
             <select>
-              {{% for shelf in shelves %}}
+              {% for shelf in shelves %}
                 <option value="shelf[0]">{{shelf[1]}}</option>
-              {{% endfor %}}
+              {% endfor %}
             </select>
           {% endif %}
 
@@ -123,7 +123,7 @@
               <button class="button is-primary is-small">Update</button>
             </div>
           </div>
-          
+
         </form>
 
       </div>
@@ -138,15 +138,13 @@
             </tr>
           </thead>
           <tbody>
-            {% for b in book %}
-              <tr><td> <b>Name:</b>  {{ b[1] }} </td></tr>
-              <tr><td> <b>Publication Year:</b>  {{b[2]}} </td></tr>
-              <tr><td> <b>Publication Location:</b>  {{ b[3] }} </td></tr>
-              <tr><td> <b>Publisher:</b>  {{ b[4] }} </td></tr>
-              <tr><td> <b>Genre:</b>  {{ b[5] }} </td></tr>
-              <tr><td> <b>Language:</b>  {{ b[6] }} </td></tr>
-              <tr><td> <b>Count:</b>  {{ b[7] }} </td></tr>
-            {% endfor %}
+              <tr><td> <b>Name:</b>  {{ book[1] }} </td></tr>
+              <tr><td> <b>Publication Year:</b>  {{book[2]}} </td></tr>
+              <tr><td> <b>Publication Location:</b>  {{ book[3] }} </td></tr>
+              <tr><td> <b>Publisher:</b>  {{ book[4] }} </td></tr>
+              <tr><td> <b>Genre:</b>  {{ book[5] }} </td></tr>
+              <tr><td> <b>Language:</b>  {{ book[6] }} </td></tr>
+              <tr><td> <b>Count:</b>  {{ book[7] }} </td></tr>
             {% if authors %}
               {% for author in authors %}
               <tr><td>Author: <a href = "{{ url_for('author_page', author_id = author[0]) }}">{{ author[1] }} {{author[2]}}</a></td></tr>
