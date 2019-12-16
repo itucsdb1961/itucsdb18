@@ -107,14 +107,14 @@
 
           <h3 class="title">Update Shelf</h3>
           <div class="field">
-            <input type="hidden" name="form_name" value = "update"/>
+            <input type="hidden" name="form_name" value = "select_shelf"/>
           </div>
 
-          {{% if shelves %}}
-            <select>
-              {{% for shelf in shelves %}}
-                <option value="shelf[0]">{{shelf[1]}}</option>
-              {{% endfor %}}
+          {% if shelves %}
+            <select name = "shelf_dropdown">
+              {% for shelf in shelves %}
+                <option value="{{shelf[0]}}">{{shelf[1]}}</option>
+              {% endfor %}
             </select>
           {% endif %}
 
@@ -146,6 +146,9 @@
               <tr><td> <b>Genre:</b>  {{ b[5] }} </td></tr>
               <tr><td> <b>Language:</b>  {{ b[6] }} </td></tr>
               <tr><td> <b>Count:</b>  {{ b[7] }} </td></tr>
+              {% if cur_shelf %}
+                <tr><td> <b>Shelf:</b>  {{ cur_shelf[0] }} </td></tr>
+              {% endif %}
             {% endfor %}
             {% if authors %}
               {% for author in authors %}

@@ -7,11 +7,13 @@ from random import randint
 
 class shelf:
 	def __init__(self,
+				name,
 				num,
 				block,
 				floor,
 				capacity,
 				book_genre = ""):
+		self.name = name
 		self.num = num
 		self.block = block
 		self.floor = floor
@@ -21,10 +23,10 @@ class shelf:
 	def add_to_db(self,db_url):
 		STATEMENT ='''
 					INSERT INTO
-					SHELVES	(NUM, BLOCK, FLR, BOOK_GENRE, CAPACITY)
-					VALUES 	('%d', '%d', '%d', '%s', '%d')
+					SHELVES	(NAME, NUM, BLOCK, FLR, BOOK_GENRE, CAPACITY)
+					VALUES 	('%s',%d, %d, %d, '%s', %d)
 					ON CONFLICT(NUM, BLOCK, FLR) DO NOTHING
-					''' % (self.num, self.block, self.floor, self.book_genre, self.capacity)
+					''' % (self.name, self.num, self.block, self.floor, self.book_genre, self.capacity)
 
 		with dbapi2.connect(db_url) as connection:
 			cursor = connection.cursor()

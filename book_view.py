@@ -272,27 +272,16 @@ def book_page(book_id):
 
 			elif request.form["form_name"] == "select_shelf":
 
-				shelf_name = str(request.form["shelf_name"])
-
+				shelf_id = int(request.form.get('shelf_dropdown'))
 				with dbapi2.connect(url) as connection:
 					cursor = connection.cursor()
-					cursor.execute('''
-						SELECT ID FROM SHELVES
-						WHERE NAME = '%s'
-					''' % (shelf_name)
-					)
-
-					shelf_id = int(cursor.fetchall()[0])
-
 					cursor.execute('''
 						INSERT INTO
 						SHELF_BOOKS (BOOK_ID, SHELF_ID)
 						VALUES 	(%d, %d)
-						ON CONFLICT(BOOK_ID, AUTHOR_ID) DO NOTHING
+						ON CONFLICT(BOOK_ID, SHELF_ID) DO NOTHING
 					''' % (int(book_id), int(shelf_id))
 					)
-
-
 
 	with dbapi2.connect(url) as connection:
 		cursor = connection.cursor()
@@ -332,7 +321,7 @@ def book_page(book_id):
 
 		shelf_ids = cursor.fetchall()
 		if shelf_ids:
-			shelf_id = shelf_ids[0]
+			shelf_id = shelf_ids[0][0]
 			cursor.execute(
 			'''
 				select * from SHELVES
@@ -341,4 +330,12 @@ def book_page(book_id):
 			)
 			shelf = cursor.fetchall()
 
-	return render_template("book.html", book = book , authors = authors, shelf = shelf)
+	shelves = []
+	if not len(shelf):
+		with dbapi2.connect(url) as connection:
+			cursor = connection.cursor()
+			cursor.execute("SELECT * FROM SHELVES")
+			shelves = cursor.fetchall()
+
+
+	return render_template("book.html", book = book , authors = authors, cur_shelf = shelf , shelves = shelves)
