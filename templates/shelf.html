@@ -18,12 +18,17 @@
               </thead>
               <tbody>
                   {% if shelf %}
-                    <tr><td> <b>Number:</b>  {{ shelf[1] }} </td></tr>
-                    <tr><td> <b>Block:</b>  {{ shelf[2] }} </td></tr>
-                    <tr><td> <b>Floor:</b>  {{ shelf[3] }} </td></tr>
-                    <tr><td> <b>Genre:</b>  {{ shelf[4] }} </td></tr>
-                    <tr><td> <b>Capacity:</b>  {{ shelf[5] }} </td></tr>
+                    <tr><td> <b>Name:</b>  {{ shelf[1] }} </td></tr>
+                    <tr><td> <b>Number:</b>  {{ shelf[2] }} </td></tr>
+                    <tr><td> <b>Block:</b>  {{ shelf[3] }} </td></tr>
+                    <tr><td> <b>Floor:</b>  {{ shelf[4] }} </td></tr>
+                    <tr><td> <b>Genre:</b>  {{ shelf[5] }} </td></tr>
+                    <tr><td> <b>Capacity:</b>  {{ shelf[6] }} </td></tr>
                   {% endif %}
+
+                  {% for book in books %}
+                    <tr><td> {{ book[1] }} </td></tr>
+                  {% endfor %}
               </tbody>
             </table>
             {% endif %}
