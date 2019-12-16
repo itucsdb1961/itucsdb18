@@ -118,10 +118,10 @@ def admin_books_page():
 				condition = []
 
 				if request.form["book_name"]:
-					condition.append("(NAME ~* '^" + str(request.form["book_name"]) + "*')")
+					condition.append("(NAME ~* '.*" + str(request.form["book_name"]) + ".*')")
 
 				if request.form["genre"]:
-					condition.append("(GENRE ~* '^" + str(request.form["genre"]) + "*')")
+					condition.append("(GENRE ~* '.*" + str(request.form["genre"]) + ".*')")
 
 				if len(condition):
 					statement += " WHERE "

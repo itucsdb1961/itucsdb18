@@ -68,26 +68,21 @@ def admin_shelves_page():
 
 				cond = []
 
-				if request.form["type"]:
+	
+				if request.form["genre"]:
+					cond.append("(BOOK_GENRE ~* '.*" + str(request.form["genre"]) + ".*')")
+
+				if request.form["shelf_floor"]:
 					cond.append('''
-						(TYPE = '%s')
-						''' % (str(request.form["type"]))
+						(FLR = '%s')
+						''' % (str(request.form["shelf_floor"]))
 					)
 				if request.form["capacity"]:
-					st = str(request.form["capacity"])
-					cnd = ""
-
-					if st.last == '+':
-						val = int(st[0:-2])
-						cnd = '''
-							(CAPACITY > %d)
-						''' % (val)
-						cond.append(cnd)
-					else:
-						cond.append('''
-							(CAPACITY = %d)
-						''' % (int(request.form["capacity"]))
-						)
+					val = int(request.form["capacity"])
+					cnd = '''
+						(CAPACITY >= %d)
+					''' % (int(val))
+					cond.append(cnd)
 
 				if len(cond):
 
@@ -123,8 +118,9 @@ def admin_shelves_page():
 
 	with dbapi2.connect(url) as connection:
 		cursor = connection.cursor()
-		cursor.execute("select * from shelves")
-		shelves = cursor.fetchall()
+		if not (request.method == "POST" and request.form["form_name"] == "filter"):
+			cursor.execute("select * from shelves")
+			shelves = cursor.fetchall()
 
 		idx = 0
 		for shelf in shelves:

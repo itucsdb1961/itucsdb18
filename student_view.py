@@ -40,19 +40,28 @@ class student:
 		return False
 
 def admin_students():
-
 	if not "access_level" in session or session["access_level"] > 2: # non-admin-user trying url manually / abort
 		abort(451)
 
+	students = []
 
 	if request.method == "POST":
 		if "form_name" in request.form:
 			if request.form["form_name"] == "add_student":
 				tmp_student = student(request.form["student_num"], request.form["name"], request.form["last_name"], request.form["faculty"], request.form["department"], request.form["grade"], time.time())
 				tmp_student.add_to_db(url)
+			
 			elif request.form["form_name"] == "filter":
 
+				statement = '''
+					SELECT * FROM STUDENTS
+				'''
+
+				where = False
 				condition = []
+
+				if request.form["student_number"]:
+					condition.append("(STUDENT_NUM ~* '.*" + str(request.form["student_number"]) + ".*')")
 
 				if request.form["student_name"]:
 					condition.append("(NAME ~* '.*" + str(request.form["student_name"]) + ".*')")
@@ -69,6 +78,13 @@ def admin_students():
 							statement += " AND "
 						first = False
 						statement += cond
+
+				# final statement
+				with dbapi2.connect(url) as connection:
+					cursor = connection.cursor()
+					cursor.execute(statement)
+					students = cursor.fetchall()
+				return render_template("admin_students.html", students = students)
 						
 			elif request.form["form_name"] == "checkbox_filter":
 
@@ -89,12 +105,9 @@ def admin_students():
 					cursor = connection.cursor()
 					cursor.execute(statement)
 
-	students = []
-	statement = "SELECT * FROM STUDENTS"				
-
 	with dbapi2.connect(url) as connection:
 		cursor = connection.cursor()
-		cursor.execute(statement)
+		cursor.execute("SELECT * FROM STUDENTS")
 		students = cursor.fetchall()
 
 	return render_template("admin_students.html", students = students)
