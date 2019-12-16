@@ -215,4 +215,12 @@ def init_db(url):
 	init_relation_table_book_author(url)
 	init_relation_table_student_lendbook(url)
 
-#init_db(_url)
+
+if __name__ == "__main__":
+
+    url = os.getenv("DATABASE_URL",5000)
+
+    if url is None:
+        print("Usage: DATABASE_URL=url python dbinit.py", file=sys.stderr)
+        sys.exit(1)
+    init_db(url)
