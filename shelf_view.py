@@ -95,23 +95,24 @@ def admin_shelves_page():
 				cursor.execute(statement)
 				shelves = cursor.fetchall()
 
-			elif request.form["form_name"] == "random":
+			elif request.form["form_name"] == "checkbox_filter":
 
-				num = randint(1,10)
-				block = randint(1,5)
-				floor  = randint(0,3)
-				capacity = 250
-				genre = randint(0,3)
+				checkbox_cond = request.form.getlist("shelf_key")
 
-				genres = ["horror","sci-fi","fantasy", "romance"]
+				statement = "DELETE FROM SHELVES WHERE "
+				update_statement = ""
+				first = True
+				for update in checkbox_cond:
+					if not first:
+						update_statement += " OR "
+					update_statement += "ID = " + str(update)
+					first = False
 
-				tmp_shelve = shelf(num,block,floor,capacity,genres[genre])
-				tmp_shelve.add_to_db(url)
+				statement += update_statement
 
 				with dbapi2.connect(url) as connection:
 					cursor = connection.cursor()
-					cursor.execute("select * from shelves")
-					shelves = cursor.fetchall()
+					cursor.execute(statement)
 
 	return render_template("admin_shelves.html", shelves = shelves, shelf_count = len(shelves))
 

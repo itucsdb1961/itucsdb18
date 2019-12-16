@@ -72,6 +72,25 @@ def admin_students():
 				# final statement
 				print("statement = " + statement)
 
+			elif request.form["form_name"] == "checkbox_filter":
+
+				checkbox_cond = request.form.getlist("student_key")
+
+				statement = "DELETE FROM STUDENTS WHERE "
+				update_statement = ""
+				first = True
+				for update in checkbox_cond:
+					if not first:
+						update_statement += " OR "
+					update_statement += "ID = " + str(update)
+					first = False
+
+				statement += update_statement
+
+				with dbapi2.connect(url) as connection:
+					cursor = connection.cursor()
+					cursor.execute(statement)
+
 	with dbapi2.connect(url) as connection:
 		cursor = connection.cursor()
 		cursor.execute(statement)
@@ -127,7 +146,7 @@ def admin_student(student_id):
 
 				with dbapi2.connect(url) as connection:
 					cursor = connection.cursor()
-					cursor.execute(statement)				
+					cursor.execute(statement)
 
 	with dbapi2.connect(url) as connection:
 		cursor = connection.cursor()
@@ -135,6 +154,6 @@ def admin_student(student_id):
 			SELECT * FROM STUDENTS
 			WHERE ID = %d
 		''' % (int(student_id)))
-		student = cursor.fetchall()				
+		student = cursor.fetchall()
 
 	return render_template("student.html", student = student)

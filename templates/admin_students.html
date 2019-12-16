@@ -11,12 +11,15 @@
     <h1 class="title">Students</h1>
     {% if students %}
     <form action="" method="post" name="authors-list">
+      <div class="field">
+          <input type="hidden" name="form_name" value="checkbox_filter"/>
+      </div>
       <table class="table is-striped is-fullwidth">
       {% for student in students %}
       <tr>
         <td>
           <label class="checkbox">
-            <input type="checkbox" name="book_key"/>
+            <input type="checkbox" name="student_key" value="{{student[0]}}"/>
           </label>
       		<a href="{{url_for('admin_student', student_id = student[0])}}">
       				{{student[1]}} {{student[2]}}

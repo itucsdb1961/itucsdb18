@@ -105,7 +105,7 @@ def admin_books_page():
 				return render_template("admin_books.html", books = books, book_count = len(books))
 
 			elif request.form["form_name"] == "filter":
-				
+
 				statement = '''
 					SELECT * FROM BOOKS
 				'''
@@ -135,6 +135,25 @@ def admin_books_page():
 					cursor = connection.cursor()
 					cursor.execute(statement)
 					books = cursor.fetchall()
+
+			elif request.form["form_name"] == "checkbox_filter":
+
+				checkbox_cond = request.form.getlist("book_key")
+
+				statement = "DELETE FROM BOOKS WHERE "
+				update_statement = ""
+				first = True
+				for update in checkbox_cond:
+					if not first:
+						update_statement += " OR "
+					update_statement += "ID = " + str(update)
+					first = False
+
+				statement += update_statement
+
+				with dbapi2.connect(url) as connection:
+					cursor = connection.cursor()
+					cursor.execute(statement)
 
 	return render_template("admin_books.html", books = books, book_count = len(books))
 

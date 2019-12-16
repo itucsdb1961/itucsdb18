@@ -53,7 +53,7 @@ def admin_authors_page():
 	authors = []
 	statement = '''
 		SELECT * FROM AUTHORS
-	'''	
+	'''
 
 	if request.method == "POST":
 		if "form_name" in request.form:
@@ -71,12 +71,31 @@ def admin_authors_page():
 
 				if len(condition):
 					statement += " WHERE "
-					
+
 					first = True
 					for cond in condition:
 						if not first:
 							statement += " AND "
-						statement += cond				
+						statement += cond
+
+			elif request.form["form_name"] == "checkbox_filter":
+
+				checkbox_cond = request.form.getlist("author_key")
+
+				statement = "DELETE FROM AUTHORS WHERE "
+				update_statement = ""
+				first = True
+				for update in checkbox_cond:
+					if not first:
+						update_statement += " OR "
+					update_statement += "ID = " + str(update)
+					first = False
+
+				statement += update_statement
+
+				with dbapi2.connect(url) as connection:
+					cursor = connection.cursor()
+					cursor.execute(statement)
 
 	authors = []
 	print("statement = " + statement)
@@ -178,7 +197,7 @@ def authors_page():
 
 				if len(condition):
 					statement += " WHERE "
-					
+
 					first = True
 					for cond in condition:
 						if not first:

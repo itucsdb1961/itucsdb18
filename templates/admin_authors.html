@@ -12,12 +12,15 @@
 
     {% if authors %}
     <form action="" method="post" name="authors-list">
+      <div class="field">
+          <input type="hidden" name="form_name" value="checkbox_filter"/>
+      </div>
       <table class="table is-striped is-fullwidth">
         {% for author in authors %}
         <tr>
           <td>
             <label class="checkbox">
-              <input type="checkbox" name="book_key"/>
+              <input type="checkbox" name="author_key" value="{{author[0]}}"/>
             </label>
             <a href="{{url_for('author_page', author_id = author[0])}}"> {{author[1]}}( {{author[2]}} ) </a>
           </td>
