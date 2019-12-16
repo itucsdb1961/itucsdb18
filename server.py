@@ -17,10 +17,8 @@ app.add_url_rule("/admin/books", view_func = book_view.admin_books_page , method
 app.add_url_rule("/books", view_func = book_view.books_page , methods=["GET", "POST"])
 
 app.add_url_rule("/book/<book_id>", view_func = book_view.book_page, methods=["GET", "POST"])
-app.add_url_rule("/book/delete/<book_id>", view_func = book_view.delete_book , methods=["GET", "POST"])
 
 app.add_url_rule("/author/<author_id>", view_func = author_view.author_page, methods=["GET", "POST"])
-app.add_url_rule("/author/delete/<author_id>", view_func = author_view.delete_author, methods=["GET", "POST"])
 
 app.add_url_rule("/admin/authors", view_func = author_view.admin_authors_page, methods=["GET", "POST"])
 app.add_url_rule("/authors", view_func = author_view.authors_page, methods=["GET", "POST"])

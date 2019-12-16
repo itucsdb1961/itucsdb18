@@ -1,7 +1,7 @@
 url = "postgres://mrzogiikkbrxmf:b6042668a00f9ea7e4d353f06e02e8c5ffab90a6a2a76191de8597340a254d68@ec2-54-228-243-29.eu-west-1.compute.amazonaws.com:5432/dsbe8b5jahoaq"
 secret_key = "hjkalsfdlamfrqwrxzc"
 import psycopg2 as dbapi2
-from flask import Flask, request, redirect, url_for,render_template
+from flask import Flask, request, redirect, url_for,render_template, session, abort
 import time
 
 class student:
@@ -41,6 +41,10 @@ class student:
 
 def admin_students():
 
+	if not "access_level" in session or session["access_level"] > 2: # non-admin-user trying url manually / abort
+		abort(451)
+
+
 	if request.method == "POST":
 		if "form_name" in request.form:
 			if request.form["form_name"] == "add_student":
@@ -65,10 +69,7 @@ def admin_students():
 							statement += " AND "
 						first = False
 						statement += cond
-
-				# final statement
-				print("statement = " + statement)
-
+						
 			elif request.form["form_name"] == "checkbox_filter":
 
 				checkbox_cond = request.form.getlist("student_key")
@@ -99,6 +100,10 @@ def admin_students():
 	return render_template("admin_students.html", students = students)
 
 def admin_student(student_id):
+
+	if not "access_level" in session or session["access_level"] > 2: # non-admin-user trying url manually / abort
+		abort(451)
+
 	student = []
 	books = []
 

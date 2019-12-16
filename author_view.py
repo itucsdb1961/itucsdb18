@@ -1,7 +1,7 @@
 url = "postgres://mrzogiikkbrxmf:b6042668a00f9ea7e4d353f06e02e8c5ffab90a6a2a76191de8597340a254d68@ec2-54-228-243-29.eu-west-1.compute.amazonaws.com:5432/dsbe8b5jahoaq"
 secret_key = "hjkalsfdlamfrqwrxzc"
 import psycopg2 as dbapi2
-from flask import Flask, request, redirect, url_for,render_template
+from flask import Flask, request, redirect, url_for,render_template, session, abort
 
 class author:
 	def __init__(self,
@@ -50,6 +50,8 @@ class author:
 
 def admin_authors_page():
 
+	if not "access_level" in session or session["access_level"] > 2: # non-admin-user trying url manually / abort
+		abort(451)
 
 	authors = []
 	statement = '''
@@ -108,7 +110,6 @@ def admin_authors_page():
 					cursor.execute(statement_delete)
 
 	authors = []
-	print("statement = " + statement)
 	with dbapi2.connect(url) as connection:
 		cursor = connection.cursor()
 		cursor.execute(statement)
