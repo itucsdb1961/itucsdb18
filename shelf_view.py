@@ -25,7 +25,7 @@ class mshelf:
 					INSERT INTO
 					SHELVES	(NAME, NUM, BLOCK, FLR, BOOK_GENRE, CAPACITY)
 					VALUES 	('%s',%d, %d, %d, '%s', %d)
-					ON CONFLICT(NUM, BLOCK, FLR) DO NOTHING
+					ON CONFLICT DO NOTHING
 					''' % (self.name, self.num, self.block, self.flr, self.book_genre, self.capacity)
 
 		with dbapi2.connect(db_url) as connection:
