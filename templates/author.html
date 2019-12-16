@@ -38,47 +38,49 @@
 
       <div class="col-sm-3 d-flex justify-content-center" style="background-color: rgb(254,203,255); border: 1px solid white; border-radius: 8px; padding: 5px;">
 
-        <form action="" method="post" name="author_update">
+        <div class="text-center">
+            <form action="" method="post" name="author_update">
 
-          <h3 class="title">Update author</h3>
-          <div class="field">
-            <input type="hidden" name="form_name" value = "update"/>
-          </div>
+            <h3 class="title">Update author</h3>
+            <div class="field">
+              <input type="hidden" name="form_name" value = "update"/>
+            </div>
+
+            <div class="field">
+              <label for="birth_year" class="label">Birth Year</label>
+              <div class="control">
+                <input type="text" name="birth_year" class="input" maxlength="4"/>
+              </div>
+            </div>
+
+            <div class="field">
+            <label for="birth_place" class="label">Birth Place</label>
+              <div class="control">
+                <input type="text" name="birth_place" class="input"/>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="last_book_date" class="label">Last Book Date</label>
+              <div class="control">
+                <input type="text" name="last_book_date" class="input"/>
+              </div>
+            </div>
 
           <div class="field">
-            <label for="birth_year" class="label">Birth Year</label>
+            <label for="last_book_name" class="label">Last Book Name</label>
+              <div class="control">
+              <input type="text" name="last_book_name" class="input"/>
+              </div>
+            </div>
+
+          <div class="field is-grouped">
             <div class="control">
-              <input type="text" name="birth_year" class="input"/>
+              <button class="button is-primary is-small">Update</button>
             </div>
           </div>
-
-          <div class="field">
-          <label for="birth_place" class="label">Birth Place</label>
-            <div class="control">
-              <input type="text" name="birth_place" class="input"/>
-            </div>
-          </div>
-
-          <div class="field">
-            <label for="last_book_date" class="label">Last Book Date</label>
-            <div class="control">
-              <input type="text" name="last_book_date" class="input"/>
-            </div>
-          </div>
-
-        <div class="field">
-          <label for="last_book_name" class="label">Last Book Name</label>
-            <div class="control">
-            <input type="text" name="last_book_name" class="input"/>
-            </div>
-          </div>
-
-        <div class="field is-grouped">
-          <div class="control">
-            <button class="button is-primary is-small">Update</button>
-          </div>
-        </div>
-      </form>
+        </form>          
+       </div>
 
     </div>
 

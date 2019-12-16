@@ -154,12 +154,12 @@ def admin_books_page():
 					first = False
 
 					# delete from book_authors relation
-					with dbapi2.connect(url) as connection:
-						cursor = connection.cursor()
-						cursor.execute('''
-							DELETE FROM BOOK_AUTHORS
-							WHERE BOOK_ID = %d
-						''' % (int(update)))
+					# with dbapi2.connect(url) as connection:
+					# 	cursor = connection.cursor()
+					# 	cursor.execute('''
+					# 		DELETE FROM BOOK_AUTHORS
+					# 		WHERE BOOK_ID = %d
+					# 	''' % (int(update)))
 
 				statement += update_statement
 

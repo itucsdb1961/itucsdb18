@@ -60,9 +60,11 @@ def admin_authors_page():
 
 	if request.method == "POST":
 		if "form_name" in request.form:
-			if request.form["form_name"] == "create":
+			if request.form["form_name"] == "author_create":
+				
 				tmp_author = author(request.form["author_name"], request.form["last_name"] ,request.form["birth_year"], request.form["birth_place"], request.form["last_book_date"], request.form["last_book_name"])
 				tmp_author.add_to_db(url)
+			
 			elif request.form["form_name"] == "filter":
 				condition = []
 
@@ -81,6 +83,13 @@ def admin_authors_page():
 							statement += " AND "
 						statement += cond
 
+				with dbapi2.connect(url) as connection:
+					cursor = connection.cursor()
+					cursor.execute(statement)
+					authors = cursor.fetchall()
+
+				return render_template("admin_authors.html", authors = authors)
+
 			elif request.form["form_name"] == "checkbox_filter":
 
 				checkbox_cond = request.form.getlist("author_key")
@@ -95,12 +104,12 @@ def admin_authors_page():
 					first = False
 
 				# delete from book_authors relation
-				with dbapi2.connect(url) as connection:
-					cursor = connection.cursor()
-					cursor.execute('''
-						DELETE FROM BOOK_AUTHORS
-						WHERE AUTHOR_ID = %d
-					''' % (int(update)))
+				# with dbapi2.connect(url) as connection:
+				# 	cursor = connection.cursor()
+				# 	cursor.execute('''
+				# 		DELETE FROM BOOK_AUTHORS
+				# 		WHERE AUTHOR_ID = %d
+				# 	''' % (int(update)))
 
 
 				statement_delete += update_statement
@@ -112,7 +121,7 @@ def admin_authors_page():
 	authors = []
 	with dbapi2.connect(url) as connection:
 		cursor = connection.cursor()
-		cursor.execute(statement)
+		cursor.execute("SELECT * FROM AUTHORS")
 		authors = cursor.fetchall()
 
 	return render_template("admin_authors.html", authors = authors)
@@ -147,6 +156,7 @@ def author_page(author_id):
 				for update in updates:
 					if not first:
 						update_statement += " , "
+					first = False
 					update_statement += update
 
 				statement += update_statement

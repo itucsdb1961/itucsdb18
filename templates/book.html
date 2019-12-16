@@ -147,7 +147,7 @@
 
             {% if authors %}
               {% for author in authors %}
-              <tr><td>Author: <a href = "{{ url_for('author_page', author_id = author[0]) }}">{{ author[1] }} {{author[2]}}</a></td></tr>
+              <tr><td><b>Author: </b><a href = "{{ url_for('author_page', author_id = author[0]) }}">{{ author[1] }} {{author[2]}}</a></td></tr>
               {% endfor %}
             {% endif %}
 
